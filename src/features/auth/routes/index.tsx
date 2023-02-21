@@ -1,10 +1,13 @@
+// Pages
+import { Login } from './Login'
+
 export const routes = [
-  {
-    path: '/login',
-    element: <div>Hello Login!</div>,
-  },
   {
     path: '/register',
     element: <div>Hello Register!</div>,
+  },
+  {
+    path: '/login',
+    element: <Login />,
   },
 ]

@@ -1,20 +1,22 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import App from './App'
+import { Main } from './Main'
 import reportWebVitals from './reportWebVitals'
 
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-
-import { routes as loginRoutes } from 'features/auth/routes'
-
-const router = createBrowserRouter([...loginRoutes, { path: '/', element: <App /> }])
+import { store, persistor } from 'store'
+import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  // <React.StrictMode>
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <Main />
+    </PersistGate>
+  </Provider>
+  // </React.StrictMode>
 )
 
 // If you want to start measuring performance in your app, pass a function

@@ -4,28 +4,13 @@
 
 body {
   margin: 0;
-  font-family: 'Montserrat', sans-serif;
   font-family: 'Work Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(252 252 252);
-  background-color: #163b23;
-  color: white !important;
 }
 
 h2 {
   font-family: 'Crimson Text', serif;
-  font-size: 30px !important;
-  color: #f9f871 !important;
-}
-
-button {
-  background-color: #f9f871 !important;
-  color: black !important;
-}
-
-button:hover {
-  background-color: #d3d248 !important;
 }
 
 input {

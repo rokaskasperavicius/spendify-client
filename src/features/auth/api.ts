@@ -5,6 +5,13 @@ type Login = {
   password: string | undefined
 }
 
+type Register = {
+  firstName: string | undefined
+  lastName: string | undefined
+  email: string | undefined
+  password: string | undefined
+}
+
 type LoginResponse = {
   accessToken: string
   refreshToken: string
@@ -22,12 +29,21 @@ export const authApi = createApi({
         body,
       }),
 
-      transformResponse: (response: { data: LoginResponse }, meta, arg) =>
-        response.data,
+      transformResponse: (response: { data: LoginResponse }) => response.data,
+    }),
+
+    register: builder.mutation<{}, Register>({
+      query: (body) => ({
+        url: `/register`,
+        method: 'POST',
+        body,
+      }),
+
+      transformResponse: (response: { data: {} }) => response.data,
     }),
   }),
 })
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useLoginMutation } = authApi
+export const { useLoginMutation, useRegisterMutation } = authApi

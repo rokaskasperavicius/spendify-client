@@ -1,4 +1,6 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi } from '@reduxjs/toolkit/query/react'
+
+import { apiQuery } from 'services/api'
 
 type Login = {
   email: string | undefined
@@ -20,11 +22,17 @@ type LoginResponse = {
 // Define a service using a base URL and expected endpoints
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://spendify.fly.dev/api/users' }),
+  baseQuery: apiQuery,
   endpoints: (builder) => ({
+    getLinkedAccounts: builder.query<any, void>({
+      query: () => `/nordigen/accounts`,
+
+      transformResponse: (response: { data: any }) => response.data,
+    }),
+
     login: builder.mutation<LoginResponse, Login>({
       query: (body) => ({
-        url: `/login`,
+        url: `/users/login`,
         method: 'POST',
         body,
       }),
@@ -34,7 +42,7 @@ export const authApi = createApi({
 
     register: builder.mutation<{}, Register>({
       query: (body) => ({
-        url: `/register`,
+        url: `/users/register`,
         method: 'POST',
         body,
       }),
@@ -46,4 +54,8 @@ export const authApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useLoginMutation, useRegisterMutation } = authApi
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useGetLinkedAccountsQuery,
+} = authApi

@@ -1,4 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { AnyAction } from 'redux'
 import {
   persistStore,
   persistReducer,
@@ -11,7 +12,7 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
-import { slice } from 'features/auth/slice'
+import { slice, signOut } from 'features/auth/slice'
 import { authApi } from 'features/auth/api'
 
 const persistConfig = {
@@ -20,12 +21,28 @@ const persistConfig = {
   whitelist: [slice.name],
 }
 
-const rootReducer = combineReducers({
+const combinedReducers = combineReducers({
   [slice.name]: slice.reducer,
   [authApi.reducerPath]: authApi.reducer,
 })
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+// Clear the redux store on logout
+// https://stackoverflow.com/a/63992547
+// https://bionicjulia.com/blog/clear-redux-toolkit-state-with-redux-persist-and-typescript
+const reducerProxy = (
+  state: ReturnType<typeof combinedReducers> | undefined,
+  action: AnyAction
+) => {
+  if (signOut.match(action)) {
+    storage.removeItem('persist:root')
+
+    return combinedReducers(undefined, action)
+  }
+
+  return combinedReducers(state, action)
+}
+
+const persistedReducer = persistReducer(persistConfig, reducerProxy)
 
 export const store = configureStore({
   reducer: persistedReducer,

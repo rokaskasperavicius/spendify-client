@@ -20,7 +20,7 @@ export const MainLayout = () => {
       <div className='p-4 text-xl font-medium w-full flex justify-between'>
         <div className='font-medium text-primary'>Spendify</div>
         <button
-          className='underline color-white text-base'
+          className='hover:underline color-white text-base'
           onClick={handleSignOut}
         >
           Sign out

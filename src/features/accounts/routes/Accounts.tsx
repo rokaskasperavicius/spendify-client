@@ -6,6 +6,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+
+import { useGetLinkedAccountsQuery } from 'features/auth/api'
 const data = [
   { name: '1st, 2023', value: 400 },
   { name: '2nd, 2023', value: 500 },
@@ -37,12 +39,56 @@ const data = [
   { name: '28th, 2023', value: 900 },
 ]
 
+const Skeleton = () => (
+  <div role='status'>
+    <div className='flex gap-4 items-center'>
+      <div className='w-[70px] h-[70px] bg-gray-200 animate-pulse rounded-sm' />
+
+      <div className='flex-1 animate-pulse'>
+        <div className='h-2 bg-gray-200 rounded-full w-2/3' />
+        <div className='h-2 bg-gray-200 rounded-full text-sm mt-1' />
+      </div>
+    </div>
+    <span className='sr-only'>Loading...</span>
+  </div>
+)
+
 export const Accounts = () => {
+  const { data: dataa, isLoading } = useGetLinkedAccountsQuery()
+  console.log(isLoading)
+  console.log(dataa)
+
   return (
     <div className='flex h-full border-y border-gray-300'>
       <aside className='w-[300px] border-r border-gray-300 p-4 space-y-4'>
         <div>Linked Accounts</div>
-        <div className='flex gap-4 items-center cursor-pointer group'>
+
+        {isLoading ? (
+          <Skeleton />
+        ) : (
+          dataa.map((account: any) => (
+            <div
+              key={account.id}
+              className='flex gap-4 items-center cursor-pointer group'
+            >
+              <div className='h-[70px] w-[70px]'>
+                <img
+                  src='https://cdn.nordigen.com/ais/LAN_AND_SPAR_BANK_LOSADKKK.png'
+                  width={70}
+                  alt='bank'
+                />
+              </div>
+
+              <div>
+                <div className='group-hover:underline'>Studiekonto</div>
+                <div className='text-gray-500 text-sm mt-1'>
+                  DK4404004025963089
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+        {/* <div className='flex gap-4 items-center cursor-pointer group'>
           <img
             src='https://cdn.nordigen.com/ais/LAN_AND_SPAR_BANK_LOSADKKK.png'
             width={70}
@@ -68,7 +114,9 @@ export const Accounts = () => {
             <div className='group-hover:underline'>StudieOpsparing</div>
             <div className='text-gray-500 text-sm mt-1'>DK3904004028411265</div>
           </div>
-        </div>
+        </div> */}
+
+        {/* <Skeleton /> */}
 
         <button className='bg-primary px-4 py-2 rounded-md w-full text-white'>
           Link a new Account

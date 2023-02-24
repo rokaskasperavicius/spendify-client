@@ -1,4 +1,10 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+  unstable_HistoryRouter as HistoryRouter,
+} from 'react-router-dom'
+import { createBrowserHistory } from 'history'
 
 import { MainLayout, SimpleLayout } from 'components/layouts'
 
@@ -8,7 +14,7 @@ import { routes as accountRoutes } from 'features/accounts/routes'
 import { Login } from 'features/auth/routes/Login'
 import { Register } from 'features/auth/routes/Register'
 
-const userRoutes = createBrowserRouter([
+export const userRoutes = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
@@ -45,5 +51,9 @@ const userRoutes = createBrowserRouter([
 ])
 
 export const Main = () => {
-  return <RouterProvider router={userRoutes} />
+  return (
+    // <HistoryRouter history={history}>
+    <RouterProvider router={userRoutes} />
+    // </HistoryRouter>
+  )
 }

@@ -4,7 +4,7 @@ import { useAppDispatch } from 'store/hooks'
 import { signUserOut, useAuthState } from 'features/auth/authSlice'
 
 export const MainLayout = () => {
-  const { accessToken } = useAuthState()
+  const { accessToken, firstName, lastName } = useAuthState()
   const dispatch = useAppDispatch()
 
   const handleSignOut = () => {
@@ -19,12 +19,13 @@ export const MainLayout = () => {
     <div className='h-screen flex flex-col first-letter bg-[#fffdfc]'>
       <div className='p-4 text-xl font-medium w-full flex justify-between'>
         <div className='font-medium text-primary'>Spendify</div>
-        <button
-          className='hover:underline color-white text-base'
-          onClick={handleSignOut}
-        >
-          Sign out
-        </button>
+        <div className='text-base'>
+          {firstName} {lastName} (
+          <button className='hover:underline' onClick={handleSignOut}>
+            Sign out
+          </button>
+          )
+        </div>
       </div>
 
       <main className='flex-1'>

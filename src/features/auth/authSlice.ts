@@ -5,11 +5,17 @@ import { useAppSelector } from 'store/hooks'
 import { authApi } from 'features/auth/authApi'
 
 const initialState: State = {
+  firstName: null,
+  lastName: null,
+
   accessToken: null,
   refreshToken: null,
 }
 
 type State = {
+  firstName: string | null
+  lastName: string | null
+
   accessToken: string | null
   refreshToken: string | null
 }
@@ -18,10 +24,7 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    signUserOut: (state) => {
-      state.accessToken = null
-      state.refreshToken = null
-    },
+    signUserOut: () => initialState,
 
     refreshAccessToken: (state, action: PayloadAction<string>) => {
       state.accessToken = action.payload
@@ -34,6 +37,9 @@ export const authSlice = createSlice({
       (state, action) => {
         state.accessToken = action.payload.accessToken
         state.refreshToken = action.payload.refreshToken
+
+        state.firstName = action.payload.firstName
+        state.lastName = action.payload.lastName
       }
     )
   },

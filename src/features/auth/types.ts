@@ -1,5 +1,8 @@
 // Login
 export type LoginUserResponse = {
+  firstName: string
+  lastName: string
+
   accessToken: string
   refreshToken: string
 }

@@ -28,7 +28,7 @@ export const LinkAccount = () => {
     try {
       const { url } = await generateAccountLinkUrl({
         institutionId,
-        redirect: 'http://localhost:3000/link-account',
+        redirect: process.env.REACT_APP_REDIRECT as string,
       }).unwrap()
 
       window.open(url, '_self')

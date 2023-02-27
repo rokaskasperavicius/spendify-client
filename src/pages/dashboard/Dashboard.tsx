@@ -7,7 +7,9 @@ import {
   YAxis,
 } from 'recharts'
 
-import { useGetLinkedAccountsQuery } from 'features/auth/api'
+import { useNavigate } from 'react-router-dom'
+
+import { useGetLinkedAccountsQuery } from 'features/linkedAccounts/linkedAccountsApi'
 const data = [
   { name: '1st, 2023', value: 400 },
   { name: '2nd, 2023', value: 500 },
@@ -53,10 +55,9 @@ const Skeleton = () => (
   </div>
 )
 
-export const Accounts = () => {
-  const { data: dataa, isLoading } = useGetLinkedAccountsQuery()
-  console.log(isLoading)
-  console.log(dataa)
+export const Dashboard = () => {
+  const { data: linkedAccounts, isLoading } = useGetLinkedAccountsQuery()
+  const navigate = useNavigate()
 
   return (
     <div className='flex h-full border-y border-gray-300'>
@@ -66,66 +67,34 @@ export const Accounts = () => {
         {isLoading ? (
           <Skeleton />
         ) : (
-          dataa.map((account: any) => (
+          linkedAccounts?.map((account) => (
             <div
               key={account.id}
               className='flex gap-4 items-center cursor-pointer group'
             >
               <div className='h-[70px] w-[70px]'>
-                <img
-                  src='https://cdn.nordigen.com/ais/LAN_AND_SPAR_BANK_LOSADKKK.png'
-                  width={70}
-                  alt='bank'
-                />
+                <img src={account.bankLogo} width={70} alt='bank' />
               </div>
 
               <div>
-                <div className='group-hover:underline'>Studiekonto</div>
+                <div className='group-hover:underline'>
+                  {account.accountName}
+                </div>
                 <div className='text-gray-500 text-sm mt-1'>
-                  DK4404004025963089
+                  {account.accountIban}
                 </div>
               </div>
             </div>
           ))
         )}
-        {/* <div className='flex gap-4 items-center cursor-pointer group'>
-          <img
-            src='https://cdn.nordigen.com/ais/LAN_AND_SPAR_BANK_LOSADKKK.png'
-            width={70}
-            alt='bank'
-          />
 
-          <div>
-            <div className='group-hover:underline'>Studiekonto</div>
-            <div className='text-gray-500 text-sm mt-1'>DK4404004025963089</div>
-          </div>
-        </div>
-
-        <div className='bg-gray-300 h-[1px] w-full' />
-
-        <div className='flex gap-4 items-center cursor-pointer group'>
-          <img
-            src='https://cdn.nordigen.com/ais/LAN_AND_SPAR_BANK_LOSADKKK.png'
-            width={70}
-            alt='bank'
-          />
-
-          <div>
-            <div className='group-hover:underline'>StudieOpsparing</div>
-            <div className='text-gray-500 text-sm mt-1'>DK3904004028411265</div>
-          </div>
-        </div> */}
-
-        {/* <Skeleton /> */}
-
-        <button className='bg-primary px-4 py-2 rounded-md w-full text-white'>
+        <button
+          className='bg-primary px-4 py-2 rounded-md w-full text-white'
+          onClick={() => navigate('/link-account')}
+        >
           Link a new Account
         </button>
       </aside>
-
-      {/* <div className='flex-1 flex justify-center items-center'>
-        <div>Please select an Account</div>
-      </div> */}
 
       <div className='flex-1 flex flex-col'>
         <div className='p-4 border-b border-gray-300'>

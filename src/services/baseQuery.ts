@@ -8,14 +8,16 @@ import type {
 import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 
 import { RootState } from 'store'
-import { userRoutes } from 'Main'
-import { signOut, refreshAccessToken } from 'features/auth/slice'
+import { userRoutes } from 'components/Main'
+import { signUserOut, refreshAccessToken } from 'features/auth/authSlice'
+
+import { toast } from 'react-toastify'
 
 type BaseQuery = {
   isRefresh: boolean
 }
 
-const baseQuery = ({ isRefresh }: BaseQuery) =>
+const query = ({ isRefresh }: BaseQuery) =>
   fetchBaseQuery({
     baseUrl: process.env.REACT_APP_API_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
@@ -30,18 +32,18 @@ const baseQuery = ({ isRefresh }: BaseQuery) =>
     },
   })
 
-export const apiQuery: BaseQueryFn<
+export const baseQuery: BaseQueryFn<
   string | FetchArgs,
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-  let result = await baseQuery({ isRefresh: false })(args, api, extraOptions)
+  let result = await query({ isRefresh: false })(args, api, extraOptions)
 
   // Unauthenticated
   if (result.error && result.error.status === 401) {
-    const refreshResult = (await baseQuery({ isRefresh: true })(
+    const refreshResult = (await query({ isRefresh: true })(
       {
-        url: '/users/refresh-token',
+        url: '/refresh-token',
         method: 'POST',
       },
       api,
@@ -57,11 +59,20 @@ export const apiQuery: BaseQueryFn<
       api.dispatch(refreshAccessToken(refreshResult.data.data.accessToken))
 
       // Retry the initial query
-      result = await baseQuery({ isRefresh: false })(args, api, extraOptions)
+      result = await query({ isRefresh: false })(args, api, extraOptions)
     } else {
-      api.dispatch(signOut())
+      toast.error('Session timeout')
+      api.dispatch(signUserOut())
       userRoutes.navigate('/login')
     }
+  }
+
+  if (
+    result.error &&
+    result.error.status !== 400 &&
+    result.error.status !== 401
+  ) {
+    toast.error('Something went wrong')
   }
 
   return result

@@ -1,14 +1,14 @@
 import { Outlet, Navigate } from 'react-router-dom'
 
-import { useAppDispatch } from 'hooks'
-import { signOut, useAuthState } from 'features/auth/slice'
+import { useAppDispatch } from 'store/hooks'
+import { signUserOut, useAuthState } from 'features/auth/authSlice'
 
 export const MainLayout = () => {
   const { accessToken } = useAuthState()
   const dispatch = useAppDispatch()
 
   const handleSignOut = () => {
-    dispatch(signOut())
+    dispatch(signUserOut())
   }
 
   if (!accessToken) {

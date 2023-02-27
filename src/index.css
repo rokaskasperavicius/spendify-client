@@ -21,3 +21,17 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+:root {
+  --toastify-color-light: #ff9900 !important;
+
+  --toastify-icon-color-error: black !important;
+
+  --toastify-font-family: 'Work Sans', sans-serif !important;
+
+  --toastify-text-color-light: black !important;
+}
+
+.Toastify__close-button {
+  opacity: 0.7 !important;
+}

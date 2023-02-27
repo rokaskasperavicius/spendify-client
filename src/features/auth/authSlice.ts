@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { authApi } from 'features/auth/api'
-import { useAppSelector } from 'hooks'
+
+// Hooks & Helpers
+import { useAppSelector } from 'store/hooks'
+import { authApi } from 'features/auth/authApi'
 
 const initialState: State = {
   accessToken: null,
@@ -12,11 +14,11 @@ type State = {
   refreshToken: string | null
 }
 
-export const slice = createSlice({
+export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    signOut: (state) => {
+    signUserOut: (state) => {
       state.accessToken = null
       state.refreshToken = null
     },
@@ -25,9 +27,10 @@ export const slice = createSlice({
       state.accessToken = action.payload
     },
   },
+
   extraReducers: (builder) => {
     builder.addMatcher(
-      authApi.endpoints.login.matchFulfilled,
+      authApi.endpoints.loginUser.matchFulfilled,
       (state, action) => {
         state.accessToken = action.payload.accessToken
         state.refreshToken = action.payload.refreshToken
@@ -36,7 +39,7 @@ export const slice = createSlice({
   },
 })
 
-// Action creators are generated for each case reducer function
-export const { signOut, refreshAccessToken } = slice.actions
+export const { signUserOut, refreshAccessToken } = authSlice.actions
 
-export const useAuthState = () => useAppSelector((state) => state.auth)
+export const useAuthState = () =>
+  useAppSelector((state) => state[authSlice.name])

@@ -36,3 +36,10 @@ export type GetInstitution = {
   bankName: string
   bankLogo: string
 }
+
+export type GetLinkedTransaction = {
+  title: string
+  category: 'Food & Groceries' | 'Utilities' | 'Transfers'
+  amount: string
+  date: string
+}

@@ -9,6 +9,7 @@ import {
   GetLinkedAccount,
   GenerateAccountLinkUrl,
   GenerateAccountLinkUrlBody,
+  GetLinkedTransaction,
   LinkAccountBody,
   GetInstitution,
 } from 'features/linkedAccounts/types'
@@ -41,6 +42,17 @@ export const linkedAccountsApi = createApi({
       query: () => `${API_PREFIX}/institutions`,
 
       transformResponse: (response: SuccessResponse<GetInstitution[]>) =>
+        response.data,
+    }),
+
+    getLinkedTransactions: builder.query<
+      GetLinkedTransaction[],
+      { accountId: string; query: string }
+    >({
+      query: ({ accountId, query }) =>
+        `${API_PREFIX}/transactions/${accountId}?${query}`,
+
+      transformResponse: (response: SuccessResponse<GetLinkedTransaction[]>) =>
         response.data,
     }),
 
@@ -77,4 +89,5 @@ export const {
   useGenerateAccountLinkUrlMutation,
   useGetInstitutionsQuery,
   useLinkAccountMutation,
+  useGetLinkedTransactionsQuery,
 } = linkedAccountsApi

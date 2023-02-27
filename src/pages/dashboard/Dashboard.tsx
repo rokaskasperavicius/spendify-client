@@ -10,6 +10,9 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { addDays, addMonths, format, subMonths } from 'date-fns'
 import { DateRange, DayPicker } from 'react-day-picker'
+import DateRangePicker from '@wojtekmaj/react-daterange-picker'
+
+import { useDebounce } from 'react-use'
 
 // Assets
 import ChartIcon from 'assets/chart.svg'
@@ -18,8 +21,12 @@ import ListIcon from 'assets/list.svg'
 // Components
 import { Input, Select } from 'components/ui'
 
-import { useGetLinkedAccountsQuery } from 'features/linkedAccounts/linkedAccountsApi'
-import React, { useState } from 'react'
+import {
+  useGetLinkedAccountsQuery,
+  useGetLinkedTransactionsQuery,
+} from 'features/linkedAccounts/linkedAccountsApi'
+import React, { useEffect, useState } from 'react'
+import { Spinner } from 'components'
 
 const pastMonth = new Date(2023, 1, 27)
 const data = [
@@ -80,9 +87,47 @@ export const Dashboard = () => {
 
   const initialDays: Date[] = []
   const [days, setDays] = React.useState<Date[] | undefined>(initialDays)
+  const [value, onChange] = useState([subMonths(new Date(), 1), new Date()])
 
-  console.log(range)
+  const accountId = '2f5c19ae-6f74-4d6b-8b02-07c678d1ede6'
 
+  const [search, setSearch] = useState<string>()
+  const [option, setOption] = useState<string>()
+
+  const generateQuery = () => {
+    const query = []
+
+    if (search) {
+      query.push(`search=${search}`)
+    }
+
+    if (option) {
+      query.push(`category=${encodeURIComponent(option)}`)
+    }
+
+    if (value) {
+      query.push(`from=${value[0].getTime()}&to=${value[1].getTime()}`)
+    }
+
+    return query.join('&')
+  }
+
+  const [query, setQuery] = useState<string>('')
+
+  useDebounce(
+    () => {
+      setQuery(generateQuery())
+    },
+    400,
+    [search, option, value]
+  )
+
+  const { data: transactions, isFetching } = useGetLinkedTransactionsQuery({
+    accountId,
+    query: query,
+  })
+
+  console.log(isFetching)
   return (
     <div className='flex h-full'>
       <aside className='w-[300px] border-r border-gray-300 p-4 space-y-4'>
@@ -129,29 +174,33 @@ export const Dashboard = () => {
           <div className='text-gray-500 mt-1'>DK4404004025963089</div>
         </div>
         <div className='p-4 border-b border-gray-300'>
-          <div className='hidden'>
-            <DayPicker
-              mode='range'
-              defaultMonth={pastMonth}
-              selected={range}
-              // footer={footer}
-              onSelect={setRange}
-              toDate={new Date()}
-            />
-          </div>
-
           <div className='flex items-center justify-between'>
-            <div>
+            <div className='flex items-stretch gap-4'>
               {view === 'list' && (
-                <div className='flex items-stretch gap-4'>
+                <>
                   <Input
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
                     placeholder='Search for transactions...'
                     className='w-60'
                   />
 
-                  <Select />
-                </div>
+                  <Select
+                    value={option}
+                    onChange={(e) => setOption(e.target.value)}
+                  />
+                </>
               )}
+
+              <DateRangePicker
+                onChange={(e) => onChange(e as unknown as [])}
+                format='y-MM-dd'
+                value={value}
+                dayPlaceholder='dd'
+                monthPlaceholder='mm'
+                yearPlaceholder='yyyy'
+                maxDate={new Date()}
+              />
             </div>
             <div>
               <div
@@ -174,41 +223,49 @@ export const Dashboard = () => {
         </div>
 
         <div className='flex-1'>
-          {view === 'chart' ? (
-            <ResponsiveContainer>
-              <LineChart
-                data={data}
-                margin={{ top: 10, right: 50, bottom: 0, left: 10 }}
-              >
-                <Line
-                  type='monotone'
-                  dataKey='value'
-                  stroke='#8884d8'
-                  animationDuration={3000}
-                />
-                <XAxis dataKey='name' minTickGap={20} />
-                <YAxis
-                  orientation='right'
-                  // axisLine={false}
-                  // tickLine={false}
-                  width={30}
-                  mirror={true}
-                  padding={{ top: 0, bottom: 20 }}
-                  label={{ value: 'kr.', position: 'right' }}
-                />
-                <Tooltip />
-              </LineChart>
-            </ResponsiveContainer>
-          ) : (
-            <div>
-              {data.map((a) => (
-                <div className='flex items-center justify-between p-4'>
-                  <div>{a.name}</div>
-                  <div>{a.value}</div>
-                </div>
-              ))}
-            </div>
-          )}
+          <Spinner isLoading={isFetching}>
+            {view === 'chart' ? (
+              <ResponsiveContainer>
+                <LineChart
+                  data={data}
+                  margin={{ top: 10, right: 50, bottom: 0, left: 10 }}
+                >
+                  <Line
+                    type='monotone'
+                    dataKey='value'
+                    stroke='#8884d8'
+                    animationDuration={3000}
+                  />
+                  <XAxis dataKey='name' minTickGap={20} />
+                  <YAxis
+                    orientation='right'
+                    // axisLine={false}
+                    // tickLine={false}
+                    width={30}
+                    mirror={true}
+                    padding={{ top: 0, bottom: 20 }}
+                    label={{ value: 'kr.', position: 'right' }}
+                  />
+                  <Tooltip />
+                </LineChart>
+              </ResponsiveContainer>
+            ) : (
+              <div>
+                {transactions?.map((transaction) => (
+                  <div className='flex items-center justify-between p-4'>
+                    <div>
+                      <div>
+                        <span className='font-medium'>{transaction.title}</span>{' '}
+                        ({transaction.category})
+                      </div>
+                      <div className='text-sm'>{transaction.date}</div>
+                    </div>
+                    <div className='font-medium'>{transaction.amount} DKK</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Spinner>
         </div>
       </div>
     </div>

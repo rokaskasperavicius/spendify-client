@@ -1,5 +1,10 @@
+import './tailwindCSS.css'
+
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import 'react-day-picker/dist/style.css'
+import 'react-toastify/dist/ReactToastify.css'
+
 import './index.css'
 import { Main } from 'components/Main'
 import reportWebVitals from './reportWebVitals'
@@ -8,8 +13,6 @@ import { ToastContainer } from 'react-toastify'
 import { store, persistor } from 'store'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
-
-import 'react-toastify/dist/ReactToastify.css'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(

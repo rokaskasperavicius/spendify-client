@@ -8,8 +8,20 @@ import {
 } from 'recharts'
 
 import { useNavigate } from 'react-router-dom'
+import { addDays, addMonths, format, subMonths } from 'date-fns'
+import { DateRange, DayPicker } from 'react-day-picker'
+
+// Assets
+import ChartIcon from 'assets/chart.svg'
+import ListIcon from 'assets/list.svg'
+
+// Components
+import { Input, Select } from 'components/ui'
 
 import { useGetLinkedAccountsQuery } from 'features/linkedAccounts/linkedAccountsApi'
+import React, { useState } from 'react'
+
+const pastMonth = new Date(2023, 1, 27)
 const data = [
   { name: '1st, 2023', value: 400 },
   { name: '2nd, 2023', value: 500 },
@@ -57,10 +69,22 @@ const Skeleton = () => (
 
 export const Dashboard = () => {
   const { data: linkedAccounts, isLoading } = useGetLinkedAccountsQuery()
+  const [view, setView] = useState<'list' | 'chart'>('list')
   const navigate = useNavigate()
 
+  const defaultSelected: DateRange = {
+    from: subMonths(pastMonth, 1),
+    to: pastMonth,
+  }
+  const [range, setRange] = useState<DateRange | undefined>(defaultSelected)
+
+  const initialDays: Date[] = []
+  const [days, setDays] = React.useState<Date[] | undefined>(initialDays)
+
+  console.log(range)
+
   return (
-    <div className='flex h-full border-y border-gray-300'>
+    <div className='flex h-full'>
       <aside className='w-[300px] border-r border-gray-300 p-4 space-y-4'>
         <div>Linked Accounts</div>
 
@@ -98,35 +122,93 @@ export const Dashboard = () => {
 
       <div className='flex-1 flex flex-col'>
         <div className='p-4 border-b border-gray-300'>
-          <div>Studiekonto</div>
-          <div className='text-gray-500 text-sm mt-1'>DK4404004025963089</div>
+          <div className='flex text-lg items-center justify-between font-medium'>
+            <div>Studiekonto</div>
+            <div>2899.71 DKK</div>
+          </div>
+          <div className='text-gray-500 mt-1'>DK4404004025963089</div>
+        </div>
+        <div className='p-4 border-b border-gray-300'>
+          <div className='hidden'>
+            <DayPicker
+              mode='range'
+              defaultMonth={pastMonth}
+              selected={range}
+              // footer={footer}
+              onSelect={setRange}
+              toDate={new Date()}
+            />
+          </div>
+
+          <div className='flex items-center justify-between'>
+            <div>
+              {view === 'list' && (
+                <div className='flex items-stretch gap-4'>
+                  <Input
+                    placeholder='Search for transactions...'
+                    className='w-60'
+                  />
+
+                  <Select />
+                </div>
+              )}
+            </div>
+            <div>
+              <div
+                className='flex items-center gap-2 cursor-pointer hover:underline select-none'
+                onClick={() => setView(view === 'chart' ? 'list' : 'chart')}
+              >
+                {view === 'chart' ? (
+                  <span>Show list</span>
+                ) : (
+                  <span>Show chart</span>
+                )}
+                <img
+                  width={30}
+                  height={30}
+                  src={view === 'chart' ? ListIcon : ChartIcon}
+                />
+              </div>
+            </div>
+          </div>
         </div>
 
         <div className='flex-1'>
-          <ResponsiveContainer>
-            <LineChart
-              data={data}
-              margin={{ top: 10, right: 50, bottom: 0, left: 10 }}
-            >
-              <Line
-                type='monotone'
-                dataKey='value'
-                stroke='#8884d8'
-                animationDuration={3000}
-              />
-              <XAxis dataKey='name' minTickGap={20} />
-              <YAxis
-                orientation='right'
-                // axisLine={false}
-                // tickLine={false}
-                width={30}
-                mirror={true}
-                padding={{ top: 0, bottom: 20 }}
-                label={{ value: 'kr.', position: 'right' }}
-              />
-              <Tooltip />
-            </LineChart>
-          </ResponsiveContainer>
+          {view === 'chart' ? (
+            <ResponsiveContainer>
+              <LineChart
+                data={data}
+                margin={{ top: 10, right: 50, bottom: 0, left: 10 }}
+              >
+                <Line
+                  type='monotone'
+                  dataKey='value'
+                  stroke='#8884d8'
+                  animationDuration={3000}
+                />
+                <XAxis dataKey='name' minTickGap={20} />
+                <YAxis
+                  orientation='right'
+                  // axisLine={false}
+                  // tickLine={false}
+                  width={30}
+                  mirror={true}
+                  padding={{ top: 0, bottom: 20 }}
+                  label={{ value: 'kr.', position: 'right' }}
+                />
+                <Tooltip />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <div>
+              {data.map((a) => (
+                <div className='flex items-center justify-between p-4'>
+                  <div>{a.name}</div>
+                  <div>{a.value}</div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

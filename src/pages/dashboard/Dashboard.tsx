@@ -10,7 +10,7 @@ import {
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 import { useNavigate } from 'react-router-dom'
-import { subMonths } from 'date-fns'
+import { subMonths, format } from 'date-fns'
 import DateRangePicker from '@wojtekmaj/react-daterange-picker'
 
 import { useDebounce } from 'react-use'
@@ -68,7 +68,10 @@ export const Dashboard = () => {
     }
 
     if (value) {
-      query.push(`from=${value[0].toISOString()}&to=${value[1].toISOString()}`)
+      const from = new Date(format(value[0], 'yyyy-MM-dd')).toISOString()
+      const to = new Date(format(value[1], 'yyyy-MM-dd')).toISOString()
+
+      query.push(`from=${from}&to=${to}`)
     }
 
     return query.join('&')

@@ -2,6 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 
 // Helpers
 import { baseQuery } from 'services/baseQuery'
+import { formatDate } from 'utils/formatDate'
 
 // Types
 import {
@@ -14,7 +15,6 @@ import {
   GetInstitution,
 } from 'features/linkedAccount/types'
 import { SuccessResponse } from 'services/types'
-
 const API_PREFIX = '/linked-account'
 
 export const linkedAccountApi = createApi({
@@ -53,7 +53,10 @@ export const linkedAccountApi = createApi({
         `${API_PREFIX}/transactions/${accountId}?${query}`,
 
       transformResponse: (response: SuccessResponse<GetLinkedTransaction[]>) =>
-        response.data,
+        response.data.map((transaction) => ({
+          ...transaction,
+          date: formatDate(new Date(transaction.date)),
+        })),
     }),
 
     generateAccountLinkUrl: builder.mutation<

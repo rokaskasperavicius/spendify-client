@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Components
-import { Spinner } from 'components'
+import { Spinner } from 'components/ui'
 
 // Hooks & Helpers
 import {
@@ -10,7 +10,7 @@ import {
   useGenerateAccountLinkUrlMutation,
   useGetLinkableAccountsQuery,
   useLinkAccountMutation,
-} from 'features/linkedAccounts/linkedAccountsApi'
+} from 'features/linkedAccount/linkedAccountApi'
 
 export const LinkAccount = () => {
   const { data: institutions, isLoading } = useGetInstitutionsQuery()
@@ -80,7 +80,7 @@ export const LinkAccount = () => {
                     {account.accountIban}
                   </div>
                 </h3>
-                <div>{account.accountBalance} kr</div>
+                <div>{account.accountBalance} DKK</div>
               </div>
             ))}
           </div>

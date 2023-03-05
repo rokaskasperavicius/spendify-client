@@ -12,19 +12,19 @@ import {
   GetLinkedTransaction,
   LinkAccountBody,
   GetInstitution,
-} from 'features/linkedAccounts/types'
+} from 'features/linkedAccount/types'
 import { SuccessResponse } from 'services/types'
 
-const API_PREFIX = '/link-account'
+const API_PREFIX = '/linked-account'
 
-export const linkedAccountsApi = createApi({
+export const linkedAccountApi = createApi({
   reducerPath: 'linkedAccountsApi',
   baseQuery: baseQuery,
   tagTypes: ['LinkedAccounts'],
 
   endpoints: (builder) => ({
     getLinkedAccounts: builder.query<GetLinkedAccount[], void>({
-      query: () => `${API_PREFIX}/accounts`,
+      query: () => `${API_PREFIX}`,
       providesTags: ['LinkedAccounts'],
 
       transformResponse: (response: SuccessResponse<GetLinkedAccount[]>) =>
@@ -32,7 +32,7 @@ export const linkedAccountsApi = createApi({
     }),
 
     getLinkableAccounts: builder.query<GetLinkableAccount[], string>({
-      query: (ref) => `${API_PREFIX}/accounts/${ref}`,
+      query: (ref) => `${API_PREFIX}/available-accounts/${ref}`,
 
       transformResponse: (response: SuccessResponse<GetLinkableAccount[]>) =>
         response.data,
@@ -61,7 +61,7 @@ export const linkedAccountsApi = createApi({
       GenerateAccountLinkUrlBody
     >({
       query: (body) => ({
-        url: `${API_PREFIX}/url`,
+        url: `${API_PREFIX}/create-requisition`,
         method: 'POST',
         body,
       }),
@@ -90,4 +90,4 @@ export const {
   useGetInstitutionsQuery,
   useLinkAccountMutation,
   useGetLinkedTransactionsQuery,
-} = linkedAccountsApi
+} = linkedAccountApi

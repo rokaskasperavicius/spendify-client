@@ -27,7 +27,7 @@ export const Login = () => {
     } catch (error) {
       if (
         isFetchBaseQueryError(error) &&
-        error.code === ERROR_CODES.WRONG_PASSWORD
+        error.code === ERROR_CODES.INVALID_CREDENTIALS
       ) {
         setIsWrongPassword(true)
       }
@@ -60,7 +60,9 @@ export const Login = () => {
           )}
 
           {/* #FFA552 */}
-          <Button type='submit'>Sign In</Button>
+          <Button type='submit' variant='secondary'>
+            Sign In
+          </Button>
 
           <div className='flex justify-between text-secondary mt-2'>
             <Link to='/register'>Forgot Your Password?</Link>

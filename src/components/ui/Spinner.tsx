@@ -8,7 +8,7 @@ type Props = {
 export const Spinner = ({ isLoading, children }: Props) => {
   if (isLoading) {
     return (
-      <div className='h-full flex justify-center items-center'>
+      <div className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2'>
         <BounceLoader loading={isLoading} color='#163b23' />
       </div>
     )

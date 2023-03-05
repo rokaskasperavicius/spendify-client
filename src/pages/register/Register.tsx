@@ -47,7 +47,7 @@ export const Register = () => {
     } catch (err) {
       if (
         isFetchBaseQueryError(err) &&
-        err.code === ERROR_CODES.INVALID_EMAIL
+        err.code === ERROR_CODES.INVALID_CREDENTIALS
       ) {
         setIsWrongEmail(true)
       }
@@ -105,7 +105,7 @@ export const Register = () => {
             </div>
           )}
 
-          <Button type='submit' className='mt-2'>
+          <Button type='submit' className='mt-2' variant='secondary'>
             Sign Up
           </Button>
 

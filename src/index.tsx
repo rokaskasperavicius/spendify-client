@@ -2,11 +2,10 @@ import './tailwindCSS.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import 'react-day-picker/dist/style.css'
 import 'react-toastify/dist/ReactToastify.css'
 
 import './index.css'
-import { Main } from 'components/Main'
+import { Main } from 'components'
 import reportWebVitals from './reportWebVitals'
 import { ToastContainer } from 'react-toastify'
 
@@ -24,7 +23,7 @@ root.render(
           autoClose={3000}
           position='bottom-right'
         />
-        {!process.env.REACT_APP_MAINTENANCE && <Main />}
+        {process.env.REACT_APP_MAINTENANCE === 'false' && <Main />}
       </PersistGate>
     </Provider>
   </React.StrictMode>

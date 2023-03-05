@@ -38,8 +38,12 @@ export type GetInstitution = {
 }
 
 export type GetLinkedTransaction = {
+  weight: number
+  id: string
   title: string
   category: 'Food & Groceries' | 'Utilities' | 'Transfers'
   amount: string
+  totalAmount: string
+  totalAmountInt: number
   date: string
 }

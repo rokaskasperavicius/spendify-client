@@ -61,7 +61,7 @@ export const baseQuery: BaseQueryFn<
       // Retry the initial query
       result = await query({ isRefresh: false })(args, api, extraOptions)
     } else {
-      toast.error('Session timeout')
+      toast.error('Session timeout', { toastId: 'session-timeout' })
       api.dispatch(signUserOut())
       userRoutes.navigate('/login')
     }
@@ -72,7 +72,7 @@ export const baseQuery: BaseQueryFn<
     result.error.status !== 400 &&
     result.error.status !== 401
   ) {
-    toast.error('Something went wrong')
+    toast.error('Something went wrong', { toastId: 'general-error' })
   }
 
   return result

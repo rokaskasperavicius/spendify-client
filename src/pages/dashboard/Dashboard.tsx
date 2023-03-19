@@ -1,19 +1,8 @@
-import {
-  LineChart,
-  Line,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-  TooltipProps,
-} from 'recharts'
-import { skipToken } from '@reduxjs/toolkit/query/react'
-
 import { useNavigate } from 'react-router-dom'
 import { subMonths, format } from 'date-fns'
 import DateRangePicker from '@wojtekmaj/react-daterange-picker'
 
-import { useDebounce, useEffectOnce } from 'react-use'
+import { useDebounce } from 'react-use'
 
 // Assets
 import ChartIcon from 'assets/chart.svg'
@@ -24,8 +13,6 @@ import { Input, Select } from 'components/ui'
 import {
   LinkedAccount,
   LinkedAccountSkeleton,
-  LinkedAccountTransaction,
-  LinkedAccountTransactionSkeleton,
 } from 'features/linkedAccount/components'
 
 import {
@@ -33,13 +20,12 @@ import {
   useGetLinkedTransactionsQuery,
 } from 'features/linkedAccount/linkedAccountApi'
 import React, { useEffect, useState } from 'react'
-import { Spinner, Button } from 'components/ui'
+import { Button } from 'components/ui'
+import { DashboardTransactionGraph } from './DashboardTransactionGraph'
+import { DashboardTransactionList } from './DashboardTransactionList'
 
 // Types
-import {
-  GetLinkedTransaction,
-  GetLinkedAccount,
-} from 'features/linkedAccount/types'
+import { GetLinkedAccount } from 'features/linkedAccount/types'
 
 export const Dashboard = () => {
   const { data: linkedAccounts, isLoading } = useGetLinkedAccountsQuery()
@@ -95,7 +81,11 @@ export const Dashboard = () => {
     setSelectedAccount(account)
   }
 
-  const { data: transactions, isFetching } = useGetLinkedTransactionsQuery(
+  const {
+    data: transactions,
+    isFetching: isTransactionsFetching,
+    isLoading: isTransactionsLoading,
+  } = useGetLinkedTransactionsQuery(
     {
       accountId: accountId as string,
       query: query,
@@ -109,7 +99,11 @@ export const Dashboard = () => {
     setSelectedAccount(account)
   }, [linkedAccounts])
 
-  console.log(transactions)
+  const noTransactions =
+    !isTransactionsLoading &&
+    !isTransactionsFetching &&
+    transactions?.length === 0
+
   return (
     <div className='flex min-h-[calc(100vh-57px-60px)]'>
       <aside className='w-[300px] border-r border-gray-300 p-4 space-y-4'>
@@ -191,6 +185,7 @@ export const Dashboard = () => {
                       width={30}
                       height={30}
                       src={view === 'chart' ? ListIcon : ChartIcon}
+                      alt='stuff'
                     />
                   </div>
                 </div>
@@ -198,66 +193,27 @@ export const Dashboard = () => {
             </div>
 
             <div className='flex-1 relative overflow-y-scroll'>
-              {/* <Spinner isLoading={isFetching}> */}
-              {view === 'chart' ? (
-                <ResponsiveContainer>
-                  <LineChart
-                    data={transactions
-                      ?.slice()
-                      .sort(
-                        (
-                          result: GetLinkedTransaction,
-                          next: GetLinkedTransaction
-                        ) => next.weight - result.weight
-                      )}
-                    margin={{ top: 10, right: 50, bottom: 0, left: 10 }}
-                  >
-                    <Line
-                      type='monotone'
-                      dataKey='totalAmountInt'
-                      stroke='#163b23'
-                      animationDuration={3000}
-                      strokeWidth={2}
-                    />
-                    <XAxis dataKey='date' minTickGap={20} />
-                    <YAxis
-                      orientation='right'
-                      // axisLine={false}
-                      // tickLine={false}
-                      width={30}
-                      mirror={true}
-                      padding={{ top: 0, bottom: 20 }}
-                      label={{ value: 'kr.', position: 'right' }}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                  </LineChart>
-                </ResponsiveContainer>
+              {noTransactions ? (
+                <div className='h-full flex justify-center items-center'>
+                  No Transactions
+                </div>
               ) : (
                 <div className='h-full'>
-                  {isFetching ? (
-                    [...Array(10)].map((_, index) => (
-                      <LinkedAccountTransactionSkeleton key={index} />
-                    ))
-                  ) : transactions?.length !== 0 ? (
-                    transactions?.map(
-                      ({ id, amount, category, date, title }) => (
-                        <LinkedAccountTransaction
-                          key={id}
-                          title={title}
-                          amount={amount}
-                          category={category}
-                          date={date}
-                        />
-                      )
-                    )
+                  {view === 'chart' ? (
+                    <DashboardTransactionGraph
+                      isLoading={isTransactionsFetching}
+                      transactions={transactions
+                        ?.slice()
+                        .sort((result, next) => next.weight - result.weight)}
+                    />
                   ) : (
-                    <div className='h-full flex justify-center items-center'>
-                      No Transactions
-                    </div>
+                    <DashboardTransactionList
+                      isLoading={isTransactionsFetching}
+                      transactions={transactions}
+                    />
                   )}
                 </div>
               )}
-              {/* </Spinner> */}
             </div>
           </>
         ) : (
@@ -268,27 +224,4 @@ export const Dashboard = () => {
       </div>
     </div>
   )
-}
-
-const CustomTooltip = ({ payload, active }: any) => {
-  const data =
-    payload && (payload[0]?.payload as GetLinkedTransaction | undefined)
-
-  if (active && data) {
-    return (
-      <div className='border border-primary rounded-md p-4 bg-background-transparent flex gap-6'>
-        <div>
-          <span className='font-medium'>{data.title}</span> ({data.category})
-          <div className='text-gray-500'>{data.date}</div>
-        </div>
-
-        <div className='flex flex-col items-end'>
-          <div className='font-medium'>{data.amount} DKK</div>
-          <div className='text-gray-500'>{data.totalAmount} DKK</div>
-        </div>
-      </div>
-    )
-  }
-
-  return null
 }

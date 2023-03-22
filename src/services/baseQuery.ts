@@ -9,7 +9,7 @@ import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 
 import { RootState } from 'store'
 import { userRoutes } from 'components/Main'
-import { signUserOut, refreshAccessToken } from 'features/auth/authSlice'
+import { signUserOut, setUserTokens } from 'features/auth/authSlice'
 
 import { toast } from 'react-toastify'
 
@@ -49,14 +49,15 @@ export const baseQuery: BaseQueryFn<
       api,
       extraOptions
     )) as QueryReturnValue<
-      { data: { accessToken: string } },
+      { data: { accessToken: string; refreshToken: string } },
       FetchBaseQueryError,
       FetchBaseQueryMeta
     >
 
     if (refreshResult.data) {
       // Store the new access token
-      api.dispatch(refreshAccessToken(refreshResult.data.data.accessToken))
+      const payload = refreshResult.data.data
+      api.dispatch(setUserTokens(payload))
 
       // Retry the initial query
       result = await query({ isRefresh: false })(args, api, extraOptions)

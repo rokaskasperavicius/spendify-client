@@ -26,8 +26,12 @@ export const authSlice = createSlice({
   reducers: {
     signUserOut: () => initialState,
 
-    refreshAccessToken: (state, action: PayloadAction<string>) => {
-      state.accessToken = action.payload
+    setUserTokens: (
+      state,
+      action: PayloadAction<{ accessToken: string; refreshToken: string }>
+    ) => {
+      state.accessToken = action.payload.accessToken
+      state.refreshToken = action.payload.refreshToken
     },
   },
 
@@ -35,17 +39,17 @@ export const authSlice = createSlice({
     builder.addMatcher(
       authApi.endpoints.loginUser.matchFulfilled,
       (state, action) => {
-        state.accessToken = action.payload.accessToken
-        state.refreshToken = action.payload.refreshToken
+        state.accessToken = action.payload.auth.accessToken
+        state.refreshToken = action.payload.auth.refreshToken
 
-        state.firstName = action.payload.firstName
-        state.lastName = action.payload.lastName
+        state.firstName = action.payload.user.firstName
+        state.lastName = action.payload.user.lastName
       }
     )
   },
 })
 
-export const { signUserOut, refreshAccessToken } = authSlice.actions
+export const { signUserOut, setUserTokens } = authSlice.actions
 
 export const useAuthState = () =>
   useAppSelector((state) => state[authSlice.name])

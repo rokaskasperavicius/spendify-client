@@ -1,10 +1,14 @@
 // Login
 export type LoginUserResponse = {
-  firstName: string
-  lastName: string
+  user: {
+    firstName: string
+    lastName: string
+  }
 
-  accessToken: string
-  refreshToken: string
+  auth: {
+    accessToken: string
+    refreshToken: string
+  }
 }
 
 export type LoginUser = {

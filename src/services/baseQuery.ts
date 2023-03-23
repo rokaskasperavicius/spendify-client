@@ -43,7 +43,7 @@ export const baseQuery: BaseQueryFn<
   if (result.error && result.error.status === 401) {
     const refreshResult = (await query({ isRefresh: true })(
       {
-        url: '/refresh-token',
+        url: '/auth/refresh-token',
         method: 'POST',
       },
       api,

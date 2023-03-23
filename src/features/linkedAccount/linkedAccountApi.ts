@@ -15,7 +15,7 @@ import {
   GetInstitution,
 } from 'features/linkedAccount/types'
 import { SuccessResponse } from 'services/types'
-const API_PREFIX = '/linked-account'
+const API_PREFIX = '/accounts'
 
 export const linkedAccountApi = createApi({
   reducerPath: 'linkedAccountsApi',
@@ -75,7 +75,7 @@ export const linkedAccountApi = createApi({
 
     linkAccount: builder.mutation<{}, LinkAccountBody>({
       query: (body) => ({
-        url: `${API_PREFIX}/connect`,
+        url: `${API_PREFIX}`,
         method: 'POST',
         body,
       }),

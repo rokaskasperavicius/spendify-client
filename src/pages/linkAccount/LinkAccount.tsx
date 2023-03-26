@@ -10,7 +10,7 @@ import {
   useGenerateAccountLinkUrlMutation,
   useGetLinkableAccountsQuery,
   useLinkAccountMutation,
-} from 'features/linkedAccount/linkedAccountApi'
+} from 'features/account/linkedAccountApi'
 
 export const LinkAccount = () => {
   const { data: institutions, isLoading } = useGetInstitutionsQuery()

@@ -13,9 +13,9 @@ import {
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
 import { authSlice, signUserOut } from 'features/auth/authSlice'
-import { accountsSlice } from 'features/linkedAccount/accountsSlice'
+import { accountsSlice } from 'features/account/accountsSlice'
 import { authApi } from 'features/auth/authApi'
-import { linkedAccountApi } from 'features/linkedAccount/linkedAccountApi'
+import { linkedAccountApi } from 'features/account/linkedAccountApi'
 
 const persistConfig = {
   key: 'root',

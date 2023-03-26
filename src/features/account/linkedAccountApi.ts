@@ -13,7 +13,7 @@ import {
   GetLinkedTransaction,
   LinkAccountBody,
   GetInstitution,
-} from 'features/linkedAccount/types'
+} from 'features/account/types'
 import { SuccessResponse } from 'services/types'
 const API_PREFIX = '/accounts'
 

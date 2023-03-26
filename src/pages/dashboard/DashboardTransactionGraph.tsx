@@ -11,7 +11,7 @@ import {
 import { Spinner } from 'components/ui'
 
 // Types
-import { GetLinkedTransaction } from 'features/linkedAccount/types'
+import { GetLinkedTransaction } from 'features/account/types'
 
 import theme from 'styles/theme'
 

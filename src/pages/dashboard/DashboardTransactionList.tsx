@@ -2,10 +2,10 @@
 import {
   LinkedAccountTransaction,
   LinkedAccountTransactionSkeleton,
-} from 'features/linkedAccount/components'
+} from 'features/account/components'
 
 // Types
-import { GetLinkedTransaction } from 'features/linkedAccount/types'
+import { GetLinkedTransaction } from 'features/account/types'
 
 type Props = {
   isLoading: boolean

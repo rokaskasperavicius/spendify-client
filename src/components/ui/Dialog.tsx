@@ -10,7 +10,7 @@ import {
   addAccountsInterval,
   removeAccountsInterval,
   changeAccountsInterval,
-} from 'features/linkedAccount/accountsSlice'
+} from 'features/account/accountsSlice'
 import { useAppDispatch } from 'store/hooks'
 
 // Components

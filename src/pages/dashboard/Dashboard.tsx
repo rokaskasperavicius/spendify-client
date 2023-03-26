@@ -13,19 +13,19 @@ import { Input, Select, Dialog } from 'components/ui'
 import {
   LinkedAccount,
   LinkedAccountSkeleton,
-} from 'features/linkedAccount/components'
+} from 'features/account/components'
 
 import {
   useGetLinkedAccountsQuery,
   useGetLinkedTransactionsQuery,
-} from 'features/linkedAccount/linkedAccountApi'
+} from 'features/account/linkedAccountApi'
 import React, { useEffect, useState } from 'react'
 import { Button } from 'components/ui'
 import { DashboardTransactionGraph } from './DashboardTransactionGraph'
 import { DashboardTransactionList } from './DashboardTransactionList'
 
 // Types
-import { GetLinkedAccount } from 'features/linkedAccount/types'
+import { GetLinkedAccount } from 'features/account/types'
 
 export const Dashboard = () => {
   const { data: linkedAccounts, isLoading } = useGetLinkedAccountsQuery()

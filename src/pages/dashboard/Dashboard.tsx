@@ -9,7 +9,7 @@ import ChartIcon from 'assets/chart.svg'
 import ListIcon from 'assets/list.svg'
 
 // Components
-import { Input, Select } from 'components/ui'
+import { Input, Select, Dialog } from 'components/ui'
 import {
   LinkedAccount,
   LinkedAccountSkeleton,
@@ -170,6 +170,8 @@ export const Dashboard = () => {
                     yearPlaceholder='yyyy'
                     // maxDate={new Date()}
                   />
+
+                  <Dialog />
                 </div>
                 <div>
                   <div

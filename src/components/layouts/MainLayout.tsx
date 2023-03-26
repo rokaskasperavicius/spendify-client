@@ -22,7 +22,7 @@ export const MainLayout = () => {
   return (
     <div className='min-h-screen flex flex-col first-letter bg-background'>
       <div
-        className={`min-h-[60px] items-center px-4 text-xl font-medium w-full flex justify-between sticky top-0 bg-background border-b border-gray-300 z-50 ${
+        className={`min-h-[60px] items-center px-4 text-xl font-medium w-full flex justify-between sticky top-0 bg-background border-b border-gray-300 z-30 ${
           scrollDirection === 'down' ? '!-top-[60px]' : 'top-0'
         } transition-all duration-500`}
       >

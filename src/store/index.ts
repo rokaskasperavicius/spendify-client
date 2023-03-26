@@ -13,6 +13,7 @@ import {
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
 import { authSlice, signUserOut } from 'features/auth/authSlice'
+import { accountsSlice } from 'features/linkedAccount/accountsSlice'
 import { authApi } from 'features/auth/authApi'
 import { linkedAccountApi } from 'features/linkedAccount/linkedAccountApi'
 
@@ -24,6 +25,7 @@ const persistConfig = {
 
 const combinedReducers = combineReducers({
   [authSlice.name]: authSlice.reducer,
+  [accountsSlice.name]: accountsSlice.reducer,
   [authApi.reducerPath]: authApi.reducer,
   [linkedAccountApi.reducerPath]: linkedAccountApi.reducer,
 })

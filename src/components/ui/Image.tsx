@@ -8,7 +8,7 @@ type Props = {
 }
 
 const sizes = {
-  sm: '',
+  sm: 'w-4 h-4',
   md: 'w-16 h-16',
   lg: '',
 }

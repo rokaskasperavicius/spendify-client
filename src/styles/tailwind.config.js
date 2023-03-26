@@ -15,6 +15,10 @@ module.exports = {
 
         error: '#FF9900',
       },
+
+      fontFamily: {
+        primary: ['Work Sans', 'sans-serif'],
+      },
     },
   },
   plugins: [],

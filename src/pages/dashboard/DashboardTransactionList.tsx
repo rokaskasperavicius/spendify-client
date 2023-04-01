@@ -5,11 +5,11 @@ import {
 } from 'features/account/components'
 
 // Types
-import { GetLinkedTransaction } from 'features/account/types'
+import { AccountTransactionProps } from 'features/account/types'
 
 type Props = {
   isLoading: boolean
-  transactions: GetLinkedTransaction[] | undefined
+  transactions: AccountTransactionProps[] | undefined
 }
 
 export const DashboardTransactionList = ({

@@ -1,0 +1,1 @@
+export { filterIntervals } from './filterIntervals'

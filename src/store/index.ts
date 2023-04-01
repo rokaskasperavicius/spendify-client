@@ -13,21 +13,21 @@ import {
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
 import { authSlice, signUserOut } from 'features/auth/authSlice'
-import { accountsSlice } from 'features/account/accountsSlice'
+import { accountSlice } from 'features/account/accountSlice'
 import { authApi } from 'features/auth/authApi'
-import { linkedAccountApi } from 'features/account/linkedAccountApi'
+import { accountApi } from 'features/account/accountApi'
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: [authSlice.name],
+  whitelist: [authSlice.name, accountSlice.name],
 }
 
 const combinedReducers = combineReducers({
   [authSlice.name]: authSlice.reducer,
-  [accountsSlice.name]: accountsSlice.reducer,
+  [accountSlice.name]: accountSlice.reducer,
   [authApi.reducerPath]: authApi.reducer,
-  [linkedAccountApi.reducerPath]: linkedAccountApi.reducer,
+  [accountApi.reducerPath]: accountApi.reducer,
 })
 
 // Clear the redux store on logout
@@ -58,7 +58,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(authApi.middleware, linkedAccountApi.middleware),
+    }).concat(authApi.middleware, accountApi.middleware),
 })
 
 export const persistor = persistStore(store)

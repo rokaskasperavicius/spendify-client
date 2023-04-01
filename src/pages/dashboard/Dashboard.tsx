@@ -10,67 +10,88 @@ import ListIcon from 'assets/list.svg'
 
 // Components
 import { Input, Select, Dialog } from 'components/ui'
+import { AccountTransactionGraph } from 'features/account/components/TransactionGraph'
 import {
   LinkedAccount,
   LinkedAccountSkeleton,
 } from 'features/account/components'
 
 import {
-  useGetLinkedAccountsQuery,
-  useGetLinkedTransactionsQuery,
-} from 'features/account/linkedAccountApi'
-import React, { useEffect, useState } from 'react'
+  useGetAccountsQuery,
+  useGetAccountTransactionsMutation,
+} from 'features/account/accountApi'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Button } from 'components/ui'
 import { DashboardTransactionGraph } from './DashboardTransactionGraph'
 import { DashboardTransactionList } from './DashboardTransactionList'
 
+import { filterIntervals } from 'features/account/utils'
+
 // Types
-import { GetLinkedAccount } from 'features/account/types'
+import {
+  GetAccountTransactions,
+  GetLinkedAccount,
+} from 'features/account/types'
+import { useAccountSlice } from 'features/account/accountSlice'
 
 export const Dashboard = () => {
-  const { data: linkedAccounts, isLoading } = useGetLinkedAccountsQuery()
+  const { data: linkedAccounts, isLoading } = useGetAccountsQuery()
+  const { intervals } = useAccountSlice()
+
+  const filteredIntervals = useMemo(
+    () => filterIntervals(intervals),
+    [intervals]
+  )
+
+  const [transactions, setTransactions] = useState<GetAccountTransactions>()
 
   const [selectedAccount, setSelectedAccount] = useState<GetLinkedAccount>()
 
   const [view, setView] = useState<'list' | 'chart'>('list')
   const navigate = useNavigate()
 
-  const [value, onChange] = useState([subMonths(new Date(), 1), new Date()])
+  // const [value, onChange] = useState([subMonths(new Date(), 1), new Date()])
 
   const accountId = selectedAccount?.accountId
 
   const [search, setSearch] = useState<string>()
   const [option, setOption] = useState<string>()
 
-  const generateQuery = () => {
-    const query = []
+  const generateQuery = async () => {
+    // const query = []
 
-    if (search) {
-      query.push(`search=${search}`)
+    // if (search) {
+    //   query.push(`search=${search}`)
+    // }
+
+    // if (option) {
+    //   query.push(`category=${encodeURIComponent(option)}`)
+    // }
+
+    // return query.join('&')
+    if (!accountId) return
+
+    try {
+      const data = await getAccountTransactions({
+        accountId: accountId,
+        search: search || '',
+        intervals: filteredIntervals,
+      }).unwrap()
+
+      setTransactions(data)
+    } catch (err) {
+      console.error(err)
     }
-
-    if (option) {
-      query.push(`category=${encodeURIComponent(option)}`)
-    }
-
-    if (value) {
-      const from = new Date(format(value[0], 'yyyy-MM-dd')).toISOString()
-      const to = new Date(format(value[1], 'yyyy-MM-dd')).toISOString()
-
-      query.push(`from=${from}&to=${to}`)
-    }
-
-    return query.join('&')
   }
 
   const [query, setQuery] = useState<string>('')
 
   useDebounce(
     () => {
-      setQuery(generateQuery())
+      generateQuery()
     },
     400,
-    [search, option, value]
+    [search, option, filteredIntervals, selectedAccount]
   )
 
   const handleAccountChange = (accountId: string) => {
@@ -81,28 +102,19 @@ export const Dashboard = () => {
     setSelectedAccount(account)
   }
 
-  const {
-    data: transactions,
-    isFetching: isTransactionsFetching,
-    isLoading: isTransactionsLoading,
-  } = useGetLinkedTransactionsQuery(
-    {
-      accountId: accountId as string,
-      query: query,
-    },
-    { skip: !accountId }
-  )
+  const [getAccountTransactions, { isLoading: isTransactionsLoading }] =
+    useGetAccountTransactionsMutation()
 
   useEffect(() => {
     const account = linkedAccounts ? linkedAccounts[0] : undefined
-
+    console.log(account)
     setSelectedAccount(account)
   }, [linkedAccounts])
 
-  const noTransactions =
-    !isTransactionsLoading &&
-    !isTransactionsFetching &&
-    transactions?.length === 0
+  // const noTransactions =
+  //   !isTransactionsLoading &&
+  //   !isTransactionsFetching &&
+  //   transactions?.length === 0
 
   return (
     <div className='flex min-h-[calc(100vh-57px-60px)]'>
@@ -161,7 +173,7 @@ export const Dashboard = () => {
                     onChange={(e) => setOption(e.target.value)}
                   />
 
-                  <DateRangePicker
+                  {/* <DateRangePicker
                     onChange={(e) => onChange(e as unknown as [])}
                     format='y-MM-dd'
                     value={value}
@@ -169,7 +181,7 @@ export const Dashboard = () => {
                     monthPlaceholder='mm'
                     yearPlaceholder='yyyy'
                     // maxDate={new Date()}
-                  />
+                  /> */}
 
                   <Dialog />
                 </div>
@@ -195,23 +207,25 @@ export const Dashboard = () => {
             </div>
 
             <div className='flex-1 relative overflow-y-scroll'>
-              {noTransactions ? (
+              {false ? (
                 <div className='h-full flex justify-center items-center'>
                   No Transactions
                 </div>
               ) : (
                 <div className='h-full'>
                   {view === 'chart' ? (
-                    <DashboardTransactionGraph
-                      isLoading={isTransactionsFetching}
-                      transactions={transactions
-                        ?.slice()
-                        .sort((result, next) => next.weight - result.weight)}
+                    <AccountTransactionGraph
+                      isLoading={isTransactionsLoading}
+                      transactions={transactions}
+                      // ?.slice()
+                      // .sort((result, next) => next.weight - result.weight)}
                     />
                   ) : (
                     <DashboardTransactionList
-                      isLoading={isTransactionsFetching}
-                      transactions={transactions}
+                      isLoading={isTransactionsLoading}
+                      transactions={
+                        transactions ? transactions[0].transactions : undefined
+                      }
                     />
                   )}
                 </div>

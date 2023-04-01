@@ -6,18 +6,18 @@ import CloseIcon from 'assets/close.svg'
 
 // Helpers & Hooks
 import {
-  useAccountsSlice,
+  useAccountSlice,
   addAccountsInterval,
   removeAccountsInterval,
   changeAccountsInterval,
-} from 'features/account/accountsSlice'
+} from 'features/account/accountSlice'
 import { useAppDispatch } from 'store/hooks'
 
 // Components
 import { Image } from 'components/ui'
 
 export const Dialog = () => {
-  const { intervals } = useAccountsSlice()
+  const { intervals } = useAccountSlice()
   const dispatch = useAppDispatch()
 
   return (

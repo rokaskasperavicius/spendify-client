@@ -10,28 +10,28 @@ import {
   GetLinkedAccount,
   GenerateAccountLinkUrl,
   GenerateAccountLinkUrlBody,
-  GetLinkedTransaction,
+  GetAccountTransactions,
   LinkAccountBody,
   GetInstitution,
 } from 'features/account/types'
 import { SuccessResponse } from 'services/types'
 const API_PREFIX = '/accounts'
 
-export const linkedAccountApi = createApi({
-  reducerPath: 'linkedAccountsApi',
+export const accountApi = createApi({
+  reducerPath: 'accountApi',
   baseQuery: baseQuery,
-  tagTypes: ['LinkedAccounts'],
+  tagTypes: ['Accounts'],
 
   endpoints: (builder) => ({
-    getLinkedAccounts: builder.query<GetLinkedAccount[], void>({
+    getAccounts: builder.query<GetLinkedAccount[], void>({
       query: () => `${API_PREFIX}`,
-      providesTags: ['LinkedAccounts'],
+      providesTags: ['Accounts'],
 
       transformResponse: (response: SuccessResponse<GetLinkedAccount[]>) =>
         response.data,
     }),
 
-    getLinkableAccounts: builder.query<GetLinkableAccount[], string>({
+    getAvailableAccounts: builder.query<GetLinkableAccount[], string>({
       query: (ref) => `${API_PREFIX}/available-accounts/${ref}`,
 
       transformResponse: (response: SuccessResponse<GetLinkableAccount[]>) =>
@@ -45,21 +45,25 @@ export const linkedAccountApi = createApi({
         response.data,
     }),
 
-    getLinkedTransactions: builder.query<
-      GetLinkedTransaction[],
-      { accountId: string; query: string }
+    getAccountTransactions: builder.mutation<
+      GetAccountTransactions,
+      {
+        accountId: string
+        search: string
+        intervals: Array<{ id: string; from: number; to: number }>
+      }
     >({
-      query: ({ accountId, query }) =>
-        `${API_PREFIX}/transactions/${accountId}?${query}`,
+      query: (body) => ({
+        url: `${API_PREFIX}/transactions`,
+        method: 'POST',
+        body,
+      }),
 
-      transformResponse: (response: SuccessResponse<GetLinkedTransaction[]>) =>
-        response.data.map((transaction) => ({
-          ...transaction,
-          date: formatDate(new Date(transaction.date)),
-        })),
+      transformResponse: (response: SuccessResponse<GetAccountTransactions>) =>
+        response.data,
     }),
 
-    generateAccountLinkUrl: builder.mutation<
+    getAccountConnectUrl: builder.mutation<
       GenerateAccountLinkUrl,
       GenerateAccountLinkUrlBody
     >({
@@ -73,24 +77,24 @@ export const linkedAccountApi = createApi({
         response.data,
     }),
 
-    linkAccount: builder.mutation<{}, LinkAccountBody>({
+    connectAccount: builder.mutation<{}, LinkAccountBody>({
       query: (body) => ({
         url: `${API_PREFIX}`,
         method: 'POST',
         body,
       }),
 
-      invalidatesTags: ['LinkedAccounts'],
+      invalidatesTags: ['Accounts'],
       transformResponse: (response: SuccessResponse<{}>) => response.data,
     }),
   }),
 })
 
 export const {
-  useGetLinkedAccountsQuery,
-  useGetLinkableAccountsQuery,
-  useGenerateAccountLinkUrlMutation,
+  useGetAccountsQuery,
+  useGetAvailableAccountsQuery,
+  useGetAccountConnectUrlMutation,
   useGetInstitutionsQuery,
-  useLinkAccountMutation,
-  useGetLinkedTransactionsQuery,
-} = linkedAccountApi
+  useConnectAccountMutation,
+  useGetAccountTransactionsMutation,
+} = accountApi

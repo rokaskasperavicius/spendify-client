@@ -23,8 +23,8 @@ type State = {
   }>
 }
 
-export const accountsSlice = createSlice({
-  name: 'accounts',
+export const accountSlice = createSlice({
+  name: 'account',
   initialState,
   reducers: {
     addAccountsInterval: (state) => {
@@ -73,7 +73,7 @@ export const {
   addAccountsInterval,
   removeAccountsInterval,
   changeAccountsInterval,
-} = accountsSlice.actions
+} = accountSlice.actions
 
-export const useAccountsSlice = () =>
-  useAppSelector((state) => state[accountsSlice.name])
+export const useAccountSlice = () =>
+  useAppSelector((state) => state[accountSlice.name])

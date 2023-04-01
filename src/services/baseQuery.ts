@@ -73,7 +73,12 @@ export const baseQuery: BaseQueryFn<
     result.error.status !== 400 &&
     result.error.status !== 401
   ) {
-    toast.error('Something went wrong', { toastId: 'general-error' })
+    toast.error(
+      toast.error((result.error as any).error as any, {
+        toastId: 'general-error',
+      }),
+      { toastId: 'general-error' }
+    )
   }
 
   return result

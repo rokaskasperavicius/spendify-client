@@ -3,6 +3,7 @@ type Props = {
   category: string
   date: string
   amount: string
+  totalAmount: string
 }
 
 export const LinkedAccountTransaction = ({
@@ -10,16 +11,20 @@ export const LinkedAccountTransaction = ({
   category,
   date,
   amount,
+  totalAmount,
 }: Props) => (
-  <div className='flex items-start justify-between p-4'>
-    <div>
+  <div className='p-4'>
+    <div className='flex justify-between gap-4'>
       <div>
         <span className='font-medium'>{title}</span> ({category})
       </div>
 
-      <div className='text-sm'>{date}</div>
+      <div className='font-medium shrink-0'>{amount} DKK</div>
     </div>
 
-    <div className='font-medium'>{amount} DKK</div>
+    <div className='text-sm flex justify-between gap-4'>
+      <div>{date}</div>
+      <div>{totalAmount} DKK</div>
+    </div>
   </div>
 )

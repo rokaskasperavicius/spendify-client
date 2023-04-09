@@ -56,10 +56,11 @@ export const Login = () => {
           </label>
 
           {isWrongPassword && (
-            <div className='text-error my-3'>Invalid email or password</div>
+            <div className='text-error my-3 text-base'>
+              Invalid email or password
+            </div>
           )}
 
-          {/* #FFA552 */}
           <Button type='submit' variant='secondary'>
             Sign In
           </Button>

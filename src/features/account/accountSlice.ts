@@ -5,22 +5,21 @@ import { v4 as uuid } from 'uuid'
 // Hooks & Helpers
 import { useAppSelector } from 'store/hooks'
 
+// Types
+import { IntervalProps } from './types'
+
 const initialState: State = {
   intervals: [
     {
       id: uuid(),
-      from: subMonths(new Date(), 1).getTime(),
-      to: new Date().getTime(),
+      from: subMonths(new Date('2023-02-01'), 1).getTime(),
+      to: new Date('2023-02-01').getTime(),
     },
   ],
 }
 
 type State = {
-  intervals: Array<{
-    id: string
-    from: number | undefined
-    to: number | undefined
-  }>
+  intervals: IntervalProps[]
 }
 
 export const accountSlice = createSlice({

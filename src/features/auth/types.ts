@@ -1,8 +1,8 @@
 // Login
 export type LoginUserResponse = {
   user: {
-    firstName: string
-    lastName: string
+    name: string
+    email: string
   }
 
   auth: {
@@ -22,4 +22,21 @@ export type RegisterUser = {
   lastName: string
   email: string
   password: string
+}
+
+// Patch User Info
+export type PatchUserInfoBody = {
+  name: string
+  email: string
+}
+
+export type PatchUserInfoResponse = {
+  name: string
+  email: string
+}
+
+// Patch User Password
+export type PatchUserPasswordBody = {
+  oldPassword: string
+  newPassword: string
 }

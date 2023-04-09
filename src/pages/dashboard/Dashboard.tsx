@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { subMonths, format } from 'date-fns'
+import { skipToken } from '@reduxjs/toolkit/dist/query'
 import DateRangePicker from '@wojtekmaj/react-daterange-picker'
+import { useWindowSize } from 'react-use'
 
 import { useDebounce } from 'react-use'
 
@@ -15,14 +17,19 @@ import {
   LinkedAccount,
   LinkedAccountSkeleton,
 } from 'features/account/components'
+import {
+  DashboardIntervalDialog,
+  DashboardAccountList,
+  DashboardSelectedAccount,
+} from 'components/pages/Dashboard'
 
 import {
   useGetAccountsQuery,
   useGetAccountTransactionsMutation,
+  useGetAccountTransactionsGroupedQuery,
 } from 'features/account/accountApi'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Button } from 'components/ui'
-import { DashboardTransactionGraph } from './DashboardTransactionGraph'
 import { DashboardTransactionList } from './DashboardTransactionList'
 
 import { filterIntervals } from 'features/account/utils'
@@ -34,9 +41,13 @@ import {
 } from 'features/account/types'
 import { useAccountSlice } from 'features/account/accountSlice'
 
+import { Breakpoints } from 'lib/constants'
+
 export const Dashboard = () => {
   const { data: linkedAccounts, isLoading } = useGetAccountsQuery()
   const { intervals } = useAccountSlice()
+
+  const screenWidth = useWindowSize().width
 
   const filteredIntervals = useMemo(
     () => filterIntervals(intervals),
@@ -46,18 +57,27 @@ export const Dashboard = () => {
   const [transactions, setTransactions] = useState<GetAccountTransactions>()
 
   const [selectedAccount, setSelectedAccount] = useState<GetLinkedAccount>()
+  const accountId = selectedAccount?.accountId
+  const { data: groupedTransactions } = useGetAccountTransactionsGroupedQuery(
+    accountId ?? skipToken
+  )
 
-  const [view, setView] = useState<'list' | 'chart'>('list')
+  const [view, setView] = useState<'list' | 'chart'>('chart')
+
+  const [isTooltipActive, setIsTooltipActive] = useState(true)
+
   const navigate = useNavigate()
 
   // const [value, onChange] = useState([subMonths(new Date(), 1), new Date()])
-
-  const accountId = selectedAccount?.accountId
 
   const [search, setSearch] = useState<string>()
   const [option, setOption] = useState<string>()
 
   const generateQuery = async () => {
+    filteredIntervals.forEach((a) => {
+      console.log(new Date(a.from))
+      console.log(new Date(a.to))
+    })
     // const query = []
 
     // if (search) {
@@ -107,7 +127,7 @@ export const Dashboard = () => {
 
   useEffect(() => {
     const account = linkedAccounts ? linkedAccounts[0] : undefined
-    console.log(account)
+    // console.log(account)
     setSelectedAccount(account)
   }, [linkedAccounts])
 
@@ -118,105 +138,98 @@ export const Dashboard = () => {
 
   return (
     <div className='flex min-h-[calc(100vh-57px-60px)]'>
-      <aside className='w-[300px] border-r border-gray-300 p-4 space-y-4'>
-        {!isLoading && !linkedAccounts && <div>Linked Accounts</div>}
-
-        {isLoading ? (
-          <LinkedAccountSkeleton />
-        ) : (
-          linkedAccounts?.map(
-            ({ id, accountId, accountName, bankLogo, accountIban }) => (
-              <LinkedAccount
-                key={id}
-                accountIban={accountIban}
-                accountName={accountName}
-                bankLogo={bankLogo}
-                onClick={() => handleAccountChange(accountId)}
-              />
-            )
-          )
-        )}
-
-        <Button variant='primary' onClick={() => navigate('/link-account')}>
-          Link a new Account
-        </Button>
+      <aside className='w-[300px] border-r border-gray-300 p-4 hidden lg:block'>
+        <DashboardAccountList
+          handleCTA={() => navigate('/link-account')}
+          handleAccountChange={handleAccountChange}
+        />
       </aside>
 
-      <div className='flex-1 flex flex-col h-[calc(100vh-60px-57px)]'>
+      <div
+        className='flex-1 flex flex-col h-[calc(100vh-60px-57px)] overflow-scroll'
+        // onScroll={(e) => console.log(e)}
+        // onScroll={(e) => {
+        //   let ele = document.getElementsByClassName('recharts-yAxis')[0]
+        //   ele.style = 'transform: translateX(' + e.target.scrollLeft + 'px);'
+        // }}
+      >
         {selectedAccount ? (
           <>
             <div className='p-4 border-b border-gray-300'>
               {selectedAccount && (
-                <>
-                  <div className='flex text-lg items-center justify-between font-medium'>
-                    <div>{selectedAccount.accountName}</div>
-                    <div>{selectedAccount.accountBalance} DKK</div>
-                  </div>
-                  <div className='text-gray-500 mt-1'>
-                    {selectedAccount.accountIban}
-                  </div>
-                </>
+                <DashboardSelectedAccount
+                  selectedAccount={selectedAccount}
+                  handleCTA={() => navigate('/link-account')}
+                  handleAccountChange={handleAccountChange}
+                />
               )}
             </div>
             <div className='p-4 border-b border-gray-300'>
-              <div className='flex items-center justify-between'>
-                <div className='flex items-stretch gap-4'>
-                  <Input
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    placeholder='Search for transactions...'
-                    className='w-60'
-                  />
+              <div className='space-y-4'>
+                {isTooltipActive && <DashboardIntervalDialog />}
 
-                  <Select
-                    value={option}
-                    onChange={(e) => setOption(e.target.value)}
-                  />
-
-                  {/* <DateRangePicker
-                    onChange={(e) => onChange(e as unknown as [])}
-                    format='y-MM-dd'
-                    value={value}
-                    dayPlaceholder='dd'
-                    monthPlaceholder='mm'
-                    yearPlaceholder='yyyy'
-                    // maxDate={new Date()}
-                  /> */}
-
-                  <Dialog />
-                </div>
-                <div>
+                <div className='flex justify-between items-center'>
                   <div
-                    className='flex items-center gap-2 cursor-pointer hover:underline select-none'
-                    onClick={() => setView(view === 'chart' ? 'list' : 'chart')}
+                    className='cursor-pointer hover:underline'
+                    onClick={() => setIsTooltipActive((isActive) => !isActive)}
                   >
-                    {view === 'chart' ? (
-                      <span>Show list</span>
-                    ) : (
-                      <span>Show chart</span>
-                    )}
-                    <img
-                      width={30}
-                      height={30}
-                      src={view === 'chart' ? ListIcon : ChartIcon}
-                      alt='stuff'
-                    />
+                    {isTooltipActive ? 'Hide' : 'Expand'}
+                  </div>
+                  <div>
+                    <div
+                      className='flex items-center gap-2 cursor-pointer hover:underline select-none'
+                      onClick={() =>
+                        setView(view === 'chart' ? 'list' : 'chart')
+                      }
+                    >
+                      {view === 'chart' ? (
+                        <span>Show list</span>
+                      ) : (
+                        <span>Show chart</span>
+                      )}
+                      <img
+                        width={30}
+                        height={30}
+                        src={view === 'chart' ? ListIcon : ChartIcon}
+                        alt='stuff'
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className='flex-1 relative overflow-y-scroll'>
+            <div
+              className='flex-1 relative flex'
+              // onScroll={(e) => console.log(e)}
+            >
               {false ? (
                 <div className='h-full flex justify-center items-center'>
                   No Transactions
                 </div>
               ) : (
-                <div className='h-full'>
+                <div
+                  // className='h-full w-0 flex-1 overflow-x-scroll test'
+                  className='h-full w-0 flex-1'
+                  // onScroll={(e) => {
+                  //   // console.log(e.currentTarget.scrollLeft)
+
+                  //   ;(
+                  //     document.getElementsByClassName(
+                  //       'recharts-yAxis'
+                  //     )[0] as any
+                  //   ).style =
+                  //     'transform: translateX(' +
+                  //     e.currentTarget.scrollLeft +
+                  //     'px);'
+                  // }}
+                >
+                  {/* min-w-[1970px] */}
                   {view === 'chart' ? (
                     <AccountTransactionGraph
                       isLoading={isTransactionsLoading}
                       transactions={transactions}
+                      groupedTransactions={groupedTransactions}
                       // ?.slice()
                       // .sort((result, next) => next.weight - result.weight)}
                     />

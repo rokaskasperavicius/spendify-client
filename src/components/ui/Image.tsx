@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 
 type Props = {
-  size: 'sm' | 'md' | 'lg'
+  size: 'sm' | 'md' | 'mdd' | 'lg'
   className?: string
   src: string
   alt: string
@@ -9,6 +9,7 @@ type Props = {
 
 const sizes = {
   sm: 'w-4 h-4',
+  mdd: 'w-8 h-8',
   md: 'w-16 h-16',
   lg: '',
 }

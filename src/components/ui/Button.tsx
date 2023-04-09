@@ -3,27 +3,51 @@ import clsx from 'clsx'
 
 type Props = {
   children: React.ReactNode
-  variant?: 'primary' | 'secondary'
+  variant?:
+    | 'primary'
+    | 'secondary'
+    | 'error-outline'
+    | 'simple'
+    | 'text'
+    | 'primary-two'
+  fullWidth?: boolean
+  isDisabled?: boolean
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
 const variants = {
   primary:
-    'text-white bg-primary focus:bg-primary-focus hover:bg-primary-focus',
+    'text-white bg-primary focus:bg-primary-focus hover:bg-primary-focus shadow-md',
+
+  'primary-two':
+    'text-primary font-medium bg-white focus:bg-neutral-100 hover:bg-neutral-50 border border-primary',
+
+  simple:
+    'text-black bg-white border border-gray-400 focus:bg-gray-100 hover:bg-gray-100',
+
+  'error-outline':
+    'text-error-red bg-white focus:bg-red-100 hover:bg-red-50 border border-error-red',
+
   secondary:
     'text-black bg-secondary focus:bg-secondary-focus hover:bg-secondary-focus',
+
+  text: 'text-black bg-white !p-0',
 }
 
 export const Button = ({
   children,
   variant = 'primary',
+  isDisabled = false,
   className,
+  fullWidth = true,
   ...props
 }: Props) => (
   <button
     {...props}
+    disabled={isDisabled}
     className={clsx(
       variants[variant],
-      'px-4 py-2 rounded-md w-full shadow-md',
+      { 'w-full': fullWidth },
+      'px-4 py-2 rounded-md',
       className
     )}
   >

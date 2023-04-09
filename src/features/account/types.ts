@@ -11,6 +11,14 @@ export type GetLinkedAccount = {
   bankLogo: string
 }
 
+export type GetAccountTransactionsGrouped = {
+  date: string
+  expenses: string
+  income: string
+  expensesInt: number
+  incomeInt: number
+}
+
 export type GetLinkableAccount = {
   requisitionId: string
   accountId: string
@@ -30,6 +38,10 @@ export type GenerateAccountLinkUrlBody = {
 
 export type LinkAccountBody = {
   requisitionId: string
+  accountId: string
+}
+
+export type DeleteAccountBody = {
   accountId: string
 }
 
@@ -53,5 +65,11 @@ export type AccountTransactionProps = {
   amountInt: string
   totalAmount: string
   totalAmountInt: number
-  date: string
+  date: number
+}
+
+export type IntervalProps = {
+  id: string
+  from: number | undefined
+  to: number | undefined
 }

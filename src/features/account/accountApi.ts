@@ -13,6 +13,8 @@ import {
   GetAccountTransactions,
   LinkAccountBody,
   GetInstitution,
+  DeleteAccountBody,
+  GetAccountTransactionsGrouped,
 } from 'features/account/types'
 import { SuccessResponse } from 'services/types'
 const API_PREFIX = '/accounts'
@@ -63,6 +65,18 @@ export const accountApi = createApi({
         response.data,
     }),
 
+    getAccountTransactionsGrouped: builder.query<
+      GetAccountTransactionsGrouped[],
+      string
+    >({
+      query: (accountId) => `${API_PREFIX}/${accountId}/transactions/grouped`,
+      providesTags: ['Accounts'],
+
+      transformResponse: (
+        response: SuccessResponse<GetAccountTransactionsGrouped[]>
+      ) => response.data,
+    }),
+
     getAccountConnectUrl: builder.mutation<
       GenerateAccountLinkUrl,
       GenerateAccountLinkUrlBody
@@ -87,6 +101,17 @@ export const accountApi = createApi({
       invalidatesTags: ['Accounts'],
       transformResponse: (response: SuccessResponse<{}>) => response.data,
     }),
+
+    deleteAccount: builder.mutation<{}, DeleteAccountBody>({
+      query: (body) => ({
+        url: `${API_PREFIX}`,
+        method: 'DELETE',
+        body,
+      }),
+
+      invalidatesTags: ['Accounts'],
+      transformResponse: (response: SuccessResponse<{}>) => response.data,
+    }),
   }),
 })
 
@@ -97,4 +122,6 @@ export const {
   useGetInstitutionsQuery,
   useConnectAccountMutation,
   useGetAccountTransactionsMutation,
+  useDeleteAccountMutation,
+  useGetAccountTransactionsGroupedQuery,
 } = accountApi

@@ -8,6 +8,7 @@ import { Login } from 'pages/login'
 import { Register } from 'pages/register'
 import { Dashboard } from 'pages/dashboard'
 import { LinkAccount } from 'pages/linkAccount'
+import { Settings } from 'pages'
 
 export const userRoutes = createBrowserRouter([
   {
@@ -21,6 +22,11 @@ export const userRoutes = createBrowserRouter([
       {
         path: '/link-account',
         element: <LinkAccount />,
+      },
+
+      {
+        path: '/settings',
+        element: <Settings />,
       },
 
       {

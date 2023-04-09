@@ -10,13 +10,7 @@ export class TransactionGraphCollector {
     this.activeLineDot = undefined
   }
 
-  resetCollector = () => {
-    this.lineDots = []
-    this.activeLineDot = undefined
-  }
-
   pushLineDot = (lineDot: CollectorLineDotProps) => {
-    // console.log(this.lineDots)
     this.lineDots.push(lineDot)
   }
 
@@ -55,7 +49,6 @@ export class TransactionGraphCollector {
         return prevDistance < nextDistance ? prev : next
       }, lineDotsWithSameX[0])
     }
-    // console.log(closestLineDot)
 
     this.activeLineDot = closestLineDot
   }

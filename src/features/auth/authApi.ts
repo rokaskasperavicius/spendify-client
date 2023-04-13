@@ -4,7 +4,14 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseQuery } from 'services/baseQuery'
 
 // Types
-import { LoginUser, LoginUserResponse, RegisterUser } from 'features/auth/types'
+import {
+  LoginUser,
+  LoginUserResponse,
+  RegisterUser,
+  PatchUserInfoBody,
+  PatchUserInfoResponse,
+  PatchUserPasswordBody,
+} from 'features/auth/types'
 import { SuccessResponse } from 'services/types'
 
 export const authApi = createApi({
@@ -33,7 +40,37 @@ export const authApi = createApi({
 
       transformErrorResponse: (response) => response.data,
     }),
+
+    patchUserInfo: builder.mutation<PatchUserInfoBody, PatchUserInfoResponse>({
+      query: (body) => ({
+        url: `/auth/user-info`,
+        method: 'PATCH',
+        body,
+      }),
+
+      transformResponse: (response: SuccessResponse<PatchUserInfoBody>) =>
+        response.data,
+      transformErrorResponse: (response) => response.data,
+    }),
+
+    patchUserPassword: builder.mutation<
+      SuccessResponse<{}>,
+      PatchUserPasswordBody
+    >({
+      query: (body) => ({
+        url: `/auth/user-password`,
+        method: 'PATCH',
+        body,
+      }),
+
+      transformErrorResponse: (response) => response.data,
+    }),
   }),
 })
 
-export const { useLoginUserMutation, useRegisterUserMutation } = authApi
+export const {
+  useLoginUserMutation,
+  useRegisterUserMutation,
+  usePatchUserInfoMutation,
+  usePatchUserPasswordMutation,
+} = authApi

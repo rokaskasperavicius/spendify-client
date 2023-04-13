@@ -18,14 +18,31 @@ code {
     monospace;
 }
 
-:root {
-  --toastify-color-light: #ff9900 !important;
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scroll::-webkit-scrollbar {
+  display: none;
+}
 
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scroll {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.recharts-yAxis {
+  transition: transform ease-in-out;
+}
+
+:root {
   --toastify-icon-color-error: black !important;
 
   --toastify-font-family: 'Work Sans', sans-serif !important;
 
   --toastify-text-color-light: black !important;
+}
+
+.Toastify__toast--error {
+  background: #ff9900 !important;
 }
 
 .Toastify__close-button {
@@ -87,4 +104,8 @@ code {
 
 .react-calendar {
   font-family: 'Work Sans', sans-serif !important;
+}
+
+.recharts-tooltip-wrapper {
+  outline: none !important;
 }

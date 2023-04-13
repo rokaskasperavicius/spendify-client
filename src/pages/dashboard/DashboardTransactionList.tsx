@@ -2,14 +2,17 @@
 import {
   LinkedAccountTransaction,
   LinkedAccountTransactionSkeleton,
-} from 'features/linkedAccount/components'
+} from 'features/account/components'
+
+// Helpers
+import { formatDate } from 'utils/formatDate'
 
 // Types
-import { GetLinkedTransaction } from 'features/linkedAccount/types'
+import { AccountTransactionProps } from 'features/account/types'
 
 type Props = {
   isLoading: boolean
-  transactions: GetLinkedTransaction[] | undefined
+  transactions: AccountTransactionProps[] | undefined
 }
 
 export const DashboardTransactionList = ({
@@ -28,15 +31,18 @@ export const DashboardTransactionList = ({
 
   return (
     <>
-      {transactions?.map(({ id, amount, category, date, title }) => (
-        <LinkedAccountTransaction
-          key={id}
-          title={title}
-          amount={amount}
-          category={category}
-          date={date}
-        />
-      ))}
+      {transactions?.map(
+        ({ id, amount, category, date, title, totalAmount }) => (
+          <LinkedAccountTransaction
+            key={id}
+            title={title}
+            amount={amount}
+            totalAmount={totalAmount}
+            category={category}
+            date={formatDate(date)}
+          />
+        )
+      )}
     </>
   )
 }

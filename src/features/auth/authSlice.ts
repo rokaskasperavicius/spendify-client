@@ -5,16 +5,16 @@ import { useAppSelector } from 'store/hooks'
 import { authApi } from 'features/auth/authApi'
 
 const initialState: State = {
-  firstName: null,
-  lastName: null,
+  name: null,
+  email: null,
 
   accessToken: null,
   refreshToken: null,
 }
 
 type State = {
-  firstName: string | null
-  lastName: string | null
+  name: string | null
+  email: string | null
 
   accessToken: string | null
   refreshToken: string | null
@@ -36,16 +36,24 @@ export const authSlice = createSlice({
   },
 
   extraReducers: (builder) => {
-    builder.addMatcher(
-      authApi.endpoints.loginUser.matchFulfilled,
-      (state, action) => {
-        state.accessToken = action.payload.auth.accessToken
-        state.refreshToken = action.payload.auth.refreshToken
+    builder
+      .addMatcher(
+        authApi.endpoints.loginUser.matchFulfilled,
+        (state, action) => {
+          state.accessToken = action.payload.auth.accessToken
+          state.refreshToken = action.payload.auth.refreshToken
 
-        state.firstName = action.payload.user.firstName
-        state.lastName = action.payload.user.lastName
-      }
-    )
+          state.name = action.payload.user.name
+          state.email = action.payload.user.email
+        }
+      )
+      .addMatcher(
+        authApi.endpoints.patchUserInfo.matchFulfilled,
+        (state, action) => {
+          state.name = action.payload.name
+          state.email = action.payload.email
+        }
+      )
   },
 })
 

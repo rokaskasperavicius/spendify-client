@@ -8,12 +8,22 @@ module.exports = {
         background: '#fffdfc',
 
         primary: '#163b23',
+        // primary: '#004c4c',
         'primary-focus': '#13321E',
 
         secondary: '#f9f871',
+        // secondary: '#FFFEB7',
+        // secondary: 'white',
+
         'secondary-focus': '#EEED6D',
 
         error: '#FF9900',
+        // error: '#fb3b3b',
+        'error-red': '#CC0000',
+      },
+
+      fontFamily: {
+        primary: ['Work Sans', 'sans-serif'],
       },
     },
   },

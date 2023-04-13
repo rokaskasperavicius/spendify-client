@@ -7,22 +7,22 @@ import { Spinner } from 'components/ui'
 // Hooks & Helpers
 import {
   useGetInstitutionsQuery,
-  useGenerateAccountLinkUrlMutation,
-  useGetLinkableAccountsQuery,
-  useLinkAccountMutation,
-} from 'features/linkedAccount/linkedAccountApi'
+  useGetAccountConnectUrlMutation,
+  useGetAvailableAccountsQuery,
+  useConnectAccountMutation,
+} from 'features/account/accountApi'
 
 export const LinkAccount = () => {
   const { data: institutions, isLoading } = useGetInstitutionsQuery()
-  const [generateAccountLinkUrl] = useGenerateAccountLinkUrlMutation()
-  const [linkAccount] = useLinkAccountMutation()
+  const [generateAccountLinkUrl] = useGetAccountConnectUrlMutation()
+  const [linkAccount] = useConnectAccountMutation()
 
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const ref = searchParams.get('ref')
 
   const { data: linkableAccounts, isLoading: isLinkableAccountsLoading } =
-    useGetLinkableAccountsQuery(ref ?? skipToken)
+    useGetAvailableAccountsQuery(ref ?? skipToken)
 
   const createLink = async (institutionId: string) => {
     try {

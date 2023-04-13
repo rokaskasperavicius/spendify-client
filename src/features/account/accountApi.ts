@@ -14,7 +14,7 @@ import {
   LinkAccountBody,
   GetInstitution,
   DeleteAccountBody,
-  GetAccountTransactionsGrouped,
+  AccountTransactionsGroupedProps,
 } from 'features/account/types'
 import { SuccessResponse } from 'services/types'
 const API_PREFIX = '/accounts'
@@ -66,14 +66,14 @@ export const accountApi = createApi({
     }),
 
     getAccountTransactionsGrouped: builder.query<
-      GetAccountTransactionsGrouped[],
+      AccountTransactionsGroupedProps[],
       string
     >({
       query: (accountId) => `${API_PREFIX}/${accountId}/transactions/grouped`,
       providesTags: ['Accounts'],
 
       transformResponse: (
-        response: SuccessResponse<GetAccountTransactionsGrouped[]>
+        response: SuccessResponse<AccountTransactionsGroupedProps[]>
       ) => response.data,
     }),
 

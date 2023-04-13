@@ -42,6 +42,7 @@ import {
 import { useAccountSlice } from 'features/account/accountSlice'
 
 import { Breakpoints } from 'lib/constants'
+import clsx from 'clsx'
 
 export const Dashboard = () => {
   const { data: linkedAccounts, isLoading } = useGetAccountsQuery()
@@ -62,7 +63,7 @@ export const Dashboard = () => {
     accountId ?? skipToken
   )
 
-  const [view, setView] = useState<'list' | 'chart'>('chart')
+  const [view, setView] = useState<'list' | 'line' | 'monthly'>('monthly')
 
   const [isTooltipActive, setIsTooltipActive] = useState(true)
 
@@ -175,24 +176,35 @@ export const Dashboard = () => {
                   >
                     {isTooltipActive ? 'Hide' : 'Expand'}
                   </div>
-                  <div>
+                  <div className='flex gap-2'>
                     <div
-                      className='flex items-center gap-2 cursor-pointer hover:underline select-none'
-                      onClick={() =>
-                        setView(view === 'chart' ? 'list' : 'chart')
-                      }
-                    >
-                      {view === 'chart' ? (
-                        <span>Show list</span>
-                      ) : (
-                        <span>Show chart</span>
+                      className={clsx(
+                        'cursor-pointer hover:underline select-none',
+                        { underline: view === 'list' }
                       )}
-                      <img
-                        width={30}
-                        height={30}
-                        src={view === 'chart' ? ListIcon : ChartIcon}
-                        alt='stuff'
-                      />
+                      onClick={() => setView('list')}
+                    >
+                      List
+                    </div>
+
+                    <div
+                      className={clsx(
+                        'cursor-pointer hover:underline select-none',
+                        { underline: view === 'line' }
+                      )}
+                      onClick={() => setView('line')}
+                    >
+                      Line
+                    </div>
+
+                    <div
+                      className={clsx(
+                        'cursor-pointer hover:underline select-none',
+                        { underline: view === 'monthly' }
+                      )}
+                      onClick={() => setView('monthly')}
+                    >
+                      Monthly
                     </div>
                   </div>
                 </div>
@@ -225,7 +237,7 @@ export const Dashboard = () => {
                   // }}
                 >
                   {/* min-w-[1970px] */}
-                  {view === 'chart' ? (
+                  {view === 'monthly' ? (
                     <AccountTransactionGraph
                       isLoading={isTransactionsLoading}
                       transactions={transactions}

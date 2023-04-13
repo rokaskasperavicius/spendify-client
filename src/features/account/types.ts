@@ -11,13 +11,13 @@ export type GetLinkedAccount = {
   bankLogo: string
 }
 
-export type GetAccountTransactionsGrouped = {
+export type AccountTransactionsGroupedProps = Array<{
   date: string
   expenses: string
   income: string
   expensesInt: number
   incomeInt: number
-}
+}>
 
 export type GetLinkableAccount = {
   requisitionId: string

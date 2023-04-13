@@ -21,6 +21,7 @@ import {
   DashboardIntervalDialog,
   DashboardAccountList,
   DashboardSelectedAccount,
+  DashboardBarChart,
 } from 'components/pages/Dashboard'
 
 import {
@@ -59,9 +60,10 @@ export const Dashboard = () => {
 
   const [selectedAccount, setSelectedAccount] = useState<GetLinkedAccount>()
   const accountId = selectedAccount?.accountId
-  const { data: groupedTransactions } = useGetAccountTransactionsGroupedQuery(
-    accountId ?? skipToken
-  )
+  const {
+    data: groupedTransactions,
+    isLoading: isGroupedAccountTransactionsLoading,
+  } = useGetAccountTransactionsGroupedQuery(accountId ?? skipToken)
 
   const [view, setView] = useState<'list' | 'line' | 'monthly'>('monthly')
 
@@ -147,7 +149,7 @@ export const Dashboard = () => {
       </aside>
 
       <div
-        className='flex-1 flex flex-col h-[calc(100vh-60px-57px)] overflow-scroll'
+        className='flex-1 flex flex-col h-[calc(100vh-60px-57px)]'
         // onScroll={(e) => console.log(e)}
         // onScroll={(e) => {
         //   let ele = document.getElementsByClassName('recharts-yAxis')[0]
@@ -211,39 +213,25 @@ export const Dashboard = () => {
               </div>
             </div>
 
-            <div
-              className='flex-1 relative flex'
-              // onScroll={(e) => console.log(e)}
-            >
+            <div className='flex-1 overflow-y-scroll'>
               {false ? (
                 <div className='h-full flex justify-center items-center'>
                   No Transactions
                 </div>
               ) : (
-                <div
-                  // className='h-full w-0 flex-1 overflow-x-scroll test'
-                  className='h-full w-0 flex-1'
-                  // onScroll={(e) => {
-                  //   // console.log(e.currentTarget.scrollLeft)
-
-                  //   ;(
-                  //     document.getElementsByClassName(
-                  //       'recharts-yAxis'
-                  //     )[0] as any
-                  //   ).style =
-                  //     'transform: translateX(' +
-                  //     e.currentTarget.scrollLeft +
-                  //     'px);'
-                  // }}
-                >
-                  {/* min-w-[1970px] */}
-                  {view === 'monthly' ? (
+                <div className='w-full h-full'>
+                  {view === 'line' ? (
                     <AccountTransactionGraph
                       isLoading={isTransactionsLoading}
                       transactions={transactions}
                       groupedTransactions={groupedTransactions}
                       // ?.slice()
                       // .sort((result, next) => next.weight - result.weight)}
+                    />
+                  ) : view === 'monthly' ? (
+                    <DashboardBarChart
+                      isLoading={isGroupedAccountTransactionsLoading}
+                      groupedAccountTransactions={groupedTransactions}
                     />
                   ) : (
                     <DashboardTransactionList

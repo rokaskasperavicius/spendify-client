@@ -1,5 +1,4 @@
 import { BarChart, XAxis, Tooltip, ResponsiveContainer } from 'recharts'
-import millify from 'millify'
 
 // Components
 import { Spinner } from 'components/ui'
@@ -14,8 +13,6 @@ type Props = {
   groupedAccountTransactions: AccountTransactionsGroupedProps | undefined
 }
 
-const tickFormatter = (value: number) => millify(value)
-
 export const DashboardBarChart = ({
   isLoading,
   groupedAccountTransactions,
@@ -24,9 +21,9 @@ export const DashboardBarChart = ({
 
   return (
     <Spinner isLoading={isLoading}>
-      <div className='relative h-full w-full'>
-        <div className='h-full w-full overflow-x-scroll test z-20 absolute'>
-          <div className='w-[3500px] h-full overflow-x-scroll test'>
+      <div className='relative w-full h-full'>
+        <div className='absolute h-full w-full z-20 overflow-x-scroll no-scroll'>
+          <div className='w-[3500px] h-full'>
             <DashboardBarChartPrimary
               groupedAccountTransactions={groupedAccountTransactions}
             />

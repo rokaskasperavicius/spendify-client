@@ -66,14 +66,14 @@ export const accountApi = createApi({
     }),
 
     getAccountTransactionsGrouped: builder.query<
-      AccountTransactionsGroupedProps[],
+      AccountTransactionsGroupedProps,
       string
     >({
       query: (accountId) => `${API_PREFIX}/${accountId}/transactions/grouped`,
       providesTags: ['Accounts'],
 
       transformResponse: (
-        response: SuccessResponse<AccountTransactionsGroupedProps[]>
+        response: SuccessResponse<AccountTransactionsGroupedProps>
       ) => response.data,
     }),
 

@@ -5,6 +5,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import { Spinner } from 'components/ui'
 
 // Hooks & Helpers
+import { useTitle } from 'hooks/useTitle'
 import {
   useGetInstitutionsQuery,
   useGetAccountConnectUrlMutation,
@@ -13,6 +14,8 @@ import {
 } from 'features/account/accountApi'
 
 export const LinkAccount = () => {
+  useTitle('Connect Account')
+
   const { data: institutions, isLoading } = useGetInstitutionsQuery()
   const [generateAccountLinkUrl] = useGetAccountConnectUrlMutation()
   const [linkAccount] = useConnectAccountMutation()

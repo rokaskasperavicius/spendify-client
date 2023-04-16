@@ -35,6 +35,8 @@ import { DashboardTransactionList } from './DashboardTransactionList'
 
 import { filterIntervals } from 'features/account/utils'
 
+import { useTitle } from 'hooks/useTitle'
+
 // Types
 import {
   GetAccountTransactions,
@@ -46,6 +48,8 @@ import { Breakpoints } from 'lib/constants'
 import clsx from 'clsx'
 
 export const Dashboard = () => {
+  useTitle('Dashboard')
+
   const { data: linkedAccounts, isLoading } = useGetAccountsQuery()
   const { intervals } = useAccountSlice()
 
@@ -65,9 +69,9 @@ export const Dashboard = () => {
     isLoading: isGroupedAccountTransactionsLoading,
   } = useGetAccountTransactionsGroupedQuery(accountId ?? skipToken)
 
-  const [view, setView] = useState<'list' | 'line' | 'monthly'>('monthly')
+  const [view, setView] = useState<'list' | 'line' | 'monthly'>('list')
 
-  const [isTooltipActive, setIsTooltipActive] = useState(true)
+  const [isTooltipActive, setIsTooltipActive] = useState(false)
 
   const navigate = useNavigate()
 
@@ -176,7 +180,7 @@ export const Dashboard = () => {
                     className='cursor-pointer hover:underline'
                     onClick={() => setIsTooltipActive((isActive) => !isActive)}
                   >
-                    {isTooltipActive ? 'Hide' : 'Expand'}
+                    {isTooltipActive ? 'Hide' : 'Filter'}
                   </div>
                   <div className='flex gap-2'>
                     <div
@@ -206,7 +210,7 @@ export const Dashboard = () => {
                       )}
                       onClick={() => setView('monthly')}
                     >
-                      Monthly
+                      Grouped
                     </div>
                   </div>
                 </div>

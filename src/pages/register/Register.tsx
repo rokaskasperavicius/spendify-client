@@ -9,6 +9,7 @@ import passwordValidator from 'password-validator'
 import { Input, Button } from 'components/ui'
 
 // Hooks & Helpers
+import { useTitle } from 'hooks/useTitle'
 import { useRegisterUserMutation } from 'features/auth/authApi'
 import { isFetchBaseQueryError } from 'services/isFetchBaseQueryError'
 
@@ -30,6 +31,8 @@ passwordSchema
   .digits(1) // Must have at least 1 digit
 
 export const Register = () => {
+  useTitle('Sign up')
+
   const {
     register,
     handleSubmit,

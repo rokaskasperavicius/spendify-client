@@ -8,6 +8,9 @@ import {
 } from 'recharts'
 import millify from 'millify'
 
+// import queryString from 'query-string'
+// import qs from 'qs'
+
 // Components
 import { Spinner } from 'components/ui'
 import { TransactionGraphDot } from './TransactionGraphDot'
@@ -76,6 +79,19 @@ export const TransactionGraph = ({
   }
 
   if (!groupedTransactions) return null
+
+  // console.log(
+  //   qs.stringify([
+  //     { id: '43434', from: 34343, to: 2323 },
+  //     { id: '6666', from: 9999, to: 10000 },
+  //   ])
+  // )
+
+  // console.log(
+  //   qs.parse(
+  //     '0%5Bid%5D=43434&0%5Bfrom%5D=34343&0%5Bto%5D=2323&1%5Bid%5D=6666&1%5Bfrom%5D=9999&1%5Bto%5D=10000'
+  //   )
+  // )
 
   return (
     <Spinner isLoading={isLoading}>

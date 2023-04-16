@@ -8,12 +8,15 @@ import { Input, Button } from 'components/ui'
 // Hooks & Helpers
 import { isFetchBaseQueryError } from 'services/isFetchBaseQueryError'
 import { useLoginUserMutation } from 'features/auth/authApi'
+import { useTitle } from 'hooks/useTitle'
 
 // Types
 import { LoginFormValues } from 'pages/login/types'
 import { ERROR_CODES } from 'services/types'
 
 export const Login = () => {
+  useTitle('Sign in')
+
   const { register, handleSubmit } = useForm<LoginFormValues>()
   const [loginUser] = useLoginUserMutation()
   const navigate = useNavigate()

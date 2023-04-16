@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
 import clsx from 'clsx'
+
+// Hooks & Helpers
+import { useTitle } from 'hooks/useTitle'
 
 // Components
 import {
@@ -15,6 +17,8 @@ import {
 } from 'features/account/accountApi'
 
 export const Settings = () => {
+  useTitle('Settings')
+
   const [deleteAccount] = useDeleteAccountMutation()
   const { data: linkedAccounts } = useGetAccountsQuery()
 

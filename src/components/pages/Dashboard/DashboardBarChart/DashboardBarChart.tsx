@@ -1,5 +1,3 @@
-import { BarChart, XAxis, Tooltip, ResponsiveContainer } from 'recharts'
-
 // Components
 import { Spinner } from 'components/ui'
 import { DashboardBarChartPrimary } from './DashboardBarChartPrimary'

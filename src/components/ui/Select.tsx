@@ -13,9 +13,7 @@ export const Select = React.forwardRef<HTMLSelectElement, Props>(
         className
       )}
     >
-      <option value='' selected>
-        Choose a Category
-      </option>
+      <option value=''>Choose a Category</option>
       <option value='Food & Groceries'>Food & Groceries</option>
       <option value='Utilities'>Utilities</option>
       <option value='Transfers'>Transfers</option>

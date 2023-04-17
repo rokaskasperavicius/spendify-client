@@ -47,19 +47,15 @@ export const accountApi = createApi({
         response.data,
     }),
 
-    getAccountTransactions: builder.mutation<
+    getAccountTransactions: builder.query<
       GetAccountTransactions,
       {
         accountId: string
-        search: string
-        intervals: Array<{ id: string; from: number; to: number }>
+        query: string
       }
     >({
-      query: (body) => ({
-        url: `${API_PREFIX}/transactions`,
-        method: 'POST',
-        body,
-      }),
+      query: ({ accountId, query }) =>
+        `${API_PREFIX}/${accountId}/transactions?${query}`,
 
       transformResponse: (response: SuccessResponse<GetAccountTransactions>) =>
         response.data,
@@ -121,7 +117,7 @@ export const {
   useGetAccountConnectUrlMutation,
   useGetInstitutionsQuery,
   useConnectAccountMutation,
-  useGetAccountTransactionsMutation,
+  useGetAccountTransactionsQuery,
   useDeleteAccountMutation,
   useGetAccountTransactionsGroupedQuery,
 } = accountApi

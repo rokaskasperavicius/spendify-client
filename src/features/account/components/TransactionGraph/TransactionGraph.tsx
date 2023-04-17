@@ -8,9 +8,6 @@ import {
 } from 'recharts'
 import millify from 'millify'
 
-// import queryString from 'query-string'
-// import qs from 'qs'
-
 // Components
 import { Spinner } from 'components/ui'
 import { TransactionGraphDot } from './TransactionGraphDot'
@@ -29,22 +26,18 @@ import { graphColors } from 'features/account/components/TransactionGraph/consta
 import {
   GetAccountTransactions,
   AccountTransactionProps,
-  AccountTransactionsGroupedProps,
 } from 'features/account/types'
 
 import { LineDotProps } from './types'
 
+const tickFormatter = (value: number) => millify(value)
+
 type Props = {
   isLoading: boolean
   transactions: GetAccountTransactions | undefined
-  groupedTransactions: AccountTransactionsGroupedProps | undefined
 }
 
-export const TransactionGraph = ({
-  isLoading,
-  transactions,
-  groupedTransactions,
-}: Props) => {
+export const TransactionGraph = ({ isLoading, transactions }: Props) => {
   const TRANSACTION_COLLECTOR = new TransactionGraphCollector()
 
   const setActiveLineDot = (x: number | undefined, y: number | undefined) => {
@@ -60,14 +53,25 @@ export const TransactionGraph = ({
     const { payload, ...restLineDotProps } = lineDotProps
 
     const lineDots = TRANSACTION_COLLECTOR.getLineDots()
-
     const doesLineDotExist = lineDots.find(
       (lineDot) =>
         lineDot.dotPayload.cx === restLineDotProps.cx &&
         lineIndex === lineDot.lineIndex
     )
 
-    if (!doesLineDotExist) {
+    // If line dot already exists, replace the same line dot
+    // with the correct y axis coordinate which could be different
+    if (doesLineDotExist) {
+      const lineDotIndex = lineDots.findIndex(
+        (lineDot) => lineDot === doesLineDotExist
+      )
+
+      TRANSACTION_COLLECTOR.replaceLineDot(lineDotIndex, {
+        lineIndex,
+        transactionPayload: payload,
+        dotPayload: restLineDotProps,
+      })
+    } else {
       TRANSACTION_COLLECTOR.pushLineDot({
         lineIndex,
         transactionPayload: payload,
@@ -78,27 +82,12 @@ export const TransactionGraph = ({
     return <TransactionGraphDot {...lineDotProps} />
   }
 
-  if (!groupedTransactions) return null
-
-  // console.log(
-  //   qs.stringify([
-  //     { id: '43434', from: 34343, to: 2323 },
-  //     { id: '6666', from: 9999, to: 10000 },
-  //   ])
-  // )
-
-  // console.log(
-  //   qs.parse(
-  //     '0%5Bid%5D=43434&0%5Bfrom%5D=34343&0%5Bto%5D=2323&1%5Bid%5D=6666&1%5Bfrom%5D=9999&1%5Bto%5D=10000'
-  //   )
-  // )
-
   return (
     <Spinner isLoading={isLoading}>
       <ResponsiveContainer>
         <LineChart
           onMouseMove={(e) => setActiveLineDot(e.chartX, e.chartY)}
-          margin={{ top: 10, right: 50, bottom: 0, left: 10 }}
+          margin={{ top: 10, right: 10, bottom: 0, left: 10 }}
         >
           {transactions?.map((transaction, index) => (
             <Line
@@ -113,7 +102,9 @@ export const TransactionGraph = ({
               }
               id={transaction.id}
               xAxisId={transaction.id}
-              data={transaction.transactions}
+              data={transaction.transactions
+                ?.slice()
+                .sort((result, next) => next.weight - result.weight)}
               type='monotone'
               dataKey={(transaction: AccountTransactionProps) =>
                 isOnePeriod ? transaction.totalAmountInt : transaction.amountInt
@@ -140,7 +131,8 @@ export const TransactionGraph = ({
             width={30}
             mirror={true}
             padding={{ top: 0, bottom: 20 }}
-            label={{ value: 'DKK', position: 'right' }}
+            // label={{ value: 'DKK', position: 'right' }}
+            tickFormatter={tickFormatter}
           />
 
           <Tooltip

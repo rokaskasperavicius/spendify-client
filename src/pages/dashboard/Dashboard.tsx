@@ -3,6 +3,9 @@ import { subMonths, format } from 'date-fns'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
 import DateRangePicker from '@wojtekmaj/react-daterange-picker'
 import { useWindowSize } from 'react-use'
+import clsx from 'clsx'
+import { motion, AnimatePresence } from 'framer-motion'
+import qs from 'qs'
 
 import { useDebounce } from 'react-use'
 
@@ -26,7 +29,7 @@ import {
 
 import {
   useGetAccountsQuery,
-  useGetAccountTransactionsMutation,
+  useGetAccountTransactionsQuery,
   useGetAccountTransactionsGroupedQuery,
 } from 'features/account/accountApi'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -45,10 +48,11 @@ import {
 import { useAccountSlice } from 'features/account/accountSlice'
 
 import { Breakpoints } from 'lib/constants'
-import clsx from 'clsx'
 
 export const Dashboard = () => {
   useTitle('Dashboard')
+
+  const [view2, setView2] = useState<'separate' | 'grouped'>('separate')
 
   const { data: linkedAccounts, isLoading } = useGetAccountsQuery()
   const { intervals } = useAccountSlice()
@@ -59,8 +63,6 @@ export const Dashboard = () => {
     () => filterIntervals(intervals),
     [intervals]
   )
-
-  const [transactions, setTransactions] = useState<GetAccountTransactions>()
 
   const [selectedAccount, setSelectedAccount] = useState<GetLinkedAccount>()
   const accountId = selectedAccount?.accountId
@@ -77,49 +79,36 @@ export const Dashboard = () => {
 
   // const [value, onChange] = useState([subMonths(new Date(), 1), new Date()])
 
-  const [search, setSearch] = useState<string>()
-  const [option, setOption] = useState<string>()
+  const [search, setSearch] = useState<string>('')
+  const [category, setCategory] = useState<string>('')
 
-  const generateQuery = async () => {
-    filteredIntervals.forEach((a) => {
-      console.log(new Date(a.from))
-      console.log(new Date(a.to))
-    })
-    // const query = []
+  const generateQuery = () => {
+    const query = []
 
-    // if (search) {
-    //   query.push(`search=${search}`)
-    // }
-
-    // if (option) {
-    //   query.push(`category=${encodeURIComponent(option)}`)
-    // }
-
-    // return query.join('&')
-    if (!accountId) return
-
-    try {
-      const data = await getAccountTransactions({
-        accountId: accountId,
-        search: search || '',
-        intervals: filteredIntervals,
-      }).unwrap()
-
-      setTransactions(data)
-    } catch (err) {
-      console.error(err)
+    if (search) {
+      query.push(`search=${search}`)
     }
+
+    if (category) {
+      query.push(`category=${encodeURIComponent(category)}`)
+    }
+
+    query.push(qs.stringify({ intervals: filteredIntervals }))
+
+    return query.join('&')
   }
 
-  const [query, setQuery] = useState<string>('')
+  const [query, setQuery] = useState<string>()
 
   useDebounce(
     () => {
-      generateQuery()
+      setQuery(generateQuery())
     },
     400,
-    [search, option, filteredIntervals, selectedAccount]
+    [search, category, filteredIntervals, selectedAccount]
   )
+
+  console.log(query)
 
   const handleAccountChange = (accountId: string) => {
     const account = linkedAccounts?.find(
@@ -129,8 +118,14 @@ export const Dashboard = () => {
     setSelectedAccount(account)
   }
 
-  const [getAccountTransactions, { isLoading: isTransactionsLoading }] =
-    useGetAccountTransactionsMutation()
+  const { data: transactions, isLoading: isTransactionsLoading } =
+    useGetAccountTransactionsQuery(
+      {
+        accountId: accountId as string,
+        query: query as string,
+      },
+      { skip: !accountId || !query }
+    )
 
   useEffect(() => {
     const account = linkedAccounts ? linkedAccounts[0] : undefined
@@ -144,22 +139,15 @@ export const Dashboard = () => {
   //   transactions?.length === 0
 
   return (
-    <div className='flex min-h-[calc(100vh-57px-60px)]'>
-      <aside className='w-[300px] border-r border-gray-300 p-4 hidden lg:block'>
+    <div className='flex min-h-[calc(100vh-57px-61px)]'>
+      <aside className='w-[300px] border-r border-gray-300 p-4 hidden lg:block z-20 bg-white'>
         <DashboardAccountList
           handleCTA={() => navigate('/link-account')}
           handleAccountChange={handleAccountChange}
         />
       </aside>
 
-      <div
-        className='flex-1 flex flex-col h-[calc(100vh-60px-57px)]'
-        // onScroll={(e) => console.log(e)}
-        // onScroll={(e) => {
-        //   let ele = document.getElementsByClassName('recharts-yAxis')[0]
-        //   ele.style = 'transform: translateX(' + e.target.scrollLeft + 'px);'
-        // }}
-      >
+      <div className='flex-1 flex flex-col h-[calc(100vh-61px-57px)]'>
         {selectedAccount ? (
           <>
             <div className='p-4 border-b border-gray-300'>
@@ -171,82 +159,145 @@ export const Dashboard = () => {
                 />
               )}
             </div>
-            <div className='p-4 border-b border-gray-300'>
-              <div className='space-y-4'>
-                {isTooltipActive && <DashboardIntervalDialog />}
-
-                <div className='flex justify-between items-center'>
-                  <div
-                    className='cursor-pointer hover:underline'
-                    onClick={() => setIsTooltipActive((isActive) => !isActive)}
-                  >
-                    {isTooltipActive ? 'Hide' : 'Filter'}
-                  </div>
-                  <div className='flex gap-2'>
-                    <div
-                      className={clsx(
-                        'cursor-pointer hover:underline select-none',
-                        { underline: view === 'list' }
-                      )}
-                      onClick={() => setView('list')}
-                    >
-                      List
-                    </div>
-
-                    <div
-                      className={clsx(
-                        'cursor-pointer hover:underline select-none',
-                        { underline: view === 'line' }
-                      )}
-                      onClick={() => setView('line')}
-                    >
-                      Line
-                    </div>
-
-                    <div
-                      className={clsx(
-                        'cursor-pointer hover:underline select-none',
-                        { underline: view === 'monthly' }
-                      )}
-                      onClick={() => setView('monthly')}
-                    >
-                      Grouped
-                    </div>
-                  </div>
-                </div>
+            <div className='flex border-b border-gray-300'>
+              <div
+                onClick={() => setView2('separate')}
+                className={clsx(
+                  'flex-1 py-2 px-4 cursor-pointer hover:bg-gray-50',
+                  {
+                    'bg-gray-50': view2 === 'separate',
+                  }
+                )}
+              >
+                Separate
+              </div>
+              <div
+                onClick={() => setView2('grouped')}
+                className={clsx(
+                  'flex-1 py-2 px-4 border-l border-gray-300 hover:bg-gray-50 cursor-pointer',
+                  {
+                    'bg-gray-50': view2 === 'grouped',
+                  }
+                )}
+              >
+                Grouped
               </div>
             </div>
 
-            <div className='flex-1 overflow-y-scroll'>
-              {false ? (
-                <div className='h-full flex justify-center items-center'>
-                  No Transactions
-                </div>
-              ) : (
-                <div className='w-full h-full'>
-                  {view === 'line' ? (
-                    <AccountTransactionGraph
-                      isLoading={isTransactionsLoading}
-                      transactions={transactions}
-                      groupedTransactions={groupedTransactions}
-                      // ?.slice()
-                      // .sort((result, next) => next.weight - result.weight)}
-                    />
-                  ) : view === 'monthly' ? (
+            <div className='relative w-full h-full overflow-hidden'>
+              <AnimatePresence initial={false}>
+                {view2 === 'separate' && (
+                  <motion.div
+                    className='flex-1 flex flex-col absolute left-0 top-0 h-full w-full'
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -30 }}
+                  >
+                    <div className='p-4 border-b border-gray-300'>
+                      <div className='space-y-4'>
+                        {isTooltipActive && (
+                          <DashboardIntervalDialog
+                            showIntervals={view === 'line'}
+                            search={search}
+                            setSearch={setSearch}
+                            category={category}
+                            setCategory={setCategory}
+                          />
+                        )}
+
+                        <div className='flex justify-between items-center'>
+                          <div
+                            className='cursor-pointer hover:underline'
+                            onClick={() =>
+                              setIsTooltipActive((isActive) => !isActive)
+                            }
+                          >
+                            {isTooltipActive ? 'Hide' : 'Filter'}
+                          </div>
+                          <div className='flex gap-2'>
+                            <div
+                              className={clsx(
+                                'cursor-pointer hover:underline select-none',
+                                { underline: view === 'list' }
+                              )}
+                              onClick={() => setView('list')}
+                            >
+                              List
+                            </div>
+
+                            <div
+                              className={clsx(
+                                'cursor-pointer hover:underline select-none',
+                                { underline: view === 'line' }
+                              )}
+                              onClick={() => setView('line')}
+                            >
+                              Line
+                            </div>
+
+                            {/* <div
+                              className={clsx(
+                                'cursor-pointer hover:underline select-none',
+                                { underline: view === 'monthly' }
+                              )}
+                              onClick={() => setView('monthly')}
+                            >
+                              Grouped
+                            </div> */}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className='flex-1 overflow-y-scroll'>
+                      {false ? (
+                        <div className='h-full flex justify-center items-center'>
+                          No Transactions
+                        </div>
+                      ) : (
+                        <div className='w-full h-full'>
+                          {view === 'line' ? (
+                            <AccountTransactionGraph
+                              isLoading={isTransactionsLoading}
+                              transactions={transactions}
+                            />
+                          ) : view === 'monthly' ? (
+                            <DashboardBarChart
+                              isLoading={isGroupedAccountTransactionsLoading}
+                              groupedAccountTransactions={groupedTransactions}
+                            />
+                          ) : (
+                            <DashboardTransactionList
+                              isLoading={isTransactionsLoading}
+                              transactions={
+                                transactions
+                                  ? transactions[0].transactions
+                                  : undefined
+                              }
+                            />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <AnimatePresence>
+                {view2 === 'grouped' && (
+                  <motion.div
+                    className='absolute left-0 top-0 h-full w-full'
+                    initial={{ opacity: 0, x: 30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 30 }}
+                  >
                     <DashboardBarChart
                       isLoading={isGroupedAccountTransactionsLoading}
                       groupedAccountTransactions={groupedTransactions}
                     />
-                  ) : (
-                    <DashboardTransactionList
-                      isLoading={isTransactionsLoading}
-                      transactions={
-                        transactions ? transactions[0].transactions : undefined
-                      }
-                    />
-                  )}
-                </div>
-              )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </>
         ) : (

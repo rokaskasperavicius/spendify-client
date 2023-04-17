@@ -27,7 +27,7 @@ export const DashboardBarChartPrimary = ({
         data={groupedAccountTransactions}
         margin={{
           top: 5,
-          right: 30,
+          right: 30, // CHANGE TO 0
           left: 70,
           bottom: 5,
         }}

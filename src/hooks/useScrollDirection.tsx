@@ -11,6 +11,7 @@ export const useScrollDirection = () => {
 
     const updateScrollDirection = () => {
       const scrollY = window.pageYOffset
+      console.log(lastScrollY)
       const direction = scrollY > lastScrollY ? 'down' : 'up'
 
       if (

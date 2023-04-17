@@ -8,7 +8,10 @@ type Props = {
   groupedAccountTransactions: AccountTransactionsGroupedProps
 }
 
-const tickFormatter = (value: number) => millify(value)
+const tickFormatter = (value: number) => {
+  console.log(millify(value))
+  return millify(value)
+}
 
 export const DashboardBarChartYAxis = ({
   groupedAccountTransactions,

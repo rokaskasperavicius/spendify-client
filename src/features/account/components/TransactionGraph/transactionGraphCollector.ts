@@ -14,6 +14,10 @@ export class TransactionGraphCollector {
     this.lineDots.push(lineDot)
   }
 
+  replaceLineDot = (index: number, lineDot: CollectorLineDotProps) => {
+    this.lineDots[index] = lineDot
+  }
+
   getLineDots = () => {
     return this.lineDots
   }

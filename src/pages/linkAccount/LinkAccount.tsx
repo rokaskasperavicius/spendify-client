@@ -102,11 +102,11 @@ export const LinkAccount = () => {
           >
             Go Back
           </div>
-          <h2 className='font-medium text-2xl'>Select a Danish Insitution</h2>
+          <h2 className='font-medium text-2xl'>Select a Danish Institution</h2>
           <div />
         </div>
 
-        <div className='grid grid-cols-3 gap-8 mt-4'>
+        <div className='grid md:grid-cols-3 grid-cols-1 md:gap-8 gap-4 mt-4'>
           {institutions?.map((institution) => (
             <div
               key={institution.id}

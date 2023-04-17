@@ -41,7 +41,7 @@ export const TransactionGraphTooltip = ({
         {/* {data.category}) */}
         <div className='mt-1'>(Food & Groceries)</div>
 
-        <div className='flex justify-between'>
+        <div className='flex justify-between gap-4'>
           <div className='text-gray-500'>{formatDate(data.date)}</div>
           <div className='text-gray-500'>{data.totalAmount} DKK</div>
         </div>

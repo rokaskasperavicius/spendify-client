@@ -38,8 +38,8 @@ export const TransactionGraphTooltip = ({
           <div className='font-medium truncate'>{data.title}</div>
           <div className='shrink-0 font-medium'>{data.amount} DKK</div>
         </div>
-        {/* {data.category}) */}
-        <div className='mt-1'>(Food & Groceries)</div>
+
+        <div className='mt-1'>({data.category})</div>
 
         <div className='flex justify-between gap-4'>
           <div className='text-gray-500'>{formatDate(data.date)}</div>

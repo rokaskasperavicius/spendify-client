@@ -1,5 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import { toast } from 'react-toastify'
 
 // Components
 import { Spinner } from 'components/ui'
@@ -12,6 +13,10 @@ import {
   useGetAvailableAccountsQuery,
   useConnectAccountMutation,
 } from 'features/account/accountApi'
+import { isFetchBaseQueryError } from 'services/isFetchBaseQueryError'
+
+// Types
+import { ERROR_CODES } from 'services/types'
 
 export const LinkAccount = () => {
   useTitle('Connect Account')
@@ -45,11 +50,16 @@ export const LinkAccount = () => {
     accountId: string
   ) => {
     try {
-      await linkAccount({ requisitionId, accountId })
+      await linkAccount({ requisitionId, accountId }).unwrap()
 
       navigate('/')
-    } catch (err) {
-      console.error(err)
+    } catch (error) {
+      if (
+        isFetchBaseQueryError(error) &&
+        error.code === ERROR_CODES.DUPLICATE_ACCOUNTS
+      ) {
+        toast.error('This account is already connected')
+      }
     }
   }
 

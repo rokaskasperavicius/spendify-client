@@ -95,7 +95,7 @@ export const accountApi = createApi({
       }),
 
       invalidatesTags: ['Accounts'],
-      transformResponse: (response: SuccessResponse<{}>) => response.data,
+      transformErrorResponse: (response) => response.data,
     }),
 
     deleteAccount: builder.mutation<{}, DeleteAccountBody>({

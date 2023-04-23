@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import { useState } from 'react'
 
 // Assets
@@ -23,6 +24,7 @@ import { graphColors } from 'features/account/components/TransactionGraph/consta
 import { IntervalProps } from 'features/account/types'
 
 type Props = {
+  isShown: boolean
   showIntervals: boolean
   search: string
   setSearch: (search: string) => void
@@ -31,6 +33,7 @@ type Props = {
 }
 
 export const DashboardIntervalDialog = ({
+  isShown,
   showIntervals,
   search,
   setSearch,
@@ -57,7 +60,12 @@ export const DashboardIntervalDialog = ({
   const primaryInterval = intervals[0]
 
   return (
-    <div className='flex gap-4 flex-col'>
+    <div
+      className={clsx('flex gap-4 flex-col overflow-hidden transition-all', {
+        'max-h-0 mb-0': !isShown,
+        'max-h-[200px] mb-4': isShown,
+      })}
+    >
       <Input
         className='flex-1'
         value={search}

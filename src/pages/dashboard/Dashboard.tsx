@@ -14,7 +14,7 @@ import ChartIcon from 'assets/chart.svg'
 import ListIcon from 'assets/list.svg'
 
 // Components
-import { Input, Select, Dialog } from 'components/ui'
+import { Input, Select, Dialog, Spinner } from 'components/ui'
 import { AccountTransactionGraph } from 'features/account/components/TransactionGraph'
 import {
   LinkedAccount,
@@ -54,7 +54,8 @@ export const Dashboard = () => {
 
   const [view2, setView2] = useState<'separate' | 'grouped'>('separate')
 
-  const { data: linkedAccounts, isLoading } = useGetAccountsQuery()
+  const { data: linkedAccounts, isLoading: isAccountsLoading } =
+    useGetAccountsQuery()
   const { intervals } = useAccountSlice()
 
   const screenWidth = useWindowSize().width
@@ -68,9 +69,9 @@ export const Dashboard = () => {
   const accountId = selectedAccount?.accountId
   const {
     data: groupedTransactions,
-    isLoading: isGroupedAccountTransactionsLoading,
+    isFetching: isGroupedTransactionsFetching,
   } = useGetAccountTransactionsGroupedQuery(accountId ?? skipToken)
-
+  console.log(groupedTransactions)
   const [view, setView] = useState<'list' | 'line' | 'monthly'>('list')
 
   const [isTooltipActive, setIsTooltipActive] = useState(false)
@@ -108,8 +109,6 @@ export const Dashboard = () => {
     [search, category, filteredIntervals, selectedAccount]
   )
 
-  console.log(query)
-
   const handleAccountChange = (accountId: string) => {
     const account = linkedAccounts?.find(
       (account) => account.accountId === accountId
@@ -118,7 +117,7 @@ export const Dashboard = () => {
     setSelectedAccount(account)
   }
 
-  const { data: transactions, isLoading: isTransactionsLoading } =
+  const { data: transactions, isFetching: isTransactionsFetching } =
     useGetAccountTransactionsQuery(
       {
         accountId: accountId as string,
@@ -138,8 +137,27 @@ export const Dashboard = () => {
   //   !isTransactionsFetching &&
   //   transactions?.length === 0
 
+  // No accounts found
+  if (!isAccountsLoading && linkedAccounts?.length === 0) {
+    return (
+      <main className='flex-1 flex justify-center items-center'>
+        <div>
+          <div className='text-center'>No Accounts Found</div>
+          <Button
+            className='mt-4'
+            fullWidth={false}
+            variant='primary'
+            onClick={() => navigate('/link-account')}
+          >
+            Connect a new Account
+          </Button>
+        </div>
+      </main>
+    )
+  }
+
   return (
-    <div className='flex min-h-[calc(100vh-57px-61px)]'>
+    <main className='flex flex-1'>
       <aside className='w-[300px] border-r border-gray-300 p-4 hidden lg:block z-20 bg-white'>
         <DashboardAccountList
           handleCTA={() => navigate('/link-account')}
@@ -147,95 +165,93 @@ export const Dashboard = () => {
         />
       </aside>
 
-      <div className='flex-1 flex flex-col h-[calc(100vh-61px-57px)]'>
-        {selectedAccount ? (
-          <>
-            <div className='p-4 border-b border-gray-300'>
-              {selectedAccount && (
-                <DashboardSelectedAccount
-                  selectedAccount={selectedAccount}
-                  handleCTA={() => navigate('/link-account')}
-                  handleAccountChange={handleAccountChange}
-                />
+      <div className='flex-1 flex flex-col relative'>
+        <Spinner isLoading={isAccountsLoading}>
+          <div className='p-4 border-b border-gray-300'>
+            {selectedAccount && (
+              <DashboardSelectedAccount
+                selectedAccount={selectedAccount}
+                handleCTA={() => navigate('/link-account')}
+                handleAccountChange={handleAccountChange}
+              />
+            )}
+          </div>
+          <div className='flex border-b border-gray-300'>
+            <div
+              onClick={() => setView2('separate')}
+              className={clsx(
+                'flex-1 py-2 px-4 cursor-pointer hover:bg-gray-50',
+                {
+                  'bg-gray-50': view2 === 'separate',
+                }
               )}
+            >
+              Separate
             </div>
-            <div className='flex border-b border-gray-300'>
-              <div
-                onClick={() => setView2('separate')}
-                className={clsx(
-                  'flex-1 py-2 px-4 cursor-pointer hover:bg-gray-50',
-                  {
-                    'bg-gray-50': view2 === 'separate',
-                  }
-                )}
-              >
-                Separate
-              </div>
-              <div
-                onClick={() => setView2('grouped')}
-                className={clsx(
-                  'flex-1 py-2 px-4 border-l border-gray-300 hover:bg-gray-50 cursor-pointer',
-                  {
-                    'bg-gray-50': view2 === 'grouped',
-                  }
-                )}
-              >
-                Grouped
-              </div>
+            <div
+              onClick={() => setView2('grouped')}
+              className={clsx(
+                'flex-1 py-2 px-4 border-l border-gray-300 hover:bg-gray-50 cursor-pointer',
+                {
+                  'bg-gray-50': view2 === 'grouped',
+                }
+              )}
+            >
+              Grouped
             </div>
+          </div>
 
-            <div className='relative w-full h-full overflow-hidden'>
-              <AnimatePresence initial={false}>
-                {view2 === 'separate' && (
-                  <motion.div
-                    className='flex-1 flex flex-col absolute left-0 top-0 h-full w-full'
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -30 }}
-                  >
-                    <div className='p-4 border-b border-gray-300'>
-                      <div className='space-y-4'>
-                        {isTooltipActive && (
-                          <DashboardIntervalDialog
-                            showIntervals={view === 'line'}
-                            search={search}
-                            setSearch={setSearch}
-                            category={category}
-                            setCategory={setCategory}
-                          />
-                        )}
+          <div className='relative w-full h-full overflow-hidden'>
+            <AnimatePresence initial={false}>
+              {view2 === 'separate' && (
+                <motion.div
+                  className='flex-1 flex flex-col absolute left-0 top-0 h-full w-full'
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -30 }}
+                >
+                  <div className='p-4 border-b border-gray-300'>
+                    <div>
+                      <DashboardIntervalDialog
+                        isShown={isTooltipActive}
+                        showIntervals={view === 'line'}
+                        search={search}
+                        setSearch={setSearch}
+                        category={category}
+                        setCategory={setCategory}
+                      />
 
-                        <div className='flex justify-between items-center'>
+                      <div className='flex justify-between items-center'>
+                        <div
+                          className='cursor-pointer hover:underline'
+                          onClick={() =>
+                            setIsTooltipActive((isActive) => !isActive)
+                          }
+                        >
+                          {isTooltipActive ? 'Hide' : 'Filter'}
+                        </div>
+                        <div className='flex gap-2'>
                           <div
-                            className='cursor-pointer hover:underline'
-                            onClick={() =>
-                              setIsTooltipActive((isActive) => !isActive)
-                            }
+                            className={clsx(
+                              'cursor-pointer hover:underline select-none',
+                              { underline: view === 'list' }
+                            )}
+                            onClick={() => setView('list')}
                           >
-                            {isTooltipActive ? 'Hide' : 'Filter'}
+                            List
                           </div>
-                          <div className='flex gap-2'>
-                            <div
-                              className={clsx(
-                                'cursor-pointer hover:underline select-none',
-                                { underline: view === 'list' }
-                              )}
-                              onClick={() => setView('list')}
-                            >
-                              List
-                            </div>
 
-                            <div
-                              className={clsx(
-                                'cursor-pointer hover:underline select-none',
-                                { underline: view === 'line' }
-                              )}
-                              onClick={() => setView('line')}
-                            >
-                              Line
-                            </div>
+                          <div
+                            className={clsx(
+                              'cursor-pointer hover:underline select-none',
+                              { underline: view === 'line' }
+                            )}
+                            onClick={() => setView('line')}
+                          >
+                            Line
+                          </div>
 
-                            {/* <div
+                          {/* <div
                               className={clsx(
                                 'cursor-pointer hover:underline select-none',
                                 { underline: view === 'monthly' }
@@ -244,68 +260,58 @@ export const Dashboard = () => {
                             >
                               Grouped
                             </div> */}
-                          </div>
                         </div>
                       </div>
                     </div>
+                  </div>
 
-                    <div className='flex-1 overflow-y-scroll'>
-                      {false ? (
-                        <div className='h-full flex justify-center items-center'>
-                          No Transactions
-                        </div>
-                      ) : (
-                        <div className='w-full h-full'>
-                          {view === 'line' ? (
-                            <AccountTransactionGraph
-                              isLoading={isTransactionsLoading}
-                              transactions={transactions}
-                            />
-                          ) : view === 'monthly' ? (
-                            <DashboardBarChart
-                              isLoading={isGroupedAccountTransactionsLoading}
-                              groupedAccountTransactions={groupedTransactions}
-                            />
-                          ) : (
-                            <DashboardTransactionList
-                              isLoading={isTransactionsLoading}
-                              transactions={
-                                transactions
-                                  ? transactions[0].transactions
-                                  : undefined
-                              }
-                            />
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                  <div className='flex-1 overflow-y-scroll'>
+                    {false ? (
+                      <div className='h-full flex justify-center items-center'>
+                        No Transactions
+                      </div>
+                    ) : (
+                      <div className='w-full h-full'>
+                        {view === 'line' ? (
+                          <AccountTransactionGraph
+                            isLoading={isTransactionsFetching}
+                            transactions={transactions}
+                          />
+                        ) : (
+                          <DashboardTransactionList
+                            isLoading={isTransactionsFetching}
+                            transactions={
+                              transactions
+                                ? transactions[0].transactions
+                                : undefined
+                            }
+                          />
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-              <AnimatePresence>
-                {view2 === 'grouped' && (
-                  <motion.div
-                    className='absolute left-0 top-0 h-full w-full'
-                    initial={{ opacity: 0, x: 30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 30 }}
-                  >
-                    <DashboardBarChart
-                      isLoading={isGroupedAccountTransactionsLoading}
-                      groupedAccountTransactions={groupedTransactions}
-                    />
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </>
-        ) : (
-          <div className='h-full flex justify-center items-center'>
-            No Selected Account
+            <AnimatePresence>
+              {view2 === 'grouped' && (
+                <motion.div
+                  className='absolute left-0 top-0 h-full w-full'
+                  initial={{ opacity: 0, x: 30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 30 }}
+                >
+                  <DashboardBarChart
+                    isLoading={isGroupedTransactionsFetching}
+                    groupedAccountTransactions={groupedTransactions}
+                  />
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-        )}
+        </Spinner>
       </div>
-    </div>
+    </main>
   )
 }

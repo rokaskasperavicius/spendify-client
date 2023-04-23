@@ -2,7 +2,6 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 
 // Helpers
 import { baseQuery } from 'services/baseQuery'
-import { formatDate } from 'utils/formatDate'
 
 // Types
 import {

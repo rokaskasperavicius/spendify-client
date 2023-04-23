@@ -17,11 +17,13 @@ export const DashboardBarChart = ({
 }: Props) => {
   if (!groupedAccountTransactions) return null
 
+  const length = groupedAccountTransactions.length * 150
+
   return (
     <Spinner isLoading={isLoading}>
       <div className='relative w-full h-full'>
         <div className='absolute h-full w-full z-20 overflow-x-scroll no-scroll'>
-          <div className='w-[3500px] h-full'>
+          <div className='h-full' style={{ minWidth: length }}>
             <DashboardBarChartPrimary
               groupedAccountTransactions={groupedAccountTransactions}
             />

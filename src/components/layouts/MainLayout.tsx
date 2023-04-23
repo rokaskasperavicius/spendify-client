@@ -104,9 +104,7 @@ export const MainLayout = () => {
         </div>
       </div>
 
-      <main className='flex-1'>
-        <Outlet />
-      </main>
+      <Outlet />
 
       <footer className='p-4 border-t border-gray-300 md:text-base text-sm'>
         &copy; 2023 Spendify. All Rights Reserved.

@@ -32,7 +32,7 @@ export const authSlice = createSlice({
       state.refreshToken = action.payload.refreshToken
     },
 
-    signUserOutLocally: () => initialState,
+    resetStore: () => initialState,
   },
 
   extraReducers: (builder) => {
@@ -54,14 +54,10 @@ export const authSlice = createSlice({
           state.email = action.payload.email
         }
       )
-      .addMatcher(
-        authApi.endpoints.signOutUser.matchFulfilled,
-        () => initialState
-      )
   },
 })
 
-export const { setUserTokens, signUserOutLocally } = authSlice.actions
+export const { setUserTokens, resetStore } = authSlice.actions
 
 export const useAuthState = () =>
   useAppSelector((state) => state[authSlice.name])

@@ -9,7 +9,7 @@ import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 
 import { RootState } from 'store'
 import { userRoutes } from 'components/Main'
-import { setUserTokens, signUserOutLocally } from 'features/auth/authSlice'
+import { setUserTokens, resetStore } from 'features/auth/authSlice'
 
 import { toast } from 'react-toastify'
 
@@ -66,7 +66,7 @@ export const baseQuery: BaseQueryFn<
 
       // If this block gets called, that means the refresh token was not found,
       // therefore, we can send an empty refresh token to the backend
-      api.dispatch(signUserOutLocally())
+      api.dispatch(resetStore())
 
       userRoutes.navigate('/login')
     }

@@ -29,6 +29,15 @@ export type SignOutUserBody = {
   refreshToken: string
 }
 
+// Get User Devices
+type UserDevice = {
+  refreshToken: string
+  ipAddress: string
+  ipLocation: string
+}
+
+export type GetUserDevicesResponse = UserDevice[]
+
 // Patch User Info
 export type PatchUserInfoBody = {
   name: string

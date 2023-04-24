@@ -9,7 +9,6 @@ import { Container, Input, Button } from 'components/ui'
 
 // Hooks & Helpers
 import { usePatchUserPasswordMutation } from 'features/auth/authApi'
-import { useAuthState } from 'features/auth/authSlice'
 import { isFetchBaseQueryError } from 'services/isFetchBaseQueryError'
 
 // Types
@@ -38,7 +37,6 @@ export const ChangeUserPassword = () => {
   const [isWrongPassword, setIsWrongPassword] = useState(false)
 
   const [patchUserPassword, { isLoading }] = usePatchUserPasswordMutation()
-  const { name, email } = useAuthState()
 
   const {
     register,

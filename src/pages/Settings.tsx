@@ -3,6 +3,10 @@ import clsx from 'clsx'
 import { motion } from 'framer-motion'
 
 // Hooks & Helpers
+import {
+  useGetUserDevicesQuery,
+  useSignOutUserMutation,
+} from 'features/auth/authApi'
 import { useTitle } from 'hooks/useTitle'
 
 // Components
@@ -23,11 +27,14 @@ export const Settings = () => {
   const [deleteAccount] = useDeleteAccountMutation()
   const { data: linkedAccounts } = useGetAccountsQuery()
 
-  const { name } = useAuthState()
+  const [signOutUser] = useSignOutUserMutation()
+  const { data: userDevices } = useGetUserDevicesQuery()
 
-  const [settingsPanel, setSettingsPanel] = useState<'profile' | 'accounts'>(
-    'profile'
-  )
+  const { name, refreshToken: currentRefreshToken } = useAuthState()
+
+  const [settingsPanel, setSettingsPanel] = useState<
+    'profile' | 'accounts' | 'devices'
+  >('profile')
 
   return (
     <main className='flex-1'>
@@ -57,6 +64,15 @@ export const Settings = () => {
               Accounts
             </div>
           )}
+
+          <div
+            className={clsx('hover:underline cursor-pointer', {
+              'font-medium': settingsPanel === 'devices',
+            })}
+            onClick={() => setSettingsPanel('devices')}
+          >
+            Devices
+          </div>
         </Container>
       </div>
 
@@ -109,6 +125,50 @@ export const Settings = () => {
                   </div>
                 )
               )}
+            </div>
+          </motion.div>
+        </Container>
+      )}
+
+      {settingsPanel === 'devices' && (
+        <Container className='py-8'>
+          <motion.div
+            className='space-y-8'
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className='font-medium'>Manage Account Devices</div>
+
+            <div className='space-y-8'>
+              {userDevices?.map(({ refreshToken, ipAddress, ipLocation }) => (
+                <div key={refreshToken} className='space-y-4'>
+                  <div>
+                    <div className='flex items-center gap-4'>
+                      <div>{ipAddress}</div>
+
+                      {refreshToken === currentRefreshToken && (
+                        <div className='bg-primary text-white px-2 rounded-xl'>
+                          Current Device
+                        </div>
+                      )}
+                    </div>
+                    <div className='text-gray-500 text-sm mt-1 truncate'>
+                      {ipLocation}
+                    </div>
+                  </div>
+
+                  {refreshToken !== currentRefreshToken && (
+                    <Button
+                      className='mt-2'
+                      variant='error-outline'
+                      fullWidth={false}
+                      onClick={() => signOutUser({ refreshToken })}
+                    >
+                      Sign Out
+                    </Button>
+                  )}
+                </div>
+              ))}
             </div>
           </motion.div>
         </Container>

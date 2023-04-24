@@ -12,7 +12,7 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 
-import { authSlice, signUserOutLocally } from 'features/auth/authSlice'
+import { authSlice, resetStore } from 'features/auth/authSlice'
 import { accountSlice } from 'features/account/accountSlice'
 import { authApi } from 'features/auth/authApi'
 import { accountApi } from 'features/account/accountApi'
@@ -38,11 +38,7 @@ const reducerProxy = (
   action: AnyAction
 ) => {
   // This need to be refactored to use invalidatesTags!!!
-  if (
-    (action?.type === 'authApi/executeMutation/fulfilled' &&
-      action?.meta?.arg?.endpointName === 'signOutUser') ||
-    signUserOutLocally.match(action)
-  ) {
+  if (resetStore.match(action)) {
     storage.removeItem('persist:root')
 
     return combinedReducers(undefined, action)

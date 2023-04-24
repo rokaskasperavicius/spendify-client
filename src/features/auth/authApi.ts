@@ -12,12 +12,14 @@ import {
   PatchUserInfoResponse,
   PatchUserPasswordBody,
   SignOutUserBody,
+  GetUserDevicesResponse,
 } from 'features/auth/types'
 import { SuccessResponse } from 'services/types'
 
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: baseQuery,
+  tagTypes: ['Devices'],
 
   endpoints: (builder) => ({
     loginUser: builder.mutation<LoginUserResponse, LoginUser>({
@@ -48,6 +50,8 @@ export const authApi = createApi({
         method: 'DELETE',
         body,
       }),
+
+      invalidatesTags: ['Devices'],
     }),
 
     patchUserInfo: builder.mutation<PatchUserInfoBody, PatchUserInfoResponse>({
@@ -74,6 +78,14 @@ export const authApi = createApi({
 
       transformErrorResponse: (response) => response.data,
     }),
+
+    getUserDevices: builder.query<GetUserDevicesResponse, void>({
+      query: () => '/auth/devices',
+      providesTags: ['Devices'],
+
+      transformResponse: (response: SuccessResponse<GetUserDevicesResponse>) =>
+        response.data,
+    }),
   }),
 })
 
@@ -83,4 +95,5 @@ export const {
   usePatchUserInfoMutation,
   usePatchUserPasswordMutation,
   useSignOutUserMutation,
+  useGetUserDevicesQuery,
 } = authApi

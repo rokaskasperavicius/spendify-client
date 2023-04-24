@@ -13,6 +13,19 @@ import { setUserTokens, resetStore } from 'features/auth/authSlice'
 
 import { toast } from 'react-toastify'
 
+let refreshQuery:
+  | QueryReturnValue<
+      {
+        data: {
+          accessToken: string
+          refreshToken: string
+        }
+      },
+      FetchBaseQueryError,
+      FetchBaseQueryMeta
+    >
+  | undefined = undefined
+
 type BaseQuery = {
   isRefresh: boolean
 }
@@ -41,18 +54,22 @@ export const baseQuery: BaseQueryFn<
 
   // Unauthenticated
   if (result.error && result.error.status === 401) {
-    const refreshResult = (await query({ isRefresh: true })(
-      {
-        url: '/auth/refresh-token',
-        method: 'POST',
-      },
-      api,
-      extraOptions
-    )) as QueryReturnValue<
-      { data: { accessToken: string; refreshToken: string } },
-      FetchBaseQueryError,
-      FetchBaseQueryMeta
-    >
+    if (!refreshQuery) {
+      refreshQuery = query({ isRefresh: true })(
+        {
+          url: '/auth/refresh-token',
+          method: 'POST',
+        },
+        api,
+        extraOptions
+      ) as QueryReturnValue<
+        { data: { accessToken: string; refreshToken: string } },
+        FetchBaseQueryError,
+        FetchBaseQueryMeta
+      >
+    }
+
+    const refreshResult = await refreshQuery
 
     if (refreshResult.data) {
       // Store the new access token

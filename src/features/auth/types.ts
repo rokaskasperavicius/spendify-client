@@ -24,6 +24,11 @@ export type RegisterUser = {
   password: string
 }
 
+// Sign Out
+export type SignOutUserBody = {
+  refreshToken: string
+}
+
 // Patch User Info
 export type PatchUserInfoBody = {
   name: string

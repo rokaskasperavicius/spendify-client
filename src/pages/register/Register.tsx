@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 
@@ -9,6 +9,7 @@ import passwordValidator from 'password-validator'
 import { Input, Button } from 'components/ui'
 
 // Hooks & Helpers
+import { useAuthState } from 'features/auth/authSlice'
 import { useTitle } from 'hooks/useTitle'
 import { useRegisterUserMutation } from 'features/auth/authApi'
 import { isFetchBaseQueryError } from 'services/isFetchBaseQueryError'
@@ -42,6 +43,14 @@ export const Register = () => {
   const [registerUser] = useRegisterUserMutation()
   const navigate = useNavigate()
   const [isWrongEmail, setIsWrongEmail] = useState(false)
+
+  const { accessToken } = useAuthState()
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate('/')
+    }
+  }, [accessToken, navigate])
 
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
     try {

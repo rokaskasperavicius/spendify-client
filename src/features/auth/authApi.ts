@@ -11,6 +11,7 @@ import {
   PatchUserInfoBody,
   PatchUserInfoResponse,
   PatchUserPasswordBody,
+  SignOutUserBody,
 } from 'features/auth/types'
 import { SuccessResponse } from 'services/types'
 
@@ -39,6 +40,14 @@ export const authApi = createApi({
       }),
 
       transformErrorResponse: (response) => response.data,
+    }),
+
+    signOutUser: builder.mutation<SuccessResponse<{}>, SignOutUserBody>({
+      query: (body) => ({
+        url: `/auth/sign-out`,
+        method: 'DELETE',
+        body,
+      }),
     }),
 
     patchUserInfo: builder.mutation<PatchUserInfoBody, PatchUserInfoResponse>({
@@ -73,4 +82,5 @@ export const {
   useRegisterUserMutation,
   usePatchUserInfoMutation,
   usePatchUserPasswordMutation,
+  useSignOutUserMutation,
 } = authApi

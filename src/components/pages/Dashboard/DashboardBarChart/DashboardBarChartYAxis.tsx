@@ -9,7 +9,6 @@ type Props = {
 }
 
 const tickFormatter = (value: number) => {
-  console.log(millify(value))
   return millify(value)
 }
 

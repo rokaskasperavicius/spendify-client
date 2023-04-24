@@ -71,7 +71,6 @@ export const Dashboard = () => {
     data: groupedTransactions,
     isFetching: isGroupedTransactionsFetching,
   } = useGetAccountTransactionsGroupedQuery(accountId ?? skipToken)
-  console.log(groupedTransactions)
   const [view, setView] = useState<'list' | 'line' | 'monthly'>('list')
 
   const [isTooltipActive, setIsTooltipActive] = useState(false)
@@ -128,7 +127,6 @@ export const Dashboard = () => {
 
   useEffect(() => {
     const account = linkedAccounts ? linkedAccounts[0] : undefined
-    // console.log(account)
     setSelectedAccount(account)
   }, [linkedAccounts])
 

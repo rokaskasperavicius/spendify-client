@@ -9,7 +9,7 @@ import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 
 import { RootState } from 'store'
 import { userRoutes } from 'components/Main'
-import { signUserOut, setUserTokens } from 'features/auth/authSlice'
+import { setUserTokens, signUserOutLocally } from 'features/auth/authSlice'
 
 import { toast } from 'react-toastify'
 
@@ -63,7 +63,11 @@ export const baseQuery: BaseQueryFn<
       result = await query({ isRefresh: false })(args, api, extraOptions)
     } else {
       toast.error('Session timeout', { toastId: 'session-timeout' })
-      api.dispatch(signUserOut())
+
+      // If this block gets called, that means the refresh token was not found,
+      // therefore, we can send an empty refresh token to the backend
+      api.dispatch(signUserOutLocally())
+
       userRoutes.navigate('/login')
     }
   }
@@ -73,12 +77,9 @@ export const baseQuery: BaseQueryFn<
     result.error.status !== 400 &&
     result.error.status !== 401
   ) {
-    toast.error(
-      toast.error((result.error as any).error as any, {
-        toastId: 'general-error',
-      }),
-      { toastId: 'general-error' }
-    )
+    toast.error('Unexpected Error', {
+      toastId: 'general-error',
+    })
   }
 
   return result

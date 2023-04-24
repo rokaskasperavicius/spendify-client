@@ -10,8 +10,8 @@ import {
 import MenuIcon from 'assets/menu.svg'
 
 // Hooks & Helpers
-import { useAppDispatch } from 'store/hooks'
-import { signUserOut, useAuthState } from 'features/auth/authSlice'
+import { useSignOutUserMutation } from 'features/auth/authApi'
+import { useAuthState } from 'features/auth/authSlice'
 import { useScrollDirection } from 'hooks/useScrollDirection'
 
 // Components
@@ -24,15 +24,14 @@ export const MainLayout = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
+  const [signOutUser] = useSignOutUserMutation()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  console.log(location)
-  const { accessToken } = useAuthState()
-  const dispatch = useAppDispatch()
+  const { accessToken, refreshToken } = useAuthState()
 
   const scrollDirection = useScrollDirection()
 
-  const handleSignOut = () => {
-    dispatch(signUserOut())
+  const handleSignOut = async () => {
+    await signOutUser({ refreshToken: refreshToken || '' })
   }
 
   if (!accessToken) {

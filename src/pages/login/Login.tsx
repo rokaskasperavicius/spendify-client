@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 
@@ -6,6 +6,7 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { Input, Button } from 'components/ui'
 
 // Hooks & Helpers
+import { useAuthState } from 'features/auth/authSlice'
 import { isFetchBaseQueryError } from 'services/isFetchBaseQueryError'
 import { useLoginUserMutation } from 'features/auth/authApi'
 import { useTitle } from 'hooks/useTitle'
@@ -22,6 +23,14 @@ export const Login = () => {
   const navigate = useNavigate()
 
   const [isWrongPassword, setIsWrongPassword] = useState(false)
+
+  const { accessToken } = useAuthState()
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate('/')
+    }
+  }, [accessToken, navigate])
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {

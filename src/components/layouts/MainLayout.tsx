@@ -84,6 +84,14 @@ export const MainLayout = () => {
               >
                 Settings
               </Link>
+
+              <Button
+                variant='text'
+                className='text-lg text-left mt-2'
+                onClick={handleSignOut}
+              >
+                Sign out
+              </Button>
             </div>
           </Menu>
         </div>

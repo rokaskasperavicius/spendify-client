@@ -50,8 +50,6 @@ export const authApi = createApi({
         method: 'DELETE',
         body,
       }),
-
-      invalidatesTags: ['Devices'],
     }),
 
     patchUserInfo: builder.mutation<PatchUserInfoBody, PatchUserInfoResponse>({

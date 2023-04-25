@@ -3,11 +3,13 @@ import clsx from 'clsx'
 import { motion } from 'framer-motion'
 
 // Hooks & Helpers
+import { useAppDispatch } from 'store/hooks'
 import {
   useGetUserDevicesQuery,
   useSignOutUserMutation,
 } from 'features/auth/authApi'
 import { useTitle } from 'hooks/useTitle'
+import { authApi } from 'features/auth/authApi'
 
 // Components
 import {
@@ -24,6 +26,8 @@ import {
 export const Settings = () => {
   useTitle('Settings')
 
+  const dispatch = useAppDispatch()
+
   const [deleteAccount] = useDeleteAccountMutation()
   const { data: linkedAccounts } = useGetAccountsQuery()
 
@@ -35,6 +39,13 @@ export const Settings = () => {
   const [settingsPanel, setSettingsPanel] = useState<
     'profile' | 'accounts' | 'devices'
   >('profile')
+
+  const handleSignOutDevice = async (refreshToken: string) => {
+    try {
+      await signOutUser({ refreshToken }).unwrap()
+      dispatch(authApi.util.invalidateTags(['Devices']))
+    } catch {}
+  }
 
   return (
     <main className='flex-1'>
@@ -54,17 +65,14 @@ export const Settings = () => {
             Profile
           </div>
 
-          {linkedAccounts && linkedAccounts.length > 0 && (
-            <div
-              className={clsx('hover:underline cursor-pointer', {
-                'font-medium': settingsPanel === 'accounts',
-              })}
-              onClick={() => setSettingsPanel('accounts')}
-            >
-              Accounts
-            </div>
-          )}
-
+          <div
+            className={clsx('hover:underline cursor-pointer', {
+              'font-medium': settingsPanel === 'accounts',
+            })}
+            onClick={() => setSettingsPanel('accounts')}
+          >
+            Accounts
+          </div>
           <div
             className={clsx('hover:underline cursor-pointer', {
               'font-medium': settingsPanel === 'devices',
@@ -78,7 +86,7 @@ export const Settings = () => {
 
       {settingsPanel === 'profile' && (
         <motion.div
-          className='space-y-8 py-8'
+          className='space-y-8 py-4'
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -91,39 +99,43 @@ export const Settings = () => {
       )}
 
       {settingsPanel === 'accounts' && (
-        <Container className='py-8'>
+        <Container className='py-4'>
           <motion.div
-            className='space-y-8'
+            className='space-y-4'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
             <div className='font-medium'>Manage Connected Accounts</div>
 
             <div className='space-y-8'>
-              {linkedAccounts?.map(
-                ({ id, accountId, accountName, bankLogo, accountIban }) => (
-                  <div key={id} className='flex gap-4'>
-                    <div>
-                      <Image size='md' src={bankLogo} alt='Bank Logo' />
-                    </div>
-
-                    <div className='overflow-hidden'>
-                      <div className='truncate'>{accountName}</div>
-                      <div className='text-gray-500 text-sm mt-1 truncate'>
-                        {accountIban}
+              {linkedAccounts && linkedAccounts.length > 0 ? (
+                linkedAccounts?.map(
+                  ({ id, accountId, accountName, bankLogo, accountIban }) => (
+                    <div key={id} className='flex gap-4'>
+                      <div>
+                        <Image size='md' src={bankLogo} alt='Bank Logo' />
                       </div>
 
-                      <Button
-                        className='mt-2'
-                        variant='error-outline'
-                        fullWidth={false}
-                        onClick={() => deleteAccount({ accountId })}
-                      >
-                        Remove
-                      </Button>
+                      <div className='overflow-hidden'>
+                        <div className='truncate'>{accountName}</div>
+                        <div className='text-gray-500 text-sm mt-1 truncate'>
+                          {accountIban}
+                        </div>
+
+                        <Button
+                          className='mt-2'
+                          variant='error-outline'
+                          fullWidth={false}
+                          onClick={() => deleteAccount({ accountId })}
+                        >
+                          Remove
+                        </Button>
+                      </div>
                     </div>
-                  </div>
+                  )
                 )
+              ) : (
+                <div>No Accounts Found</div>
               )}
             </div>
           </motion.div>
@@ -131,9 +143,9 @@ export const Settings = () => {
       )}
 
       {settingsPanel === 'devices' && (
-        <Container className='py-8'>
+        <Container className='py-4'>
           <motion.div
-            className='space-y-8'
+            className='space-y-4'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
@@ -162,7 +174,7 @@ export const Settings = () => {
                       className='mt-2'
                       variant='error-outline'
                       fullWidth={false}
-                      onClick={() => signOutUser({ refreshToken })}
+                      onClick={() => handleSignOutDevice(refreshToken)}
                     >
                       Sign Out
                     </Button>

@@ -80,6 +80,7 @@ export const authApi = createApi({
     getUserDevices: builder.query<GetUserDevicesResponse, void>({
       query: () => '/auth/devices',
       providesTags: ['Devices'],
+      keepUnusedDataFor: 0,
 
       transformResponse: (response: SuccessResponse<GetUserDevicesResponse>) =>
         response.data,

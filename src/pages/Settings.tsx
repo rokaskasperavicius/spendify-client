@@ -3,18 +3,13 @@ import clsx from 'clsx'
 import { motion } from 'framer-motion'
 
 // Hooks & Helpers
-import { useAppDispatch } from 'store/hooks'
-import {
-  useGetUserDevicesQuery,
-  useSignOutUserMutation,
-} from 'features/auth/authApi'
 import { useTitle } from 'hooks/useTitle'
-import { authApi } from 'features/auth/authApi'
 
 // Components
 import {
   ChangeAccountInformation,
   ChangeUserPassword,
+  UserDevices,
 } from 'components/pages/Settings'
 import { Button, Image, Container } from 'components/ui'
 import { useAuthState } from 'features/auth/authSlice'
@@ -26,26 +21,14 @@ import {
 export const Settings = () => {
   useTitle('Settings')
 
-  const dispatch = useAppDispatch()
-
   const [deleteAccount] = useDeleteAccountMutation()
   const { data: linkedAccounts } = useGetAccountsQuery()
 
-  const [signOutUser] = useSignOutUserMutation()
-  const { data: userDevices } = useGetUserDevicesQuery()
-
-  const { name, refreshToken: currentRefreshToken } = useAuthState()
+  const { name } = useAuthState()
 
   const [settingsPanel, setSettingsPanel] = useState<
     'profile' | 'accounts' | 'devices'
   >('profile')
-
-  const handleSignOutDevice = async (refreshToken: string) => {
-    try {
-      await signOutUser({ refreshToken }).unwrap()
-      dispatch(authApi.util.invalidateTags(['Devices']))
-    } catch {}
-  }
 
   return (
     <main className='flex-1'>
@@ -143,45 +126,12 @@ export const Settings = () => {
       )}
 
       {settingsPanel === 'devices' && (
-        <Container className='py-4'>
+        <Container className='py-4 relative'>
           <motion.div
-            className='space-y-4'
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className='font-medium'>Manage Account Devices</div>
-
-            <div className='space-y-8'>
-              {userDevices?.map(({ refreshToken, ipAddress, ipLocation }) => (
-                <div key={refreshToken} className='space-y-4'>
-                  <div>
-                    <div className='flex items-center gap-2'>
-                      <div>{ipAddress}</div>
-
-                      {refreshToken === currentRefreshToken && (
-                        <div className='bg-primary text-white text-sm px-2 py-0.5 rounded-xl'>
-                          Current Device
-                        </div>
-                      )}
-                    </div>
-                    <div className='text-gray-500 text-sm mt-1 truncate'>
-                      {ipLocation}
-                    </div>
-                  </div>
-
-                  {refreshToken !== currentRefreshToken && (
-                    <Button
-                      className='mt-2'
-                      variant='error-outline'
-                      fullWidth={false}
-                      onClick={() => handleSignOutDevice(refreshToken)}
-                    >
-                      Sign Out
-                    </Button>
-                  )}
-                </div>
-              ))}
-            </div>
+            <UserDevices />
           </motion.div>
         </Container>
       )}

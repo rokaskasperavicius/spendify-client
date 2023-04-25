@@ -87,6 +87,8 @@ export const baseQuery: BaseQueryFn<
 
       userRoutes.navigate('/login')
     }
+
+    refreshQuery = undefined
   }
 
   if (

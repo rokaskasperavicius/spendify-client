@@ -143,11 +143,11 @@ export const Settings = () => {
               {userDevices?.map(({ refreshToken, ipAddress, ipLocation }) => (
                 <div key={refreshToken} className='space-y-4'>
                   <div>
-                    <div className='flex items-center gap-4'>
+                    <div className='flex items-center gap-2'>
                       <div>{ipAddress}</div>
 
                       {refreshToken === currentRefreshToken && (
-                        <div className='bg-primary text-white px-2 rounded-xl'>
+                        <div className='bg-primary text-white text-sm px-2 py-0.5 rounded-xl'>
                           Current Device
                         </div>
                       )}

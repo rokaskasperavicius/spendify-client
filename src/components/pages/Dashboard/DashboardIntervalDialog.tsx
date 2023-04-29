@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 // Assets
 import CloseIcon from 'assets/close.svg'
+import InfoIcon from 'assets/info.svg'
 
 // Components
 import { Dialog, Input, Button, Image, Select } from 'components/ui'
@@ -10,7 +11,7 @@ import { Dialog, Input, Button, Image, Select } from 'components/ui'
 // Hooks & Helpers
 import { useAccountSlice } from 'features/account/accountSlice'
 import { useAppDispatch } from 'store/hooks'
-import { formatDate } from 'utils/formatDate'
+import { formatInputDate } from 'utils/formatDate'
 import {
   addAccountsInterval,
   removeAccountsInterval,
@@ -80,8 +81,10 @@ export const DashboardIntervalDialog = ({
           <Input
             className='flex-1 w-full'
             type='date'
-            value={primaryInterval.from && formatDate(primaryInterval.from)}
-            max={primaryInterval.to && formatDate(primaryInterval.to)}
+            value={
+              primaryInterval.from && formatInputDate(primaryInterval.from)
+            }
+            max={primaryInterval.to && formatInputDate(primaryInterval.to)}
             onChange={(e) =>
               handleIntervalChange({
                 id: primaryInterval.id,
@@ -96,7 +99,7 @@ export const DashboardIntervalDialog = ({
           <Input
             className='flex-1 w-full'
             type='date'
-            value={primaryInterval.to && formatDate(primaryInterval.to)}
+            value={primaryInterval.to && formatInputDate(primaryInterval.to)}
             onChange={(e) =>
               handleIntervalChange({
                 id: primaryInterval.id,
@@ -104,7 +107,8 @@ export const DashboardIntervalDialog = ({
                 to: new Date(e.target.value).getTime(),
               })
             }
-            max={formatDate(new Date().getTime())}
+            min={primaryInterval.from && formatInputDate(primaryInterval.from)}
+            max={formatInputDate(new Date().getTime())}
           />
         </div>
       )}
@@ -113,10 +117,14 @@ export const DashboardIntervalDialog = ({
         <Dialog
           open={isDialogOpen}
           onOpenChange={setIsDialogOpen}
-          title='Manage Time Intervals'
+          title='Compare Time Intervals'
+          tooltipText='Here you can compare different transaction periods with additional time intervals'
           trigger={
-            <Button variant='simple' fullWidth={false}>
-              Intervals
+            <Button variant='simple'>
+              <div className='flex gap-2 items-center justify-center'>
+                <div>Time Intervals</div>
+                <Image src={InfoIcon} size='sm' alt='info icon' />
+              </div>
             </Button>
           }
         >
@@ -144,8 +152,8 @@ export const DashboardIntervalDialog = ({
                       <Input
                         className='flex-1 w-full'
                         type='date'
-                        value={from && formatDate(from)}
-                        max={to && formatDate(to)}
+                        value={from && formatInputDate(from)}
+                        max={to && formatInputDate(to)}
                         onChange={(e) =>
                           handleIntervalChange({
                             id,
@@ -158,7 +166,7 @@ export const DashboardIntervalDialog = ({
                       <Input
                         className='flex-1 w-full'
                         type='date'
-                        value={to && formatDate(to)}
+                        value={to && formatInputDate(to)}
                         onChange={(e) =>
                           handleIntervalChange({
                             id,
@@ -166,7 +174,8 @@ export const DashboardIntervalDialog = ({
                             to: new Date(e.target.value).getTime(),
                           })
                         }
-                        max={formatDate(new Date().getTime())}
+                        min={from && formatInputDate(from)}
+                        max={formatInputDate(new Date().getTime())}
                       />
                     </div>
                     <Button

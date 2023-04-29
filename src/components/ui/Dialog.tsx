@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import clsx from 'clsx'
 import * as RadixDialog from '@radix-ui/react-dialog'
+import * as Tooltip from '@radix-ui/react-tooltip'
 
 // Assets
 import CloseIcon from 'assets/close.svg'
@@ -13,13 +15,12 @@ type Props = {
   title: string
   children: React.ReactNode
   trigger: React.ReactNode
-  mode?: 'drawer' | 'modal'
+  mode?: 'modal'
   closeIconSize?: 'sm' | 'mdd'
+  tooltipText?: string
 }
 
 const variants = {
-  drawer: 'w-full h-full fixed top-0 right-0',
-
   modal:
     'rounded-md w-11/12 max-w-3xl fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
 }
@@ -30,23 +31,48 @@ export const Dialog = ({
   trigger,
   mode = 'modal',
   closeIconSize = 'sm',
-}: Props) => (
-  <RadixDialog.Root>
-    <RadixDialog.Trigger asChild>{trigger}</RadixDialog.Trigger>
+  tooltipText,
+}: Props) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
-    <RadixDialog.Portal>
-      <RadixDialog.Overlay className='bg-black opacity-30 inset-0 fixed z-50' />
-      <RadixDialog.Content
-        className={clsx('p-4 bg-white z-50', variants[mode])}
-      >
-        <RadixDialog.Title className='font-primary'>{title}</RadixDialog.Title>
+  return (
+    <RadixDialog.Root open={isOpen} onOpenChange={setIsOpen}>
+      <RadixDialog.Trigger asChild>
+        {tooltipText ? (
+          <Tooltip.Provider delayDuration={200}>
+            <Tooltip.Root>
+              <Tooltip.Trigger onClick={() => setIsOpen(true)}>
+                {trigger}
+              </Tooltip.Trigger>
+              <Tooltip.Portal>
+                <Tooltip.Content className='bg-white p-2 shadow-md rounded-lg'>
+                  {tooltipText}
+                  <Tooltip.Arrow className='fill-white' />
+                </Tooltip.Content>
+              </Tooltip.Portal>
+            </Tooltip.Root>
+          </Tooltip.Provider>
+        ) : (
+          trigger
+        )}
+      </RadixDialog.Trigger>
 
-        <div className='mt-4'>{children}</div>
+      <RadixDialog.Portal>
+        <RadixDialog.Overlay className='bg-black opacity-30 inset-0 fixed z-50' />
+        <RadixDialog.Content
+          className={clsx('p-4 bg-white z-50', variants[mode])}
+        >
+          <RadixDialog.Title className='font-primary'>
+            {title}
+          </RadixDialog.Title>
 
-        <RadixDialog.Close className='absolute top-3 right-3'>
-          <Image src={CloseIcon} alt='Close Icon' size={closeIconSize} />
-        </RadixDialog.Close>
-      </RadixDialog.Content>
-    </RadixDialog.Portal>
-  </RadixDialog.Root>
-)
+          <div className='mt-4'>{children}</div>
+
+          <RadixDialog.Close className='absolute top-3 right-3'>
+            <Image src={CloseIcon} alt='Close Icon' size={closeIconSize} />
+          </RadixDialog.Close>
+        </RadixDialog.Content>
+      </RadixDialog.Portal>
+    </RadixDialog.Root>
+  )
+}

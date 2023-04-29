@@ -21,7 +21,7 @@ export const DashboardBarChartYAxis = ({
         data={groupedAccountTransactions}
         margin={{
           top: 5,
-          right: 30,
+          right: 0,
           left: 10,
           bottom: 5,
         }}

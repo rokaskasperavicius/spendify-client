@@ -39,7 +39,7 @@ export const LinkAccount = () => {
         institutionId,
         redirect: process.env.REACT_APP_REDIRECT as string,
       }).unwrap()
-      window.open(url, '_blank')
+      window.location.replace(url)
     } catch (err) {
       console.error(err)
     }

@@ -13,7 +13,7 @@ export const LinkedAccountTransaction = ({
   amount,
   totalAmount,
 }: Props) => (
-  <div className='p-4 even:bg-gray-50'>
+  <div className='p-4 even:bg-gray-50 space-y-1'>
     <div className='flex justify-between gap-4'>
       <div>
         <span className='font-medium'>{title}</span> ({category})
@@ -24,7 +24,7 @@ export const LinkedAccountTransaction = ({
 
     <div className='text-sm flex justify-between gap-4'>
       <div>{date}</div>
-      <div>{totalAmount} DKK</div>
+      <div>Balance: {totalAmount} DKK</div>
     </div>
   </div>
 )

@@ -176,7 +176,10 @@ export const Dashboard = () => {
           </div>
           <div className='flex border-b border-gray-300'>
             <div
-              onClick={() => setView2('separate')}
+              onClick={() => {
+                setView2('separate')
+                setView('list')
+              }}
               className={clsx(
                 'flex-1 py-2 px-4 cursor-pointer hover:bg-gray-50',
                 {
@@ -184,7 +187,7 @@ export const Dashboard = () => {
                 }
               )}
             >
-              Separate
+              Transactions
             </div>
             <div
               onClick={() => setView2('grouped')}
@@ -195,7 +198,7 @@ export const Dashboard = () => {
                 }
               )}
             >
-              Grouped
+              Monthly Overview
             </div>
           </div>
 
@@ -229,6 +232,7 @@ export const Dashboard = () => {
                           {isTooltipActive ? 'Hide' : 'Filter'}
                         </div>
                         <div className='flex gap-2'>
+                          <div>View: </div>
                           <div
                             className={clsx(
                               'cursor-pointer hover:underline select-none',

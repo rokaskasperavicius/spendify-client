@@ -75,13 +75,8 @@ export const Register = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <label className='flex flex-col my-6'>
-            <span className='text-white'>First Name</span>
-            <Input {...register('firstName', { required: true })} />
-          </label>
-
-          <label className='flex flex-col my-6'>
-            <span className='text-white'>Last Name</span>
-            <Input {...register('lastName', { required: true })} />
+            <span className='text-white'>Name</span>
+            <Input {...register('name', { required: true })} />
           </label>
 
           <label className='flex flex-col my-6'>

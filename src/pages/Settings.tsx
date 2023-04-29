@@ -17,12 +17,14 @@ import {
   useGetAccountsQuery,
   useDeleteAccountMutation,
 } from 'features/account/accountApi'
+import { useGetUserDevicesQuery } from 'features/auth/authApi'
 
 export const Settings = () => {
   useTitle('Settings')
 
   const [deleteAccount] = useDeleteAccountMutation()
   const { data: linkedAccounts } = useGetAccountsQuery()
+  const { data: userDevices, isLoading } = useGetUserDevicesQuery()
 
   const { name } = useAuthState()
 

@@ -2,8 +2,11 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { toast } from 'react-toastify'
 
+// Assets
+import ArrowLeft from 'assets/arrow-left.svg'
+
 // Components
-import { Spinner } from 'components/ui'
+import { Spinner, Image, Container } from 'components/ui'
 
 // Hooks & Helpers
 import { useTitle } from 'hooks/useTitle'
@@ -53,12 +56,9 @@ export const LinkAccount = () => {
     }
   }, [])
 
-  const linkAccountHandler = async (
-    requisitionId: string,
-    accountId: string
-  ) => {
+  const linkAccountHandler = async (accountId: string) => {
     try {
-      await linkAccount({ requisitionId, accountId }).unwrap()
+      await linkAccount({ accountId }).unwrap()
 
       navigate('/')
     } catch (error) {
@@ -75,38 +75,44 @@ export const LinkAccount = () => {
     return (
       <main className='flex-1 relative'>
         <Spinner isLoading={isLinkableAccountsLoading}>
-          <div className='p-4'>
-            <div className='flex justify-between items-center'>
+          <Container>
+            <div className='flex justify-between md:items-center mt-4 flex-col md:flex-row'>
               <div
-                className='cursor-pointer hover:underline'
+                className='cursor-pointer hover:underline flex items-center gap-1'
                 onClick={() => navigate('/')}
               >
-                Go Back
+                <Image size='smm' alt='arrow left' src={ArrowLeft} />
+                <div>Go Back</div>
               </div>
-              <h2 className='font-medium text-2xl'>Select Your Bank Account</h2>
+              <h3 className='text-lg text-center mt-2 md:mt-0'>
+                Select Your Bank Account
+              </h3>
               <div />
             </div>
 
-            <div className='flex gap-4'>
+            <div className='space-y-4 mt-4'>
               {linkableAccounts?.map((account) => (
                 <div
                   key={account.accountId}
-                  className='border border-gray-400 p-2 rounded-md cursor-pointer hover:bg-gray-100'
-                  onClick={() =>
-                    linkAccountHandler(account.requisitionId, account.accountId)
-                  }
+                  className='w-full md:w-72 border border-gray-400 p-2 rounded-md cursor-pointer hover:bg-gray-100 flex gap-4'
+                  onClick={() => linkAccountHandler(account.accountId)}
                 >
-                  <h3 className='flex gap-2 items-center'>
-                    {account.accountName}
-                    <div className='text-sm text-gray-500'>
-                      {account.accountIban}
+                  <div>
+                    <Image size='md' src={account.bankLogo} alt='Bank Logo' />
+                  </div>
+                  <div className='space-y-2 overflow-hidden'>
+                    <div>
+                      <h4 className='truncate'>{account.accountName}</h4>
+                      <div className='text-sm text-gray-500 truncate'>
+                        {account.accountIban}
+                      </div>
                     </div>
-                  </h3>
-                  <div>{account.accountBalance} DKK</div>
+                    <div>{account.accountBalance} DKK</div>
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
+          </Container>
         </Spinner>
       </main>
     )
@@ -115,21 +121,22 @@ export const LinkAccount = () => {
   return (
     <main className='flex-1 relative'>
       <Spinner isLoading={isLoading}>
-        <div className='p-4'>
-          <div className='flex justify-between items-center'>
+        <Container>
+          <div className='flex justify-between md:items-center mt-4 flex-col md:flex-row'>
             <div
-              className='cursor-pointer hover:underline'
+              className='cursor-pointer hover:underline flex items-center gap-1'
               onClick={() => navigate('/')}
             >
-              Go Back
+              <Image size='smm' alt='arrow left' src={ArrowLeft} />
+              <div>Go Back</div>
             </div>
-            <h2 className='font-medium text-2xl'>
-              Select a Danish Institution
-            </h2>
+            <h3 className='text-lg text-center mt-2 md:mt-0'>
+              Choose Your Danish Bank
+            </h3>
             <div />
           </div>
 
-          <div className='grid md:grid-cols-3 grid-cols-1 md:gap-8 gap-4 mt-4'>
+          <div className='grid md:grid-cols-2 grid-cols-1 md:gap-8 gap-4 mt-4'>
             {institutions?.map((institution) => (
               <div
                 key={institution.id}
@@ -145,7 +152,7 @@ export const LinkAccount = () => {
               </div>
             ))}
           </div>
-        </div>
+        </Container>
       </Spinner>
     </main>
   )

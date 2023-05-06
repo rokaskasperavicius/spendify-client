@@ -2,7 +2,6 @@ type TransactionCategories = 'Food & Groceries' | 'Utilities' | 'Transfers'
 
 export type GetLinkedAccount = {
   id: number
-  requisitionId: string
   accountId: string
   accountBalance: string
   accountName: string
@@ -20,11 +19,11 @@ export type AccountTransactionsGroupedProps = Array<{
 }>
 
 export type GetLinkableAccount = {
-  requisitionId: string
   accountId: string
   accountBalance: string
   accountName: string
   accountIban: string
+  bankLogo: string
 }
 
 export type GenerateAccountLinkUrl = {
@@ -37,7 +36,6 @@ export type GenerateAccountLinkUrlBody = {
 }
 
 export type LinkAccountBody = {
-  requisitionId: string
   accountId: string
 }
 

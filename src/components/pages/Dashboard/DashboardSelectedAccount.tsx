@@ -23,8 +23,8 @@ export const DashboardSelectedAccount = ({
 }: Props) => (
   <div>
     <div className='flex md:flex-row flex-col items-start text-lg md:items-center justify-between font-medium'>
-      <div>
-        {selectedAccount.accountName}{' '}
+      <div className='space-x-1'>
+        <span>{selectedAccount.accountName}</span>
         {useWindowSize().width < Breakpoints.lg && (
           <Dialog
             title='Your Accounts'

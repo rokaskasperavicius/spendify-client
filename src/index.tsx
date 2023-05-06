@@ -1,10 +1,10 @@
-import './tailwindCSS.css'
+import 'styles/tailwindCSS.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import 'react-toastify/dist/ReactToastify.css'
 
-import './index.css'
+import 'styles/index.css'
 import { Main } from 'components'
 import reportWebVitals from './reportWebVitals'
 import { ToastContainer } from 'react-toastify'

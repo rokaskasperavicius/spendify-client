@@ -7,7 +7,7 @@ export const TransactionGraphDot = (lineDotProps: LineDotProps) => (
     stroke={lineDotProps.stroke}
     strokeWidth={lineDotProps.strokeWidth}
     fill={lineDotProps.fill}
-    fillOpacity={0}
+    fillOpacity={1}
     width={lineDotProps.width}
     height={lineDotProps.height}
     cx={lineDotProps.cx}

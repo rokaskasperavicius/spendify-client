@@ -89,6 +89,15 @@ export const TransactionGraph = ({ isLoading, transactions }: Props) => {
           onMouseMove={(e) => setActiveLineDot(e.chartX, e.chartY)}
           margin={{ top: 10, right: 10, bottom: 0, left: 10 }}
         >
+          <YAxis
+            orientation='right'
+            width={30}
+            mirror={true}
+            padding={{ top: 0, bottom: 20 }}
+            // label={{ value: 'DKK', position: 'right' }}
+            tickFormatter={tickFormatter}
+          />
+
           {transactions?.map((transaction, index) => (
             <Line
               key={transaction.id}
@@ -125,15 +134,6 @@ export const TransactionGraph = ({ isLoading, transactions }: Props) => {
               }
             />
           ))}
-
-          <YAxis
-            orientation='right'
-            width={30}
-            mirror={true}
-            padding={{ top: 0, bottom: 20 }}
-            // label={{ value: 'DKK', position: 'right' }}
-            tickFormatter={tickFormatter}
-          />
 
           <Tooltip
             cursor={

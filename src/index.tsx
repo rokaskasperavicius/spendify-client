@@ -23,7 +23,8 @@ root.render(
           autoClose={3000}
           position='bottom-right'
         />
-        {process.env.REACT_APP_MAINTENANCE === 'false' && <Main />}
+
+        <Main />
       </PersistGate>
     </Provider>
   </React.StrictMode>

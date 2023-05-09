@@ -12,8 +12,12 @@ import { useLoginUserMutation } from 'features/auth/authApi'
 import { useTitle } from 'hooks/useTitle'
 
 // Types
-import { LoginFormValues } from 'pages/login/types'
 import { ERROR_CODES } from 'services/types'
+
+export type LoginFormValues = {
+  email: string
+  password: string
+}
 
 export const Login = () => {
   useTitle('Sign in')
@@ -49,9 +53,9 @@ export const Login = () => {
   return (
     <div className='h-full flex justify-center items-center bg-primary'>
       <div className='p-6 w-[600px]'>
-        <h2 className='font-medium text-secondary text-3xl'>
+        <h1 className='font-medium text-secondary text-3xl font-secondary'>
           Sign in To Your Account
-        </h2>
+        </h1>
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <label className='flex flex-col my-6'>

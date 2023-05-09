@@ -15,7 +15,6 @@ import { useRegisterUserMutation } from 'features/auth/authApi'
 import { isFetchBaseQueryError } from 'services/isFetchBaseQueryError'
 
 // Types
-import { RegisterFormValues } from 'pages/register/types'
 import { ERROR_CODES } from 'services/types'
 
 const passwordSchema = new passwordValidator()
@@ -30,6 +29,12 @@ passwordSchema
   .lowercase() // Must have lowercase letters
   .has()
   .digits(1) // Must have at least 1 digit
+
+export type RegisterFormValues = {
+  name: string
+  email: string
+  password: string
+}
 
 export const Register = () => {
   useTitle('Sign up')
@@ -69,9 +74,9 @@ export const Register = () => {
   return (
     <div className='h-full flex justify-center items-center bg-primary'>
       <div className='p-6 w-[600px]'>
-        <h2 className='font-medium text-secondary text-3xl'>
+        <h1 className='font-medium text-secondary text-3xl font-secondary'>
           Sign up for an Account
-        </h2>
+        </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <label className='flex flex-col my-6'>

@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom'
 
 export const SimpleLayout = () => (
   <div className='h-screen flex flex-col bg-primary'>
-    <div className='p-6 text-white text-2xl font-medium w-full'>Spendify</div>
+    <h3 className='p-6 text-white text-2xl font-medium w-full'>Spendify</h3>
 
     <main className='flex-1'>
       <Outlet />

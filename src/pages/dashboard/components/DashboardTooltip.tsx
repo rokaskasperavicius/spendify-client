@@ -19,7 +19,7 @@ import {
 } from 'features/account/accountSlice'
 
 // Constants
-import { graphColors } from 'features/account/components/TransactionGraph/constants'
+import { graphColors } from './TransactionGraph/constants'
 
 // Types
 import { IntervalProps } from 'features/account/types'
@@ -33,7 +33,7 @@ type Props = {
   setCategory: (category: string) => void
 }
 
-export const DashboardIntervalDialog = ({
+export const DashboardTooltip = ({
   isShown,
   showIntervals,
   search,

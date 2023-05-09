@@ -1,8 +1,5 @@
 // Components
-import {
-  LinkedAccountTransaction,
-  LinkedAccountTransactionSkeleton,
-} from 'features/account/components'
+import { LinkedAccountTransaction, LinkedAccountTransactionSkeleton } from '.'
 
 // Helpers
 import { formatDate } from 'utils/formatDate'

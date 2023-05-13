@@ -39,6 +39,7 @@ const reducerProxy = (
 ) => {
   // This need to be refactored to use invalidatesTags!!!
   if (resetStore.match(action)) {
+    console.log(action)
     storage.removeItem('persist:root')
 
     return combinedReducers(undefined, action)

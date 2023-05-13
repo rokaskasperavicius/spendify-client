@@ -16,11 +16,11 @@ import { TransactionGraphTooltip } from './TransactionGraphTooltip'
 import { TransactionGraphCursor } from './TransactionGraphCursor'
 
 // Helpers
-import { TransactionGraphCollector } from 'features/account/components/TransactionGraph/transactionGraphCollector'
+import { TransactionGraphCollector } from './transactionGraphCollector'
 import { formatDate } from 'utils/formatDate'
 
 // Constants
-import { graphColors } from 'features/account/components/TransactionGraph/constants'
+import { graphColors } from './constants'
 
 // Types
 import {

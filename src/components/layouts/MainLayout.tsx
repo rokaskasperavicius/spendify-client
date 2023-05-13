@@ -44,10 +44,10 @@ export const MainLayout = () => {
   }
 
   return (
-    <div className='min-h-screen flex flex-col first-letter bg-background'>
+    <div className='min-h-screen flex flex-col bg-background'>
       <div
-        className={`items-center p-4 font-medium w-full flex justify-between sticky top-0 bg-background border-b border-gray-300 z-30 ${
-          scrollDirection === 'down' ? '!-top-[60px]' : 'top-0'
+        className={`items-center h-14 px-4 font-medium w-full flex justify-between sticky border-b border-gray-300 z-30 ${
+          scrollDirection === 'down' ? '-top-14' : 'top-0'
         } transition-all duration-500`}
       >
         <Link to='/' className='font-medium text-primary text-xl'>
@@ -116,9 +116,11 @@ export const MainLayout = () => {
         </div>
       </div>
 
-      <Outlet />
+      <main className='flex-1 flex flex-col'>
+        <Outlet />
+      </main>
 
-      <footer className='p-4 border-t border-gray-300 md:text-base text-sm'>
+      <footer className='h-14 flex px-4 items-center border-t border-gray-300 md:text-base text-sm'>
         &copy; 2023 Spendify. All Rights Reserved.
       </footer>
     </div>

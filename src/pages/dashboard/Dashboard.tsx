@@ -1,53 +1,37 @@
 import { useNavigate } from 'react-router-dom'
-import { subMonths, format } from 'date-fns'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
-import DateRangePicker from '@wojtekmaj/react-daterange-picker'
-import { useWindowSize } from 'react-use'
 import clsx from 'clsx'
 import { motion, AnimatePresence } from 'framer-motion'
 import qs from 'qs'
 
 import { useDebounce } from 'react-use'
 
-// Assets
-import ChartIcon from 'assets/chart.svg'
-import ListIcon from 'assets/list.svg'
-
 // Components
-import { Input, Select, Dialog, Spinner } from 'components/ui'
-import { AccountTransactionGraph } from 'features/account/components/TransactionGraph'
+import { Spinner } from 'components/ui'
 import {
-  LinkedAccount,
-  LinkedAccountSkeleton,
-} from 'features/account/components'
-import {
-  DashboardIntervalDialog,
+  DashboardTooltip,
   DashboardAccountList,
   DashboardSelectedAccount,
   DashboardBarChart,
-} from 'components/pages/Dashboard'
+  TransactionGraph,
+} from './components'
 
 import {
   useGetAccountsQuery,
   useGetAccountTransactionsQuery,
   useGetAccountTransactionsGroupedQuery,
 } from 'features/account/accountApi'
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Button } from 'components/ui'
-import { DashboardTransactionList } from './DashboardTransactionList'
+import { DashboardTransactionList } from './components/DashboardTransactionList'
 
 import { filterIntervals } from 'features/account/utils'
 
 import { useTitle } from 'hooks/useTitle'
 
 // Types
-import {
-  GetAccountTransactions,
-  GetLinkedAccount,
-} from 'features/account/types'
+import { GetLinkedAccount } from 'features/account/types'
 import { useAccountSlice } from 'features/account/accountSlice'
-
-import { Breakpoints } from 'lib/constants'
 
 export const Dashboard = () => {
   useTitle('Dashboard')
@@ -57,8 +41,6 @@ export const Dashboard = () => {
   const { data: linkedAccounts, isLoading: isAccountsLoading } =
     useGetAccountsQuery()
   const { intervals } = useAccountSlice()
-
-  const screenWidth = useWindowSize().width
 
   const filteredIntervals = useMemo(
     () => filterIntervals(intervals),
@@ -76,8 +58,6 @@ export const Dashboard = () => {
   const [isTooltipActive, setIsTooltipActive] = useState(false)
 
   const navigate = useNavigate()
-
-  // const [value, onChange] = useState([subMonths(new Date(), 1), new Date()])
 
   const [search, setSearch] = useState<string>('')
   const [category, setCategory] = useState<string>('')
@@ -130,11 +110,6 @@ export const Dashboard = () => {
     setSelectedAccount(account)
   }, [linkedAccounts])
 
-  // const noTransactions =
-  //   !isTransactionsLoading &&
-  //   !isTransactionsFetching &&
-  //   transactions?.length === 0
-
   // No accounts found
   if (!isAccountsLoading && linkedAccounts?.length === 0) {
     return (
@@ -155,16 +130,19 @@ export const Dashboard = () => {
   }
 
   return (
-    <main className='flex flex-1'>
-      <aside className='w-[300px] border-r border-gray-300 p-4 hidden lg:block z-20 bg-white'>
+    <div className='flex flex-1'>
+      <aside className='w-[300px] border-r border-gray-300 p-4 hidden lg:block z-20'>
         <DashboardAccountList
           handleCTA={() => navigate('/link-account')}
           handleAccountChange={handleAccountChange}
         />
       </aside>
 
-      <div className='flex-1 flex flex-col relative'>
-        <Spinner isLoading={isAccountsLoading}>
+      <div className='flex-1 overflow-hidden flex flex-col'>
+        <Spinner
+          isLoading={isAccountsLoading}
+          rootClassName='h-full flex justify-center items-center'
+        >
           <div className='p-4 border-b border-gray-300'>
             {selectedAccount && (
               <DashboardSelectedAccount
@@ -174,6 +152,7 @@ export const Dashboard = () => {
               />
             )}
           </div>
+
           <div className='flex border-b border-gray-300'>
             <div
               onClick={() => {
@@ -202,18 +181,18 @@ export const Dashboard = () => {
             </div>
           </div>
 
-          <div className='relative w-full h-full overflow-hidden'>
+          <div className='relative h-full'>
             <AnimatePresence initial={false}>
               {view2 === 'separate' && (
                 <motion.div
-                  className='flex-1 flex flex-col absolute left-0 top-0 h-full w-full'
+                  className='absolute inset-0 flex flex-col'
                   initial={{ opacity: 0, x: -30 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -30 }}
                 >
                   <div className='p-4 border-b border-gray-300'>
                     <div>
-                      <DashboardIntervalDialog
+                      <DashboardTooltip
                         isShown={isTooltipActive}
                         showIntervals={view === 'line'}
                         search={search}
@@ -231,6 +210,7 @@ export const Dashboard = () => {
                         >
                           {isTooltipActive ? 'Hide' : 'Filter'}
                         </div>
+
                         <div className='flex gap-2'>
                           <div>View: </div>
                           <div
@@ -252,30 +232,21 @@ export const Dashboard = () => {
                           >
                             Line
                           </div>
-
-                          {/* <div
-                              className={clsx(
-                                'cursor-pointer hover:underline select-none',
-                                { underline: view === 'monthly' }
-                              )}
-                              onClick={() => setView('monthly')}
-                            >
-                              Grouped
-                            </div> */}
                         </div>
                       </div>
                     </div>
                   </div>
 
                   <div className='flex-1 overflow-y-scroll'>
-                    {false ? (
+                    {transactions &&
+                    transactions[0].transactions.length === 0 ? (
                       <div className='h-full flex justify-center items-center'>
                         No Transactions
                       </div>
                     ) : (
-                      <div className='w-full h-full'>
+                      <div className='h-full'>
                         {view === 'line' ? (
-                          <AccountTransactionGraph
+                          <TransactionGraph
                             isLoading={isTransactionsFetching}
                             transactions={transactions}
                           />
@@ -314,6 +285,6 @@ export const Dashboard = () => {
           </div>
         </Spinner>
       </div>
-    </main>
+    </div>
   )
 }

@@ -4,14 +4,6 @@ import { motion } from 'framer-motion'
 
 // Hooks & Helpers
 import { useTitle } from 'hooks/useTitle'
-
-// Components
-import {
-  ChangeAccountInformation,
-  ChangeUserPassword,
-  UserDevices,
-} from 'components/pages/Settings'
-import { Button, Image, Container } from 'components/ui'
 import { useAuthState } from 'features/auth/authSlice'
 import {
   useGetAccountsQuery,
@@ -19,12 +11,20 @@ import {
 } from 'features/account/accountApi'
 import { useGetUserDevicesQuery } from 'features/auth/authApi'
 
+// Components
+import {
+  ChangeAccountInformation,
+  ChangeUserPassword,
+  UserDevices,
+} from './components'
+import { Button, Image, Container } from 'components/ui'
+
 export const Settings = () => {
   useTitle('Settings')
 
   const [deleteAccount] = useDeleteAccountMutation()
   const { data: linkedAccounts } = useGetAccountsQuery()
-  const { data: userDevices, isLoading } = useGetUserDevicesQuery()
+  const { data } = useGetUserDevicesQuery()
 
   const { name } = useAuthState()
 
@@ -33,7 +33,7 @@ export const Settings = () => {
   >('profile')
 
   return (
-    <main className='flex-1'>
+    <div>
       <div className='py-4 border-b border-gray-300 space-y-4'>
         <Container className='flex justify-between items-center'>
           <div className='text-lg'>Settings</div>
@@ -92,11 +92,11 @@ export const Settings = () => {
           >
             <div className='font-medium'>Manage Connected Accounts</div>
 
-            <div className='space-y-8'>
+            <ul className='space-y-8'>
               {linkedAccounts && linkedAccounts.length > 0 ? (
                 linkedAccounts?.map(
                   ({ id, accountId, accountName, bankLogo, accountIban }) => (
-                    <div key={id} className='flex gap-4'>
+                    <li key={id} className='flex gap-4'>
                       <div>
                         <Image size='md' src={bankLogo} alt='Bank Logo' />
                       </div>
@@ -116,13 +116,13 @@ export const Settings = () => {
                           Remove
                         </Button>
                       </div>
-                    </div>
+                    </li>
                   )
                 )
               ) : (
                 <div>No Accounts Found</div>
               )}
-            </div>
+            </ul>
           </motion.div>
         </Container>
       )}
@@ -137,6 +137,6 @@ export const Settings = () => {
           </motion.div>
         </Container>
       )}
-    </main>
+    </div>
   )
 }

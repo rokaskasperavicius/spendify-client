@@ -1,9 +1,6 @@
 // Components
 import { Button } from 'components/ui'
-import {
-  LinkedAccount,
-  LinkedAccountSkeleton,
-} from 'features/account/components'
+import { LinkedAccount, LinkedAccountSkeleton } from '.'
 
 // Hooks & Helpers
 import { useGetAccountsQuery } from 'features/account/accountApi'

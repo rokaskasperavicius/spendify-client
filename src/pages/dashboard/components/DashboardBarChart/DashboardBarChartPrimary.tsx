@@ -17,51 +17,6 @@ type Props = {
   groupedAccountTransactions: AccountTransactionsGroupedProps
 }
 
-const test = [
-  {
-    date: 'April, 2023',
-    expenses: '293,94',
-    expensesInt: 293.94,
-    income: '500,00',
-    incomeInt: 500,
-  },
-  {
-    date: 'March, 2023',
-    expenses: '293,94',
-    expensesInt: 293.94,
-    income: '500,00',
-    incomeInt: 500,
-  },
-  {
-    date: 'asd, 2023',
-    expenses: '293,94',
-    expensesInt: 293.94,
-    income: '500,00',
-    incomeInt: 500,
-  },
-  {
-    date: '343, 2023',
-    expenses: '293,94',
-    expensesInt: 293.94,
-    income: '500,00',
-    incomeInt: 500,
-  },
-  {
-    date: 'sdsad, 2023',
-    expenses: '293,94',
-    expensesInt: 293.94,
-    income: '500,00',
-    incomeInt: 500,
-  },
-  {
-    date: 'dghsh, 2023',
-    expenses: '293,94',
-    expensesInt: 293.94,
-    income: '500,00',
-    incomeInt: 500,
-  },
-]
-
 export const DashboardBarChartPrimary = ({
   groupedAccountTransactions,
 }: Props) => {

@@ -1,21 +1,7 @@
 body {
-  margin: 0;
   font-family: 'Work Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-h2 {
-  font-family: 'Crimson Text', serif;
-}
-
-input {
-  color: black;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
@@ -29,9 +15,17 @@ code {
   scrollbar-width: none; /* Firefox */
 }
 
+/* recharts */
+
 .recharts-yAxis {
   transition: transform ease-in-out;
 }
+
+.recharts-tooltip-wrapper {
+  outline: none !important;
+}
+
+/* Toast */
 
 :root {
   --toastify-icon-color-error: black !important;
@@ -47,65 +41,4 @@ code {
 
 .Toastify__close-button {
   opacity: 0.7 !important;
-}
-
-.rdp {
-  --rdp-cell-size: 40px;
-  --rdp-accent-color: #163b23;
-  --rdp-background-color: #163b23;
-
-  margin: 0;
-  height: 320px;
-}
-
-.rdp button svg {
-  width: 12px;
-  height: 12px;
-}
-
-.rdp-button:hover {
-  color: white;
-}
-
-.rdp-caption_label {
-  font-weight: 500;
-  font-size: 18px;
-}
-
-.react-daterange-picker__wrapper {
-  border: 1px solid rgb(156 163 175);
-  border-radius: 0.375rem;
-
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.react-calendar__month-view__weekdays__weekday > abbr {
-  text-decoration: unset !important;
-}
-
-.react-calendar__tile:hover,
-.react-calendar__tile--active {
-  color: white;
-  background-color: #163b23 !important;
-}
-
-.react-calendar--selectRange .react-calendar__tile--hover {
-  color: white;
-  background-color: #163b23 !important;
-}
-
-.react-calendar__tile.react-calendar__tile--now {
-  background-color: unset;
-}
-
-.react-calendar {
-  font-family: 'Work Sans', sans-serif !important;
-}
-
-.recharts-tooltip-wrapper {
-  outline: none !important;
 }

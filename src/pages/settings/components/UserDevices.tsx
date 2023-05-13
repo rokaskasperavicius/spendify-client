@@ -5,10 +5,10 @@ import {
   useSignOutUserMutation,
 } from 'features/auth/authApi'
 import { authApi } from 'features/auth/authApi'
+import { useAuthState } from 'features/auth/authSlice'
 
 // Components
 import { Button, Spinner } from 'components/ui'
-import { useAuthState } from 'features/auth/authSlice'
 
 export const UserDevices = () => {
   const dispatch = useAppDispatch()
@@ -26,7 +26,7 @@ export const UserDevices = () => {
   }
 
   return (
-    <Spinner isLoading={isLoading}>
+    <Spinner isLoading={isLoading} rootClassName='flex justify-center'>
       <div className='space-y-4'>
         <div className='font-medium'>Manage Account Devices</div>
 

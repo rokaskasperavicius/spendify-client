@@ -54,20 +54,20 @@ export const baseQuery: BaseQueryFn<
 
   // Unauthenticated
   if (result.error && result.error.status === 401) {
-    // if (!refreshQuery) {
-    refreshQuery = query({ isRefresh: true })(
-      {
-        url: '/auth/refresh-token',
-        method: 'POST',
-      },
-      api,
-      extraOptions
-    ) as QueryReturnValue<
-      { data: { accessToken: string; refreshToken: string } },
-      FetchBaseQueryError,
-      FetchBaseQueryMeta
-    >
-    // }
+    if (!refreshQuery) {
+      refreshQuery = query({ isRefresh: true })(
+        {
+          url: '/auth/refresh-token',
+          method: 'POST',
+        },
+        api,
+        extraOptions
+      ) as QueryReturnValue<
+        { data: { accessToken: string; refreshToken: string } },
+        FetchBaseQueryError,
+        FetchBaseQueryMeta
+      >
+    }
 
     const refreshResult = await refreshQuery
 
@@ -88,7 +88,7 @@ export const baseQuery: BaseQueryFn<
       userRoutes.navigate('/login')
     }
 
-    // refreshQuery = undefined
+    refreshQuery = undefined
   }
 
   if (

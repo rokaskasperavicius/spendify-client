@@ -1,5 +1,5 @@
 // Types
-import { CollectorLineDotProps } from 'features/account/components/TransactionGraph/types'
+import { CollectorLineDotProps } from './types'
 
 export class TransactionGraphCollector {
   lineDots: CollectorLineDotProps[]

@@ -1,3 +1,9 @@
+// Components
+import { DashboardBarChartTooltip } from './DashboardBarChartTooltip'
+
+// Types
+import { AccountTransactionsGroupedProps } from 'features/account/types'
+
 import {
   BarChart,
   Bar,
@@ -6,16 +12,6 @@ import {
   ReferenceLine,
   ResponsiveContainer,
 } from 'recharts'
-
-// Components
-import { DashboardBarChartTooltip } from './DashboardBarChartTooltip'
-
-// Types
-import { AccountTransactionsGroupedProps } from 'features/account/types'
-
-type Props = {
-  groupedAccountTransactions: AccountTransactionsGroupedProps
-}
 
 export const DashboardBarChartPrimary = ({
   groupedAccountTransactions,
@@ -53,4 +49,8 @@ export const DashboardBarChartPrimary = ({
       </BarChart>
     </ResponsiveContainer>
   )
+}
+
+type Props = {
+  groupedAccountTransactions: AccountTransactionsGroupedProps
 }

@@ -12,8 +12,8 @@ const initialState: State = {
   intervals: [
     {
       id: uuid(),
-      from: subMonths(new Date(), 1).getTime(),
-      to: new Date().getTime(),
+      from: subMonths(new Date('2023-05-05'), 1).getTime(),
+      to: new Date('2023-05-05').getTime(),
     },
   ],
 }

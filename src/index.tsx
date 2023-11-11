@@ -30,9 +30,9 @@ const MainProjectInstance = () => (
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
-    {/* <MainProjectInstance /> */}
+    <MainProjectInstance />
 
-    <div className='w-screen h-screen flex justify-center items-center flex-col gap-4'>
+    {/* <div className='w-screen h-screen flex justify-center items-center flex-col gap-4'>
       <div className='font-bold text-2xl'>The Project Has Been Disabled</div>
       <div className='flex gap-2 text-xl'>
         Contact the System Administrator:
@@ -43,7 +43,7 @@ root.render(
           goodname258@gmail.com
         </a>
       </div>
-    </div>
+    </div> */}
   </React.StrictMode>
 )
 

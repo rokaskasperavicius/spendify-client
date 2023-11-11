@@ -2,6 +2,9 @@
   "name": "spendify-client",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "18.16.1"
+  },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.3",
     "@radix-ui/react-tooltip": "^1.0.5",

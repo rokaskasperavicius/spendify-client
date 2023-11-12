@@ -20,7 +20,7 @@ import { accountApi } from 'features/account/accountApi'
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: [authSlice.name, accountSlice.name],
+  whitelist: [authSlice.name],
 }
 
 const combinedReducers = combineReducers({

@@ -83,7 +83,10 @@ export const TransactionGraph = ({ isLoading, transactions }: Props) => {
   }
 
   return (
-    <Spinner isLoading={isLoading}>
+    <Spinner
+      isLoading={isLoading}
+      rootClassName='h-full flex justify-center items-center'
+    >
       <ResponsiveContainer>
         <LineChart
           onMouseMove={(e) => setActiveLineDot(e.chartX, e.chartY)}

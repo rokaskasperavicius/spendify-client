@@ -46,7 +46,7 @@ export const MainLayout = () => {
   return (
     <div className='min-h-screen flex flex-col bg-background'>
       <div
-        className={`items-center h-14 px-4 font-medium w-full flex justify-between sticky border-b border-gray-300 z-30 ${
+        className={`bg-background items-center h-14 px-4 font-medium w-full flex justify-between sticky border-b border-gray-300 z-30 ${
           scrollDirection === 'down' ? '-top-14' : 'top-0'
         } transition-all duration-500`}
       >

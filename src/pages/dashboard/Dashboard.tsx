@@ -143,11 +143,11 @@ export const Dashboard = () => {
           isLoading={isAccountsLoading}
           rootClassName='h-full flex justify-center items-center'
         >
-          <div className='p-4 border-b border-gray-300'>
-            <div>
-              Current timestamp: {new Date(timestamp).toLocaleTimeString()}
-            </div>
+          <div className='p-4 border-b border-gray-300 italic text-sm'>
+            Last updated: {new Date(timestamp).toLocaleString()}
+          </div>
 
+          <div className='p-4 border-b border-gray-300'>
             {selectedAccount && (
               <DashboardSelectedAccount
                 selectedAccount={selectedAccount}

@@ -40,7 +40,7 @@ export const Dashboard = () => {
 
   const { data: linkedAccounts, isLoading: isAccountsLoading } =
     useGetAccountsQuery()
-  const { intervals } = useAccountSlice()
+  const { intervals, timestamp } = useAccountSlice()
 
   const filteredIntervals = useMemo(
     () => filterIntervals(intervals),
@@ -144,6 +144,10 @@ export const Dashboard = () => {
           rootClassName='h-full flex justify-center items-center'
         >
           <div className='p-4 border-b border-gray-300'>
+            <div>
+              Current timestamp: {new Date(timestamp).toLocaleTimeString()}
+            </div>
+
             {selectedAccount && (
               <DashboardSelectedAccount
                 selectedAccount={selectedAccount}

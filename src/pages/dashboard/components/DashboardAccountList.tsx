@@ -14,14 +14,14 @@ export const DashboardAccountList = ({
   handleCTA,
   handleAccountChange,
 }: Props) => {
-  const { data: accounts, isLoading: isAccountsLoading } = useGetAccountsQuery()
+  const { data, isLoading: isAccountsLoading } = useGetAccountsQuery()
 
   return (
     <div className='space-y-4'>
       {isAccountsLoading ? (
         <LinkedAccountSkeleton />
       ) : (
-        accounts?.map(
+        data?.accounts.map(
           ({ id, accountId, accountName, bankLogo, accountIban }) => (
             <LinkedAccount
               key={id}

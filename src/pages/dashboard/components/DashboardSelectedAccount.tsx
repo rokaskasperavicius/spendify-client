@@ -5,13 +5,13 @@ import { DashboardAccountList } from './DashboardAccountList'
 import { Dialog } from 'components/ui'
 
 // Types
-import { GetLinkedAccount } from 'features/account/types'
+import { LinkedAccount } from 'features/account/types'
 
 // Constants
 import { Breakpoints } from 'lib/constants'
 
 type Props = {
-  selectedAccount: GetLinkedAccount
+  selectedAccount: LinkedAccount
   handleCTA: () => void
   handleAccountChange: (accountId: string) => void
 }

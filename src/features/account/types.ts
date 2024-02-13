@@ -1,6 +1,11 @@
 type TransactionCategories = 'Food & Groceries' | 'Utilities' | 'Transfers'
 
-export type GetLinkedAccount = {
+export type GetLinkedAccounts = {
+  accounts: LinkedAccount[]
+  someExpired: boolean
+}
+
+export type LinkedAccount = {
   id: number
   accountId: string
   accountBalance: string

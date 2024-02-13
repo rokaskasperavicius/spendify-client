@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
 import clsx from 'clsx'
 import { motion, AnimatePresence } from 'framer-motion'
+import { toast } from 'react-toastify'
 import qs from 'qs'
 
 import { useDebounce } from 'react-use'
@@ -30,7 +31,7 @@ import { filterIntervals } from 'features/account/utils'
 import { useTitle } from 'hooks/useTitle'
 
 // Types
-import { GetLinkedAccount } from 'features/account/types'
+import { LinkedAccount } from 'features/account/types'
 import { useAccountSlice } from 'features/account/accountSlice'
 
 export const Dashboard = () => {
@@ -38,16 +39,18 @@ export const Dashboard = () => {
 
   const [view2, setView2] = useState<'separate' | 'grouped'>('separate')
 
-  const { data: linkedAccounts, isLoading: isAccountsLoading } =
+  const { data: accountsInfo, isLoading: isAccountsLoading } =
     useGetAccountsQuery()
   const { intervals, timestamp } = useAccountSlice()
+
+  const { accounts, someExpired } = accountsInfo || {}
 
   const filteredIntervals = useMemo(
     () => filterIntervals(intervals),
     [intervals]
   )
 
-  const [selectedAccount, setSelectedAccount] = useState<GetLinkedAccount>()
+  const [selectedAccount, setSelectedAccount] = useState<LinkedAccount>()
   const accountId = selectedAccount?.accountId
   const {
     data: groupedTransactions,
@@ -89,9 +92,7 @@ export const Dashboard = () => {
   )
 
   const handleAccountChange = (accountId: string) => {
-    const account = linkedAccounts?.find(
-      (account) => account.accountId === accountId
-    )
+    const account = accounts?.find((account) => account.accountId === accountId)
 
     setSelectedAccount(account)
   }
@@ -106,12 +107,18 @@ export const Dashboard = () => {
     )
 
   useEffect(() => {
-    const account = linkedAccounts ? linkedAccounts[0] : undefined
+    const account = accounts ? accounts[0] : undefined
     setSelectedAccount(account)
-  }, [linkedAccounts])
+  }, [accounts])
+
+  useEffect(() => {
+    if (someExpired) {
+      toast.info('Some accounts have expired. Please reconnect it again.')
+    }
+  }, [someExpired])
 
   // No accounts found
-  if (!isAccountsLoading && linkedAccounts?.length === 0) {
+  if (!isAccountsLoading && accounts?.length === 0) {
     return (
       <main className='flex-1 flex justify-center items-center'>
         <div>

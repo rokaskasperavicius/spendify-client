@@ -6,7 +6,7 @@ import { baseQuery } from 'services/baseQuery'
 // Types
 import {
   GetLinkableAccount,
-  GetLinkedAccount,
+  GetLinkedAccounts,
   GenerateAccountLinkUrl,
   GenerateAccountLinkUrlBody,
   GetAccountTransactions,
@@ -24,11 +24,11 @@ export const accountApi = createApi({
   tagTypes: ['Accounts'],
 
   endpoints: (builder) => ({
-    getAccounts: builder.query<GetLinkedAccount[], void>({
+    getAccounts: builder.query<GetLinkedAccounts, void>({
       query: () => `${API_PREFIX}`,
       providesTags: ['Accounts'],
 
-      transformResponse: (response: SuccessResponse<GetLinkedAccount[]>) =>
+      transformResponse: (response: SuccessResponse<GetLinkedAccounts>) =>
         response.data,
     }),
 

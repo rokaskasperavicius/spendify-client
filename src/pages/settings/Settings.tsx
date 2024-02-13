@@ -22,7 +22,7 @@ export const Settings = () => {
   useTitle('Settings')
 
   const [deleteAccount] = useDeleteAccountMutation()
-  const { data: linkedAccounts } = useGetAccountsQuery()
+  const { data } = useGetAccountsQuery()
 
   const { name } = useAuthState()
 
@@ -91,8 +91,8 @@ export const Settings = () => {
             <div className='font-medium'>Manage Connected Accounts</div>
 
             <ul className='space-y-8'>
-              {linkedAccounts && linkedAccounts.length > 0 ? (
-                linkedAccounts?.map(
+              {data && data.accounts.length > 0 ? (
+                data.accounts?.map(
                   ({ id, accountId, accountName, bankLogo, accountIban }) => (
                     <li key={id} className='flex gap-4'>
                       <div>

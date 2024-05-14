@@ -6,6 +6,5 @@ export { LinkedAccountSkeleton } from './LinkedAccountSkeleton'
 export { LinkedAccountTransaction } from './LinkedAccountTransaction'
 export { LinkedAccountTransactionSkeleton } from './LinkedAccountTransactionSkeleton'
 
-// Charts
 export { DashboardBarChart } from './DashboardBarChart'
 export { TransactionGraph } from './TransactionGraph'

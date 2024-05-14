@@ -1,5 +1,5 @@
-import { ButtonHTMLAttributes } from 'react'
 import clsx from 'clsx'
+import { ButtonHTMLAttributes } from 'react'
 
 type Props = {
   children: React.ReactNode
@@ -48,7 +48,7 @@ export const Button = ({
       variants[variant],
       { 'w-full': fullWidth },
       'px-4 py-2 rounded-md',
-      className
+      className,
     )}
   >
     {children}

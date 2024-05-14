@@ -1,25 +1,24 @@
-import {
-  Outlet,
-  Navigate,
-  useNavigate,
-  Link,
-  useLocation,
-} from 'react-router-dom'
-
-// Assets
-import MenuIcon from 'assets/menu.svg'
-
-// Hooks & Helpers
-import { useAppDispatch } from 'store/hooks'
-import { useSignOutUserMutation } from 'features/auth/authApi'
-import { useAuthState, resetStore } from 'features/auth/authSlice'
-import { useScrollDirection } from 'hooks/useScrollDirection'
-
-// Components
-import { Image, Button } from 'components/ui'
-import { Menu } from 'components/Menu'
 import clsx from 'clsx'
 import { useState } from 'react'
+import {
+  Link,
+  Navigate,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom'
+
+import MenuIcon from '@/assets/menu.svg'
+
+import { Menu } from '@/components/Menu'
+import { Button, Image } from '@/components/ui'
+
+import { useSignOutUserMutation } from '@/features/auth/authApi'
+import { resetStore, useAuthState } from '@/features/auth/authSlice'
+
+import { useScrollDirection } from '@/hooks/useScrollDirection'
+
+import { useAppDispatch } from '@/store/hooks'
 
 export const MainLayout = () => {
   const navigate = useNavigate()
@@ -36,7 +35,9 @@ export const MainLayout = () => {
     try {
       await signOutUser({ refreshToken: refreshToken || '' }).unwrap()
       dispatch(resetStore())
-    } catch {}
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   if (!accessToken) {

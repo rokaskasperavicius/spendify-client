@@ -1,18 +1,14 @@
+import passwordValidator from 'password-validator'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
-import passwordValidator from 'password-validator'
+import { Button, Container, Input } from '@/components/ui'
 
-// Components
-import { Container, Input, Button } from 'components/ui'
+import { usePatchUserPasswordMutation } from '@/features/auth/authApi'
 
-// Hooks & Helpers
-import { usePatchUserPasswordMutation } from 'features/auth/authApi'
-import { isFetchBaseQueryError } from 'services/isFetchBaseQueryError'
-
-// Types
-import { ERROR_CODES } from 'services/types'
+import { isFetchBaseQueryError } from '@/services/isFetchBaseQueryError'
+import { ERROR_CODES } from '@/services/types'
 
 type FormValues = {
   oldPassword: string

@@ -1,21 +1,21 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { AnyAction } from 'redux'
 import {
-  persistStore,
-  persistReducer,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
   PURGE,
   REGISTER,
+  REHYDRATE,
+  persistReducer,
+  persistStore,
 } from 'redux-persist'
-import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
+import storage from 'redux-persist/lib/storage'
 
-import { authSlice, resetStore } from 'features/auth/authSlice'
-import { accountSlice } from 'features/account/accountSlice'
-import { authApi } from 'features/auth/authApi'
-import { accountApi } from 'features/account/accountApi'
+import { accountApi } from '@/features/account/accountApi'
+import { accountSlice } from '@/features/account/accountSlice'
+import { authApi } from '@/features/auth/authApi'
+import { authSlice, resetStore } from '@/features/auth/authSlice'
 
 const persistConfig = {
   key: 'root',
@@ -35,11 +35,10 @@ const combinedReducers = combineReducers({
 // https://bionicjulia.com/blog/clear-redux-toolkit-state-with-redux-persist-and-typescript
 const reducerProxy = (
   state: ReturnType<typeof combinedReducers> | undefined,
-  action: AnyAction
+  action: AnyAction,
 ) => {
   // This need to be refactored to use invalidatesTags!!!
   if (resetStore.match(action)) {
-    console.log(action)
     storage.removeItem('persist:root')
 
     return combinedReducers(undefined, action)

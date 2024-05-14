@@ -1,19 +1,15 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
-
 import isEmail from 'validator/lib/isEmail'
 
-// Components
-import { Container, Input, Button } from 'components/ui'
+import { Button, Container, Input } from '@/components/ui'
 
-// Hooks & Helpers
-import { usePatchUserInfoMutation } from 'features/auth/authApi'
-import { useAuthState } from 'features/auth/authSlice'
-import { isFetchBaseQueryError } from 'services/isFetchBaseQueryError'
+import { usePatchUserInfoMutation } from '@/features/auth/authApi'
+import { useAuthState } from '@/features/auth/authSlice'
 
-// Types
-import { ERROR_CODES } from 'services/types'
+import { isFetchBaseQueryError } from '@/services/isFetchBaseQueryError'
+import { ERROR_CODES } from '@/services/types'
 
 type FormValues = {
   name: string

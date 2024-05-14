@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 // https://www.codemzy.com/blog/react-sticky-header-disappear-scroll
 export const useScrollDirection = () => {
   const [scrollDirection, setScrollDirection] = useState<'down' | 'up' | null>(
-    null
+    null,
   )
 
   useEffect(() => {

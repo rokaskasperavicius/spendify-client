@@ -1,21 +1,20 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 
-// Helpers
-import { baseQuery } from 'services/baseQuery'
-
-// Types
 import {
-  GetLinkableAccount,
-  GetLinkedAccounts,
+  AccountTransactionsGroupedProps,
+  DeleteAccountBody,
   GenerateAccountLinkUrl,
   GenerateAccountLinkUrlBody,
   GetAccountTransactions,
-  LinkAccountBody,
   GetInstitution,
-  DeleteAccountBody,
-  AccountTransactionsGroupedProps,
-} from 'features/account/types'
-import { SuccessResponse } from 'services/types'
+  GetLinkableAccount,
+  GetLinkedAccounts,
+  LinkAccountBody,
+} from '@/features/account/types'
+
+import { baseQuery } from '@/services/baseQuery'
+import { SuccessResponse } from '@/services/types'
+
 const API_PREFIX = '/accounts'
 
 export const accountApi = createApi({
@@ -68,7 +67,7 @@ export const accountApi = createApi({
       providesTags: ['Accounts'],
 
       transformResponse: (
-        response: SuccessResponse<AccountTransactionsGroupedProps>
+        response: SuccessResponse<AccountTransactionsGroupedProps>,
       ) => response.data,
     }),
 
@@ -86,7 +85,7 @@ export const accountApi = createApi({
         response.data,
     }),
 
-    connectAccount: builder.mutation<{}, LinkAccountBody>({
+    connectAccount: builder.mutation<object, LinkAccountBody>({
       query: (body) => ({
         url: `${API_PREFIX}`,
         method: 'POST',
@@ -97,7 +96,7 @@ export const accountApi = createApi({
       transformErrorResponse: (response) => response.data,
     }),
 
-    deleteAccount: builder.mutation<{}, DeleteAccountBody>({
+    deleteAccount: builder.mutation<object, DeleteAccountBody>({
       query: (body) => ({
         url: `${API_PREFIX}`,
         method: 'DELETE',
@@ -105,7 +104,7 @@ export const accountApi = createApi({
       }),
 
       invalidatesTags: ['Accounts'],
-      transformResponse: (response: SuccessResponse<{}>) => response.data,
+      transformResponse: (response: SuccessResponse<object>) => response.data,
     }),
   }),
 })

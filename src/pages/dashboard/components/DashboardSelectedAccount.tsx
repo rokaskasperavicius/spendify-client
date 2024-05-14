@@ -1,14 +1,12 @@
 import { useWindowSize } from 'react-use'
 
-// Components
+import { Dialog } from '@/components/ui'
+
+import { LinkedAccount } from '@/features/account/types'
+
+import { Breakpoints } from '@/lib/constants'
+
 import { DashboardAccountList } from './DashboardAccountList'
-import { Dialog } from 'components/ui'
-
-// Types
-import { LinkedAccount } from 'features/account/types'
-
-// Constants
-import { Breakpoints } from 'lib/constants'
 
 type Props = {
   selectedAccount: LinkedAccount

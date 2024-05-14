@@ -1,5 +1,4 @@
-// Types
-import { AccountTransactionProps } from 'features/account/types'
+import { AccountTransactionProps } from '@/features/account/types'
 
 export type CollectorLineDotProps = {
   lineIndex: number

@@ -1,10 +1,9 @@
-// Components
-import { Spinner } from 'components/ui'
+import { Spinner } from '@/components/ui'
+
+import { AccountTransactionsGroupedProps } from '@/features/account/types'
+
 import { DashboardBarChartPrimary } from './DashboardBarChartPrimary'
 import { DashboardBarChartYAxis } from './DashboardBarChartYAxis'
-
-// Types
-import { AccountTransactionsGroupedProps } from 'features/account/types'
 
 type Props = {
   isLoading: boolean

@@ -1,4 +1,3 @@
-// Types
 import { CollectorLineDotProps } from './types'
 
 export class TransactionGraphCollector {
@@ -31,7 +30,7 @@ export class TransactionGraphCollector {
     }, this.lineDots[0])
 
     const lineDotsWithSameX = this.lineDots.filter(
-      (lineDot) => lineDot.dotPayload.cx === closestLineDot.dotPayload.cx
+      (lineDot) => lineDot.dotPayload.cx === closestLineDot.dotPayload.cx,
     )
 
     if (lineDotsWithSameX.length > 1) {
@@ -43,11 +42,11 @@ export class TransactionGraphCollector {
         const nextY = next.dotPayload.cy
 
         const prevDistance = Math.sqrt(
-          Math.pow(prevX - x, 2) + Math.pow(prevY - y, 2)
+          Math.pow(prevX - x, 2) + Math.pow(prevY - y, 2),
         )
 
         const nextDistance = Math.sqrt(
-          Math.pow(nextX - x, 2) + Math.pow(nextY - y, 2)
+          Math.pow(nextX - x, 2) + Math.pow(nextY - y, 2),
         )
 
         return prevDistance < nextDistance ? prev : next

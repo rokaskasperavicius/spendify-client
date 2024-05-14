@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import clsx from 'clsx'
+import { useState } from 'react'
 
 const TITLE_WIDTHS = ['w-1/2', 'w-1/4', 'w-2/6', 'w-1/6']
 const getRandomWidth = () => TITLE_WIDTHS[Math.floor(Math.random() * 4)]

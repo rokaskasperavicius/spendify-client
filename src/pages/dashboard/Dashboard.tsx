@@ -1,38 +1,34 @@
-import { useNavigate } from 'react-router-dom'
 import { skipToken } from '@reduxjs/toolkit/dist/query'
 import clsx from 'clsx'
-import { motion, AnimatePresence } from 'framer-motion'
-import { toast } from 'react-toastify'
+import { AnimatePresence, motion } from 'framer-motion'
 import qs from 'qs'
-
+import { useEffect, useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { useDebounce } from 'react-use'
 
-// Components
-import { Spinner } from 'components/ui'
+import { Spinner } from '@/components/ui'
+import { Button } from '@/components/ui'
+
 import {
-  DashboardTooltip,
+  useGetAccountTransactionsGroupedQuery,
+  useGetAccountTransactionsQuery,
+  useGetAccountsQuery,
+} from '@/features/account/accountApi'
+import { useAccountSlice } from '@/features/account/accountSlice'
+import { LinkedAccount } from '@/features/account/types'
+import { filterIntervals } from '@/features/account/utils'
+
+import { useTitle } from '@/hooks/useTitle'
+
+import {
   DashboardAccountList,
-  DashboardSelectedAccount,
   DashboardBarChart,
+  DashboardSelectedAccount,
+  DashboardTooltip,
   TransactionGraph,
 } from './components'
-
-import {
-  useGetAccountsQuery,
-  useGetAccountTransactionsQuery,
-  useGetAccountTransactionsGroupedQuery,
-} from 'features/account/accountApi'
-import { useEffect, useMemo, useState } from 'react'
-import { Button } from 'components/ui'
 import { DashboardTransactionList } from './components/DashboardTransactionList'
-
-import { filterIntervals } from 'features/account/utils'
-
-import { useTitle } from 'hooks/useTitle'
-
-// Types
-import { LinkedAccount } from 'features/account/types'
-import { useAccountSlice } from 'features/account/accountSlice'
 
 export const Dashboard = () => {
   useTitle('Dashboard')
@@ -47,7 +43,7 @@ export const Dashboard = () => {
 
   const filteredIntervals = useMemo(
     () => filterIntervals(intervals),
-    [intervals]
+    [intervals],
   )
 
   const [selectedAccount, setSelectedAccount] = useState<LinkedAccount>()
@@ -88,7 +84,7 @@ export const Dashboard = () => {
       setQuery(generateQuery())
     },
     400,
-    [search, category, filteredIntervals, selectedAccount]
+    [search, category, filteredIntervals, selectedAccount],
   )
 
   const handleAccountChange = (accountId: string) => {
@@ -103,7 +99,7 @@ export const Dashboard = () => {
         accountId: accountId as string,
         query: query as string,
       },
-      { skip: !accountId || !query }
+      { skip: !accountId || !query },
     )
 
   useEffect(() => {
@@ -174,7 +170,7 @@ export const Dashboard = () => {
                 'flex-1 py-2 px-4 cursor-pointer hover:bg-gray-50',
                 {
                   'bg-gray-50': view2 === 'separate',
-                }
+                },
               )}
             >
               Transactions
@@ -185,7 +181,7 @@ export const Dashboard = () => {
                 'flex-1 py-2 px-4 border-l border-gray-300 hover:bg-gray-50 cursor-pointer',
                 {
                   'bg-gray-50': view2 === 'grouped',
-                }
+                },
               )}
             >
               Monthly Overview
@@ -227,7 +223,7 @@ export const Dashboard = () => {
                           <div
                             className={clsx(
                               'cursor-pointer hover:underline select-none',
-                              { underline: view === 'list' }
+                              { underline: view === 'list' },
                             )}
                             onClick={() => setView('list')}
                           >
@@ -237,7 +233,7 @@ export const Dashboard = () => {
                           <div
                             className={clsx(
                               'cursor-pointer hover:underline select-none',
-                              { underline: view === 'line' }
+                              { underline: view === 'line' },
                             )}
                             onClick={() => setView('line')}
                           >

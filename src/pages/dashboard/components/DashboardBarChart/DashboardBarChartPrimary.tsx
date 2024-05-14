@@ -1,17 +1,15 @@
-// Components
-import { DashboardBarChartTooltip } from './DashboardBarChartTooltip'
-
-// Types
-import { AccountTransactionsGroupedProps } from 'features/account/types'
-
 import {
-  BarChart,
   Bar,
-  XAxis,
-  Tooltip,
+  BarChart,
   ReferenceLine,
   ResponsiveContainer,
+  Tooltip,
+  XAxis,
 } from 'recharts'
+
+import { AccountTransactionsGroupedProps } from '@/features/account/types'
+
+import { DashboardBarChartTooltip } from './DashboardBarChartTooltip'
 
 export const DashboardBarChartPrimary = ({
   groupedAccountTransactions,

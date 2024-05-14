@@ -1,33 +1,28 @@
+import millify from 'millify'
 import {
-  LineChart,
   Line,
+  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts'
-import millify from 'millify'
 
-// Components
-import { Spinner } from 'components/ui'
-import { TransactionGraphDot } from './TransactionGraphDot'
-import { TransactionGraphActiveDot } from './TransactionGraphActiveDot'
-import { TransactionGraphTooltip } from './TransactionGraphTooltip'
-import { TransactionGraphCursor } from './TransactionGraphCursor'
+import { Spinner } from '@/components/ui'
 
-// Helpers
-import { TransactionGraphCollector } from './transactionGraphCollector'
-import { formatDate } from 'utils/formatDate'
-
-// Constants
-import { graphColors } from './constants'
-
-// Types
 import {
-  GetAccountTransactions,
   AccountTransactionProps,
-} from 'features/account/types'
+  GetAccountTransactions,
+} from '@/features/account/types'
 
+import { formatDate } from '@/utils/formatDate'
+
+import { TransactionGraphActiveDot } from './TransactionGraphActiveDot'
+import { TransactionGraphCursor } from './TransactionGraphCursor'
+import { TransactionGraphDot } from './TransactionGraphDot'
+import { TransactionGraphTooltip } from './TransactionGraphTooltip'
+import { graphColors } from './constants'
+import { TransactionGraphCollector } from './transactionGraphCollector'
 import { LineDotProps } from './types'
 
 const tickFormatter = (value: number) => millify(value)
@@ -48,7 +43,7 @@ export const TransactionGraph = ({ isLoading, transactions }: Props) => {
 
   const renderTransactionGraphDot = (
     lineIndex: number,
-    lineDotProps: LineDotProps
+    lineDotProps: LineDotProps,
   ) => {
     const { payload, ...restLineDotProps } = lineDotProps
 
@@ -56,14 +51,14 @@ export const TransactionGraph = ({ isLoading, transactions }: Props) => {
     const doesLineDotExist = lineDots.find(
       (lineDot) =>
         lineDot.dotPayload.cx === restLineDotProps.cx &&
-        lineIndex === lineDot.lineIndex
+        lineIndex === lineDot.lineIndex,
     )
 
     // If line dot already exists, replace the same line dot
     // with the correct y axis coordinate which could be different
     if (doesLineDotExist) {
       const lineDotIndex = lineDots.findIndex(
-        (lineDot) => lineDot === doesLineDotExist
+        (lineDot) => lineDot === doesLineDotExist,
       )
 
       TRANSACTION_COLLECTOR.replaceLineDot(lineDotIndex, {

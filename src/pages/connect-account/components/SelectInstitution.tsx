@@ -1,15 +1,13 @@
-// Components
-import { Spinner, Container } from 'components/ui'
-import { ConnectAccountHeader } from './ConnectAccountHeader'
+import { Container, Spinner } from '@/components/ui'
 
-// Constants
-import { NORDIGEN_REDIRECT_URL } from 'lib/constants'
-
-// Hooks & Helpers
 import {
-  useGetInstitutionsQuery,
   useGetAccountConnectUrlMutation,
-} from 'features/account/accountApi'
+  useGetInstitutionsQuery,
+} from '@/features/account/accountApi'
+
+import { NORDIGEN_REDIRECT_URL } from '@/lib/constants'
+
+import { ConnectAccountHeader } from './ConnectAccountHeader'
 
 export const SelectInstitution = () => {
   const { data: institutions, isLoading: isInstitutionsLoading } =
@@ -24,7 +22,9 @@ export const SelectInstitution = () => {
       }).unwrap()
 
       window.location.replace(url)
-    } catch {}
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (

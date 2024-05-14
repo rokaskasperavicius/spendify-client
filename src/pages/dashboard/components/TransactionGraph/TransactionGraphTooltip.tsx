@@ -1,11 +1,7 @@
-// Helpers
-import { formatDate } from 'utils/formatDate'
+import { formatDate } from '@/utils/formatDate'
 
-// Types
-import { CollectorLineDotProps } from './types'
-
-// Constants
 import { graphColors } from './constants'
+import { CollectorLineDotProps } from './types'
 
 type Props = {
   active: boolean | undefined
@@ -19,14 +15,6 @@ export const TransactionGraphTooltip = ({
   const activeLineDot = getActiveLineDot()
 
   const data = activeLineDot && activeLineDot.transactionPayload
-
-  // const data = {
-  //   title: 'asdasdasdasd asd asd asd a khgjgjgj hgkghkgh',
-  //   amount: '2200.00',
-  //   date: 132300900000,
-  //   totalAmount: '100000.00',
-  // }
-  // const activeLineDot = { lineIndex: 0 }
 
   if (active && data) {
     return (

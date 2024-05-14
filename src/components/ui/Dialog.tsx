@@ -1,13 +1,11 @@
-import { useState } from 'react'
-import clsx from 'clsx'
 import * as RadixDialog from '@radix-ui/react-dialog'
 import * as Tooltip from '@radix-ui/react-tooltip'
+import clsx from 'clsx'
+import { useState } from 'react'
 
-// Assets
-import CloseIcon from 'assets/close.svg'
+import CloseIcon from '@/assets/close.svg'
 
-// Components
-import { Image } from 'components/ui'
+import { Image } from '@/components/ui'
 
 type Props = {
   open?: boolean

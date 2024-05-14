@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 
-// Hooks & Helpers
-import { useAppSelector } from 'store/hooks'
-import { authApi } from 'features/auth/authApi'
+import { authApi } from '@/features/auth/authApi'
+
+import { useAppSelector } from '@/store/hooks'
 
 const initialState: State = {
   name: null,
@@ -26,7 +26,7 @@ export const authSlice = createSlice({
   reducers: {
     setUserTokens: (
       state,
-      action: PayloadAction<{ accessToken: string; refreshToken: string }>
+      action: PayloadAction<{ accessToken: string; refreshToken: string }>,
     ) => {
       state.accessToken = action.payload.accessToken
       state.refreshToken = action.payload.refreshToken
@@ -45,14 +45,14 @@ export const authSlice = createSlice({
 
           state.name = action.payload.user.name
           state.email = action.payload.user.email
-        }
+        },
       )
       .addMatcher(
         authApi.endpoints.patchUserInfo.matchFulfilled,
         (state, action) => {
           state.name = action.payload.name
           state.email = action.payload.email
-        }
+        },
       )
   },
 })

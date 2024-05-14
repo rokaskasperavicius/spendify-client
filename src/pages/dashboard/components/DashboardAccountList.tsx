@@ -1,9 +1,8 @@
-// Components
-import { Button } from 'components/ui'
-import { LinkedAccount, LinkedAccountSkeleton } from '.'
+import { Button } from '@/components/ui'
 
-// Hooks & Helpers
-import { useGetAccountsQuery } from 'features/account/accountApi'
+import { useGetAccountsQuery } from '@/features/account/accountApi'
+
+import { LinkedAccount, LinkedAccountSkeleton } from '.'
 
 type Props = {
   handleCTA: () => void
@@ -30,7 +29,7 @@ export const DashboardAccountList = ({
               bankLogo={bankLogo}
               onClick={() => handleAccountChange(accountId)}
             />
-          )
+          ),
         )
       )}
 

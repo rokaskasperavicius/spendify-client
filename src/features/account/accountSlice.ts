@@ -1,11 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { subMonths } from 'date-fns'
 import { v4 as uuid } from 'uuid'
 
-// Hooks & Helpers
-import { useAppSelector } from 'store/hooks'
+import { useAppSelector } from '@/store/hooks'
 
-// Types
 import { IntervalProps } from './types'
 
 const initialState: State = {
@@ -37,7 +35,7 @@ export const accountSlice = createSlice({
 
     removeAccountsInterval: (state, action: PayloadAction<{ id: string }>) => {
       const filteredIntervals = state.intervals.filter(
-        (interval) => interval.id !== action.payload.id
+        (interval) => interval.id !== action.payload.id,
       )
 
       state.intervals = filteredIntervals
@@ -49,7 +47,7 @@ export const accountSlice = createSlice({
         id: string
         from: number | undefined
         to: number | undefined
-      }>
+      }>,
     ) => {
       const { id, from, to } = action.payload
 

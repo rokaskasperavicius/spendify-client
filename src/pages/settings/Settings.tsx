@@ -1,22 +1,22 @@
-import { useState } from 'react'
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
+import { useState } from 'react'
 
-// Hooks & Helpers
-import { useTitle } from 'hooks/useTitle'
-import { useAuthState } from 'features/auth/authSlice'
+import { Button, Container, Image } from '@/components/ui'
+
 import {
-  useGetAccountsQuery,
   useDeleteAccountMutation,
-} from 'features/account/accountApi'
+  useGetAccountsQuery,
+} from '@/features/account/accountApi'
+import { useAuthState } from '@/features/auth/authSlice'
 
-// Components
+import { useTitle } from '@/hooks/useTitle'
+
 import {
   ChangeAccountInformation,
   ChangeUserPassword,
   UserDevices,
 } from './components'
-import { Button, Image, Container } from 'components/ui'
 
 export const Settings = () => {
   useTitle('Settings')
@@ -115,7 +115,7 @@ export const Settings = () => {
                         </Button>
                       </div>
                     </li>
-                  )
+                  ),
                 )
               ) : (
                 <div>No Accounts Found</div>

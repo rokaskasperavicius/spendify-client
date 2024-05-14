@@ -1,18 +1,16 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
-import { useForm, SubmitHandler } from 'react-hook-form'
 
-// Components
-import { Input, Button } from 'components/ui'
+import { Button, Input } from '@/components/ui'
 
-// Hooks & Helpers
-import { useAuthState } from 'features/auth/authSlice'
-import { isFetchBaseQueryError } from 'services/isFetchBaseQueryError'
-import { useLoginUserMutation } from 'features/auth/authApi'
-import { useTitle } from 'hooks/useTitle'
+import { useLoginUserMutation } from '@/features/auth/authApi'
+import { useAuthState } from '@/features/auth/authSlice'
 
-// Types
-import { ERROR_CODES } from 'services/types'
+import { useTitle } from '@/hooks/useTitle'
+
+import { isFetchBaseQueryError } from '@/services/isFetchBaseQueryError'
+import { ERROR_CODES } from '@/services/types'
 
 export type LoginFormValues = {
   email: string

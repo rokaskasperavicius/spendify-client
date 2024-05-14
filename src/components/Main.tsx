@@ -1,13 +1,11 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
+import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom'
 
-// Components
-import { MainLayout, SimpleLayout } from 'components/layouts'
+import { MainLayout, SimpleLayout } from '@/components/layouts'
 
-// Pages
-import { Login } from 'pages/login'
-import { Register } from 'pages/register'
-import { Dashboard } from 'pages/dashboard'
-import { Settings, ConnectAccount } from 'pages'
+import { Dashboard } from '@/pages/dashboard'
+import { ConnectAccount, Settings } from '@/pages/index'
+import { Login } from '@/pages/login'
+import { Register } from '@/pages/register'
 
 export const userRoutes = createBrowserRouter([
   {

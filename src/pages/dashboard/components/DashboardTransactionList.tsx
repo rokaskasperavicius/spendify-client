@@ -1,11 +1,8 @@
-// Components
+import { AccountTransactionProps } from '@/features/account/types'
+
+import { formatDate } from '@/utils/formatDate'
+
 import { LinkedAccountTransaction, LinkedAccountTransactionSkeleton } from '.'
-
-// Helpers
-import { formatDate } from 'utils/formatDate'
-
-// Types
-import { AccountTransactionProps } from 'features/account/types'
 
 type Props = {
   isLoading: boolean
@@ -38,7 +35,7 @@ export const DashboardTransactionList = ({
             category={category}
             date={formatDate(date)}
           />
-        )
+        ),
       )}
     </>
   )

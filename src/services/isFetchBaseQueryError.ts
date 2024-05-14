@@ -1,11 +1,10 @@
-// Types
-import { ErrorResponse } from 'services/types'
+import { ErrorResponse } from '@/services/types'
 
 /**
  * Type predicate to narrow an unknown error to `ErrorResponse`
  */
 export const isFetchBaseQueryError = (
-  error: unknown
+  error: unknown,
 ): error is ErrorResponse => {
   return (
     typeof error === 'object' &&

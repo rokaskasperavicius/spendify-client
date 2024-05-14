@@ -1,11 +1,9 @@
 import { useSearchParams } from 'react-router-dom'
-import { match, P } from 'ts-pattern'
+import { P, match } from 'ts-pattern'
 
-// Components
+import { useTitle } from '@/hooks/useTitle'
+
 import { SelectAccount, SelectInstitution } from './components'
-
-// Hooks & Helpers
-import { useTitle } from 'hooks/useTitle'
 
 export const ConnectAccount = () => {
   useTitle('Connect Account')

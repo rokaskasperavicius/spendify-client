@@ -1,4 +1,3 @@
-// Types
 import { LineDotProps } from './types'
 
 export const TransactionGraphDot = (lineDotProps: LineDotProps) => (

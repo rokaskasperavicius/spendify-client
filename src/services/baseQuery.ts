@@ -1,17 +1,20 @@
-import { fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
 import type {
   BaseQueryFn,
   FetchArgs,
   FetchBaseQueryError,
   FetchBaseQueryMeta,
 } from '@reduxjs/toolkit/query'
-import { QueryReturnValue } from '@reduxjs/toolkit/dist/query/baseQueryTypes'
-
-import { RootState } from 'store'
-import { userRoutes } from 'components/Main'
-import { setUserTokens, resetStore } from 'features/auth/authSlice'
-
+import { fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { toast } from 'react-toastify'
+
+import { userRoutes } from '@/components/Main'
+
+import { resetStore, setUserTokens } from '@/features/auth/authSlice'
+
+import { API_BASE_URL } from '@/lib/constants'
+
+import { RootState } from '@/store/index'
 
 let refreshQuery:
   | QueryReturnValue<
@@ -32,13 +35,13 @@ type BaseQuery = {
 
 const query = ({ isRefresh }: BaseQuery) =>
   fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_API_BASE_URL,
+    baseUrl: API_BASE_URL,
     prepareHeaders: (headers, { getState }) => {
       const { accessToken, refreshToken } = (getState() as RootState).auth
 
       headers.set(
         'Authorization',
-        `Bearer ${isRefresh ? refreshToken : accessToken}`
+        `Bearer ${isRefresh ? refreshToken : accessToken}`,
       )
 
       return headers
@@ -61,7 +64,7 @@ export const baseQuery: BaseQueryFn<
           method: 'POST',
         },
         api,
-        extraOptions
+        extraOptions,
       ) as QueryReturnValue<
         { data: { accessToken: string; refreshToken: string } },
         FetchBaseQueryError,

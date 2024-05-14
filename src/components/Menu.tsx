@@ -1,10 +1,8 @@
 import * as RadixDialog from '@radix-ui/react-dialog'
 
-// Assets
-import CloseIcon from 'assets/close.svg'
+import CloseIcon from '@/assets/close.svg'
 
-// Components
-import { Image } from 'components/ui'
+import { Image } from '@/components/ui'
 
 type Props = {
   children: React.ReactNode

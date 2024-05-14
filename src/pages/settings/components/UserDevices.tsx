@@ -1,14 +1,13 @@
-// Hooks & Helpers
-import { useAppDispatch } from 'store/hooks'
+import { Button, Spinner } from '@/components/ui'
+
 import {
   useGetUserDevicesQuery,
   useSignOutUserMutation,
-} from 'features/auth/authApi'
-import { authApi } from 'features/auth/authApi'
-import { useAuthState } from 'features/auth/authSlice'
+} from '@/features/auth/authApi'
+import { authApi } from '@/features/auth/authApi'
+import { useAuthState } from '@/features/auth/authSlice'
 
-// Components
-import { Button, Spinner } from 'components/ui'
+import { useAppDispatch } from '@/store/hooks'
 
 export const UserDevices = () => {
   const dispatch = useAppDispatch()
@@ -22,7 +21,9 @@ export const UserDevices = () => {
     try {
       await signOutUser({ refreshToken }).unwrap()
       dispatch(authApi.util.invalidateTags(['Devices']))
-    } catch {}
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (

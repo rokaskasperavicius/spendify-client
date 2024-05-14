@@ -1,5 +1,4 @@
-// Components
-import { Image } from 'components/ui'
+import { Image } from '@/components/ui'
 
 type Props = {
   bankLogo: string

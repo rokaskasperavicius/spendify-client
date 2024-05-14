@@ -1,28 +1,24 @@
 import clsx from 'clsx'
 import { useState } from 'react'
 
-// Assets
-import CloseIcon from 'assets/close.svg'
-import InfoIcon from 'assets/info.svg'
+import CloseIcon from '@/assets/close.svg'
+import InfoIcon from '@/assets/info.svg'
 
-// Components
-import { Dialog, Input, Button, Image, Select } from 'components/ui'
+import { Button, Dialog, Image, Input, Select } from '@/components/ui'
 
-// Hooks & Helpers
-import { useAccountSlice } from 'features/account/accountSlice'
-import { useAppDispatch } from 'store/hooks'
-import { formatInputDate } from 'utils/formatDate'
+import { useAccountSlice } from '@/features/account/accountSlice'
 import {
   addAccountsInterval,
-  removeAccountsInterval,
   changeAccountsInterval,
-} from 'features/account/accountSlice'
+  removeAccountsInterval,
+} from '@/features/account/accountSlice'
+import { IntervalProps } from '@/features/account/types'
 
-// Constants
+import { useAppDispatch } from '@/store/hooks'
+
+import { formatInputDate } from '@/utils/formatDate'
+
 import { graphColors } from './TransactionGraph/constants'
-
-// Types
-import { IntervalProps } from 'features/account/types'
 
 type Props = {
   isShown: boolean

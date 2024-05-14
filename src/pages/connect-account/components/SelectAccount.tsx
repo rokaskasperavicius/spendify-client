@@ -1,20 +1,18 @@
-import { useNavigate } from 'react-router-dom'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
-// Components
-import { Spinner, Image, Container } from 'components/ui'
-import { ConnectAccountHeader } from './ConnectAccountHeader'
+import { Container, Image, Spinner } from '@/components/ui'
 
-// Hooks & Helpers
 import {
-  useGetAvailableAccountsQuery,
   useConnectAccountMutation,
-} from 'features/account/accountApi'
-import { isFetchBaseQueryError } from 'services/isFetchBaseQueryError'
+  useGetAvailableAccountsQuery,
+} from '@/features/account/accountApi'
 
-// Types
-import { ERROR_CODES } from 'services/types'
+import { isFetchBaseQueryError } from '@/services/isFetchBaseQueryError'
+import { ERROR_CODES } from '@/services/types'
+
+import { ConnectAccountHeader } from './ConnectAccountHeader'
 
 type Props = {
   reference: string

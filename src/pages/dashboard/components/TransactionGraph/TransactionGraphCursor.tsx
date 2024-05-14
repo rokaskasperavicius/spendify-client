@@ -1,4 +1,3 @@
-// Types
 import { CollectorLineDotProps } from './types'
 
 type Props = {

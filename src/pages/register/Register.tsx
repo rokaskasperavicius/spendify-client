@@ -1,21 +1,18 @@
-import { useState, useEffect } from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
-
-import isEmail from 'validator/lib/isEmail'
 import passwordValidator from 'password-validator'
+import { useEffect, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { Link, useNavigate } from 'react-router-dom'
+import isEmail from 'validator/lib/isEmail'
 
-// Components
-import { Input, Button } from 'components/ui'
+import { Button, Input } from '@/components/ui'
 
-// Hooks & Helpers
-import { useAuthState } from 'features/auth/authSlice'
-import { useTitle } from 'hooks/useTitle'
-import { useRegisterUserMutation } from 'features/auth/authApi'
-import { isFetchBaseQueryError } from 'services/isFetchBaseQueryError'
+import { useRegisterUserMutation } from '@/features/auth/authApi'
+import { useAuthState } from '@/features/auth/authSlice'
 
-// Types
-import { ERROR_CODES } from 'services/types'
+import { useTitle } from '@/hooks/useTitle'
+
+import { isFetchBaseQueryError } from '@/services/isFetchBaseQueryError'
+import { ERROR_CODES } from '@/services/types'
 
 const passwordSchema = new passwordValidator()
 passwordSchema

@@ -1,8 +1,7 @@
-import { BarChart, Bar, YAxis, ResponsiveContainer } from 'recharts'
 import millify from 'millify'
+import { Bar, BarChart, ResponsiveContainer, YAxis } from 'recharts'
 
-// Types
-import { AccountTransactionsGroupedProps } from 'features/account/types'
+import { AccountTransactionsGroupedProps } from '@/features/account/types'
 
 type Props = {
   groupedAccountTransactions: AccountTransactionsGroupedProps

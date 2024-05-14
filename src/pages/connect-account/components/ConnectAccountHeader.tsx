@@ -1,10 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 
-// Assets
-import ArrowLeft from 'assets/arrow-left.svg'
+import ArrowLeft from '@/assets/arrow-left.svg'
 
-// Components
-import { Image } from 'components/ui'
+import { Image } from '@/components/ui'
 
 type Props = {
   title: string

@@ -1,20 +1,18 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 
-// Helpers
-import { baseQuery } from 'services/baseQuery'
-
-// Types
 import {
+  GetUserDevicesResponse,
   LoginUser,
   LoginUserResponse,
-  RegisterUser,
   PatchUserInfoBody,
   PatchUserInfoResponse,
   PatchUserPasswordBody,
+  RegisterUser,
   SignOutUserBody,
-  GetUserDevicesResponse,
-} from 'features/auth/types'
-import { SuccessResponse } from 'services/types'
+} from '@/features/auth/types'
+
+import { baseQuery } from '@/services/baseQuery'
+import { SuccessResponse } from '@/services/types'
 
 export const authApi = createApi({
   reducerPath: 'authApi',

@@ -1,5 +1,5 @@
-import React, { InputHTMLAttributes } from 'react'
 import clsx from 'clsx'
+import React, { InputHTMLAttributes } from 'react'
 
 type Props = InputHTMLAttributes<HTMLSelectElement>
 
@@ -10,7 +10,7 @@ export const Select = React.forwardRef<HTMLSelectElement, Props>(
       {...props}
       className={clsx(
         'px-4 py-2 border border-gray-400 rounded-md shadow-sm',
-        className
+        className,
       )}
     >
       <option value=''>Choose a Category</option>
@@ -18,5 +18,5 @@ export const Select = React.forwardRef<HTMLSelectElement, Props>(
       <option value='Utilities'>Utilities</option>
       <option value='Transfers'>Transfers</option>
     </select>
-  )
+  ),
 )

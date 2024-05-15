@@ -122,7 +122,7 @@ export const MainLayout = () => {
       </main>
 
       <footer className='h-14 flex px-4 items-center border-t border-gray-300 md:text-base text-sm'>
-        &copy; 2023 Spendify. All Rights Reserved.
+        &copy; 2024 Spendify. All Rights Reserved.
       </footer>
     </div>
   )

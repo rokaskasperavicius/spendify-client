@@ -1,4 +1,7 @@
-import { Container, Spinner } from '@/components/ui'
+import { useState } from 'react'
+import { useDebounce } from 'react-use'
+
+import { Container, Input, Spinner } from '@/components/ui'
 
 import {
   useGetAccountConnectUrlMutation,
@@ -10,8 +13,12 @@ import { NORDIGEN_REDIRECT_URL } from '@/lib/constants'
 import { ConnectAccountHeader } from './ConnectAccountHeader'
 
 export const SelectInstitution = () => {
+  const [search, setSearch] = useState('')
+  const [debouncedSearch, setDebouncedSearch] = useState('')
+  useDebounce(() => setDebouncedSearch(search), 500, [search])
+
   const { data: institutions, isLoading: isInstitutionsLoading } =
-    useGetInstitutionsQuery()
+    useGetInstitutionsQuery(debouncedSearch)
   const [generateAccountLinkUrl] = useGetAccountConnectUrlMutation()
 
   const createLink = async (institutionId: string) => {
@@ -32,8 +39,18 @@ export const SelectInstitution = () => {
       isLoading={isInstitutionsLoading}
       rootClassName='flex justify-center pt-10'
     >
-      <Container>
+      <Container className='space-y-4'>
         <ConnectAccountHeader title='Choose Your Danish Bank' />
+
+        <div className='flex gap-4 items-center'>
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder='Search for Institution'
+          />
+
+          <div>Found: {institutions?.length || 0}</div>
+        </div>
 
         <div className='grid md:grid-cols-2 grid-cols-1 md:gap-8 gap-4 mt-4'>
           {institutions?.map((institution) => (

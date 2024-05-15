@@ -38,8 +38,8 @@ export const accountApi = createApi({
         response.data,
     }),
 
-    getInstitutions: builder.query<GetInstitution[], void>({
-      query: () => `${API_PREFIX}/institutions`,
+    getInstitutions: builder.query<GetInstitution[], string>({
+      query: (query) => `${API_PREFIX}/institutions?query=${query}`,
 
       transformResponse: (response: SuccessResponse<GetInstitution[]>) =>
         response.data,

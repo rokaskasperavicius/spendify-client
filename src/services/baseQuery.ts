@@ -36,6 +36,7 @@ type BaseQuery = {
 const query = ({ isRefresh }: BaseQuery) =>
   fetchBaseQuery({
     baseUrl: API_BASE_URL,
+    credentials: 'include',
     prepareHeaders: (headers, { getState }) => {
       const { accessToken, refreshToken } = (getState() as RootState).auth
 

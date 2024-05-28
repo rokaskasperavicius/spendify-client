@@ -15,7 +15,7 @@ import storage from 'redux-persist/lib/storage'
 import { accountApi } from '@/features/account/accountApi'
 import { accountSlice } from '@/features/account/accountSlice'
 import { authApi } from '@/features/auth/authApi'
-import { authSlice, resetStore } from '@/features/auth/authSlice'
+import { authSlice, resetAuth } from '@/features/auth/authSlice'
 
 const persistConfig = {
   key: 'root',
@@ -38,7 +38,7 @@ const reducerProxy = (
   action: AnyAction,
 ) => {
   // This need to be refactored to use invalidatesTags!!!
-  if (resetStore.match(action)) {
+  if (resetAuth.match(action)) {
     storage.removeItem('persist:root')
 
     return combinedReducers(undefined, action)

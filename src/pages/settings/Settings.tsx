@@ -15,7 +15,7 @@ import { useTitle } from '@/hooks/useTitle'
 import {
   ChangeAccountInformation,
   ChangeUserPassword,
-  UserDevices,
+  UserSessions,
 } from './components'
 
 export const Settings = () => {
@@ -27,7 +27,7 @@ export const Settings = () => {
   const { name } = useAuthState()
 
   const [settingsPanel, setSettingsPanel] = useState<
-    'profile' | 'accounts' | 'devices'
+    'profile' | 'accounts' | 'sessions'
   >('profile')
 
   return (
@@ -58,11 +58,11 @@ export const Settings = () => {
           </div>
           <div
             className={clsx('hover:underline cursor-pointer', {
-              'font-medium': settingsPanel === 'devices',
+              'font-medium': settingsPanel === 'sessions',
             })}
-            onClick={() => setSettingsPanel('devices')}
+            onClick={() => setSettingsPanel('sessions')}
           >
-            Devices
+            Sessions
           </div>
         </Container>
       </div>
@@ -125,13 +125,13 @@ export const Settings = () => {
         </Container>
       )}
 
-      {settingsPanel === 'devices' && (
+      {settingsPanel === 'sessions' && (
         <Container className='py-4 relative'>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <UserDevices />
+            <UserSessions />
           </motion.div>
         </Container>
       )}

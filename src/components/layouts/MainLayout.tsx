@@ -13,8 +13,8 @@ import MenuIcon from '@/assets/menu.svg'
 import { Menu } from '@/components/Menu'
 import { Button, Image } from '@/components/ui'
 
-import { useSignOutUserMutation } from '@/features/auth/authApi'
-import { resetStore, useAuthState } from '@/features/auth/authSlice'
+import { useLogOutMutation } from '@/features/auth/authApi'
+import { resetAuth, useAuthState } from '@/features/auth/authSlice'
 
 import { useScrollDirection } from '@/hooks/useScrollDirection'
 
@@ -25,22 +25,22 @@ export const MainLayout = () => {
   const location = useLocation()
   const dispatch = useAppDispatch()
 
-  const [signOutUser] = useSignOutUserMutation()
+  const [logOut] = useLogOutMutation()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { accessToken, refreshToken } = useAuthState()
+  const { isAuthenticated } = useAuthState()
 
   const scrollDirection = useScrollDirection()
 
   const handleSignOut = async () => {
     try {
-      await signOutUser({ refreshToken: refreshToken || '' }).unwrap()
-      dispatch(resetStore())
+      await logOut().unwrap()
+      dispatch(resetAuth())
     } catch (err) {
       console.error(err)
     }
   }
 
-  if (!accessToken) {
+  if (!isAuthenticated) {
     return <Navigate to='/login' />
   }
 

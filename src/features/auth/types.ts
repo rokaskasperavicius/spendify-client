@@ -23,19 +23,20 @@ export type RegisterUser = {
   password: string
 }
 
-// Sign Out
-export type SignOutUserBody = {
-  refreshToken: string
+// Destroy Session
+export type DestroySessionBody = {
+  sessionId: string
 }
 
-// Get User Devices
-type UserDevice = {
-  refreshToken: string
+// Get Sessions
+type Session = {
+  sessionId: string
   ipAddress: string
   ipLocation: string
+  isCurrent: boolean
 }
 
-export type GetUserDevicesResponse = UserDevice[]
+export type GetSessionsResponse = Session[]
 
 // Patch User Info
 export type PatchUserInfoBody = {

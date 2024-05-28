@@ -1,14 +1,14 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 
 import {
-  GetUserDevicesResponse,
+  DestroySessionBody,
+  GetSessionsResponse,
   LoginUser,
   LoginUserResponse,
   PatchUserInfoBody,
   PatchUserInfoResponse,
   PatchUserPasswordBody,
   RegisterUser,
-  SignOutUserBody,
 } from '@/features/auth/types'
 
 import { baseQuery } from '@/services/baseQuery'
@@ -32,7 +32,7 @@ export const authApi = createApi({
       transformErrorResponse: (response) => response.data,
     }),
 
-    registerUser: builder.mutation<SuccessResponse<{}>, RegisterUser>({
+    registerUser: builder.mutation<SuccessResponse<object>, RegisterUser>({
       query: (body) => ({
         url: `/auth/register`,
         method: 'POST',
@@ -42,10 +42,21 @@ export const authApi = createApi({
       transformErrorResponse: (response) => response.data,
     }),
 
-    signOutUser: builder.mutation<SuccessResponse<{}>, SignOutUserBody>({
+    destroySession: builder.mutation<
+      SuccessResponse<object>,
+      DestroySessionBody
+    >({
       query: (body) => ({
-        url: `/auth/sign-out`,
+        url: `/auth/destroy-session`,
         method: 'DELETE',
+        body,
+      }),
+    }),
+
+    logOut: builder.mutation<SuccessResponse<object>, void>({
+      query: (body) => ({
+        url: `/auth/log-out`,
+        method: 'POST',
         body,
       }),
     }),
@@ -63,7 +74,7 @@ export const authApi = createApi({
     }),
 
     patchUserPassword: builder.mutation<
-      SuccessResponse<{}>,
+      SuccessResponse<object>,
       PatchUserPasswordBody
     >({
       query: (body) => ({
@@ -75,12 +86,12 @@ export const authApi = createApi({
       transformErrorResponse: (response) => response.data,
     }),
 
-    getUserDevices: builder.query<GetUserDevicesResponse, void>({
-      query: () => '/auth/devices',
+    getSessions: builder.query<GetSessionsResponse, void>({
+      query: () => '/auth/sessions',
       providesTags: ['Devices'],
       keepUnusedDataFor: 0,
 
-      transformResponse: (response: SuccessResponse<GetUserDevicesResponse>) =>
+      transformResponse: (response: SuccessResponse<GetSessionsResponse>) =>
         response.data,
     }),
   }),
@@ -91,6 +102,7 @@ export const {
   useRegisterUserMutation,
   usePatchUserInfoMutation,
   usePatchUserPasswordMutation,
-  useSignOutUserMutation,
-  useGetUserDevicesQuery,
+  useDestroySessionMutation,
+  useLogOutMutation,
+  useGetSessionsQuery,
 } = authApi

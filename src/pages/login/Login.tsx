@@ -26,13 +26,13 @@ export const Login = () => {
 
   const [isWrongPassword, setIsWrongPassword] = useState(false)
 
-  const { accessToken } = useAuthState()
+  const { isAuthenticated } = useAuthState()
 
   useEffect(() => {
-    if (accessToken) {
+    if (isAuthenticated) {
       navigate('/')
     }
-  }, [accessToken, navigate])
+  }, [isAuthenticated, navigate])
 
   const onSubmit: SubmitHandler<LoginFormValues> = async (data) => {
     try {

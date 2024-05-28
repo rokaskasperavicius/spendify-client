@@ -46,13 +46,13 @@ export const Register = () => {
   const navigate = useNavigate()
   const [isWrongEmail, setIsWrongEmail] = useState(false)
 
-  const { accessToken } = useAuthState()
+  const { isAuthenticated } = useAuthState()
 
   useEffect(() => {
-    if (accessToken) {
+    if (isAuthenticated) {
       navigate('/')
     }
-  }, [accessToken, navigate])
+  }, [isAuthenticated, navigate])
 
   const onSubmit: SubmitHandler<RegisterFormValues> = async (data) => {
     try {

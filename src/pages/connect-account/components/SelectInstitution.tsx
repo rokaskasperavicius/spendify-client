@@ -61,10 +61,10 @@ export const SelectInstitution = () => {
             >
               <img
                 className='object-cover w-[70px] h-[70px] rounded-md'
-                src={institution.bankLogo}
+                src={institution.logo}
                 alt='Institution logo'
               />
-              <h3 className='font-medium'>{institution.bankName}</h3>
+              <h3 className='font-medium'>{institution.name}</h3>
             </div>
           ))}
         </div>

@@ -29,14 +29,14 @@ export type DestroySessionBody = {
 }
 
 // Get Sessions
+export type GetSessionsResponse = Session[]
+
 type Session = {
   sessionId: string
   ipAddress: string
   ipLocation: string
   isCurrent: boolean
 }
-
-export type GetSessionsResponse = Session[]
 
 // Patch User Info
 export type PatchUserInfoBody = {

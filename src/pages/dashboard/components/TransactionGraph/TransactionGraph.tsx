@@ -32,20 +32,26 @@ type Props = {
   transactions: GetAccountTransactions | undefined
 }
 
-export const TransactionGraph = ({ isLoading, transactions }: Props) => {
+export const TransactionGraph = ({ isLoading, transactions: trans }: Props) => {
+  const formatted = [
+    {
+      id: 'main',
+      transactions: trans,
+    },
+  ]
   const TRANSACTION_COLLECTOR = new TransactionGraphCollector()
 
   const setActiveLineDot = (x: number | undefined, y: number | undefined) => {
     TRANSACTION_COLLECTOR.setActiveLineDot(x || 0, y || 0)
   }
 
-  const isOnePeriod = transactions?.length === 1
-
   const renderTransactionGraphDot = (
     lineIndex: number,
-    lineDotProps: LineDotProps,
+    lineDotProps: LineDotProps & { key: string },
   ) => {
     const { payload, ...restLineDotProps } = lineDotProps
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { key: _, ...ignoreKey } = lineDotProps
 
     const lineDots = TRANSACTION_COLLECTOR.getLineDots()
     const doesLineDotExist = lineDots.find(
@@ -74,7 +80,7 @@ export const TransactionGraph = ({ isLoading, transactions }: Props) => {
       })
     }
 
-    return <TransactionGraphDot {...lineDotProps} />
+    return <TransactionGraphDot {...ignoreKey} />
   }
 
   return (
@@ -96,10 +102,10 @@ export const TransactionGraph = ({ isLoading, transactions }: Props) => {
             tickFormatter={tickFormatter}
           />
 
-          {transactions?.map((transaction, index) => (
+          {formatted?.map((transaction, index) => (
             <Line
               key={transaction.id}
-              dot={(lineDotProps: LineDotProps) =>
+              dot={(lineDotProps: LineDotProps & { key: string }) =>
                 renderTransactionGraphDot(index, lineDotProps)
               }
               activeDot={
@@ -111,10 +117,10 @@ export const TransactionGraph = ({ isLoading, transactions }: Props) => {
               xAxisId={transaction.id}
               data={transaction.transactions
                 ?.slice()
-                .sort((result, next) => next.weight - result.weight)}
+                .sort((result, next) => result.weight - next.weight)}
               type='monotone'
               dataKey={(transaction: AccountTransactionProps) =>
-                isOnePeriod ? transaction.totalAmountInt : transaction.amountInt
+                transaction.totalAmountInt
               }
               stroke={graphColors[index]}
               animationDuration={400}
@@ -122,11 +128,10 @@ export const TransactionGraph = ({ isLoading, transactions }: Props) => {
             />
           ))}
 
-          {transactions?.map((transaction) => (
+          {formatted?.map((transaction) => (
             <XAxis
               key={transaction.id}
               xAxisId={transaction.id}
-              hide={!isOnePeriod}
               dataKey={(transaction: AccountTransactionProps) =>
                 formatDate(transaction.date)
               }

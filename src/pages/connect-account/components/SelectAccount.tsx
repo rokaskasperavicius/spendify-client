@@ -56,9 +56,16 @@ export const SelectAccount = ({ reference }: Props) => {
               className='w-full md:w-72 border border-gray-400 p-2 rounded-md cursor-pointer hover:bg-gray-100 flex gap-4'
               onClick={() => linkAccountHandler(account.accountId)}
             >
-              <div>
-                <Image size='md' src={account.bankLogo} alt='Bank Logo' />
-              </div>
+              {account.institutionLogo && (
+                <div>
+                  <Image
+                    size='md'
+                    src={account.institutionLogo}
+                    alt='Bank Logo'
+                  />
+                </div>
+              )}
+
               <div className='space-y-2 overflow-hidden'>
                 <div>
                   <h4 className='truncate'>{account.accountName}</h4>

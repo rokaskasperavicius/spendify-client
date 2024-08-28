@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 import qs from 'qs'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import { useDebounce } from 'react-use'
 
 import { Spinner } from '@/components/ui'
@@ -16,7 +15,7 @@ import {
   useGetAccountsQuery,
 } from '@/features/account/accountApi'
 import { useAccountSlice } from '@/features/account/accountSlice'
-import { LinkedAccount } from '@/features/account/types'
+import { Account } from '@/features/account/types'
 import { filterIntervals } from '@/features/account/utils'
 
 import { useTitle } from '@/hooks/useTitle'
@@ -37,17 +36,17 @@ export const Dashboard = () => {
 
   const { data: accountsInfo, isLoading: isAccountsLoading } =
     useGetAccountsQuery()
-  const { intervals, timestamp } = useAccountSlice()
+  const { intervals } = useAccountSlice()
 
-  const { accounts, someExpired } = accountsInfo || {}
+  const { accounts } = accountsInfo || {}
 
   const filteredIntervals = useMemo(
     () => filterIntervals(intervals),
     [intervals],
   )
 
-  const [selectedAccount, setSelectedAccount] = useState<LinkedAccount>()
-  const accountId = selectedAccount?.accountId
+  const [selectedAccount, setSelectedAccount] = useState<Account>()
+  const accountId = selectedAccount?.id
   const {
     data: groupedTransactions,
     isFetching: isGroupedTransactionsFetching,
@@ -72,7 +71,14 @@ export const Dashboard = () => {
       query.push(`category=${encodeURIComponent(category)}`)
     }
 
-    query.push(qs.stringify({ intervals: filteredIntervals }))
+    if (filteredIntervals[0].from && filteredIntervals[0].to) {
+      query.push(
+        qs.stringify({
+          from: new Date(filteredIntervals[0].from),
+          to: new Date(filteredIntervals[0].to),
+        }),
+      )
+    }
 
     return query.join('&')
   }
@@ -88,7 +94,7 @@ export const Dashboard = () => {
   )
 
   const handleAccountChange = (accountId: string) => {
-    const account = accounts?.find((account) => account.accountId === accountId)
+    const account = accounts?.find((account) => account.id === accountId)
 
     setSelectedAccount(account)
   }
@@ -106,12 +112,6 @@ export const Dashboard = () => {
     const account = accounts ? accounts[0] : undefined
     setSelectedAccount(account)
   }, [accounts])
-
-  useEffect(() => {
-    if (someExpired) {
-      toast.info('Some accounts have expired. Please reconnect it again.')
-    }
-  }, [someExpired])
 
   // No accounts found
   if (!isAccountsLoading && accounts?.length === 0) {
@@ -146,10 +146,12 @@ export const Dashboard = () => {
           isLoading={isAccountsLoading}
           rootClassName='h-full flex justify-center items-center'
         >
-          <div className='p-4 border-b border-gray-300 italic text-sm'>
-            Last updated: {new Date(timestamp).toLocaleString()}
-          </div>
-
+          {selectedAccount && (
+            <div className='p-4 border-b border-gray-300 italic text-sm'>
+              Last updated:{' '}
+              {new Date(selectedAccount.lastSyncedAt).toLocaleString()}
+            </div>
+          )}
           <div className='p-4 border-b border-gray-300'>
             {selectedAccount && (
               <DashboardSelectedAccount
@@ -245,8 +247,7 @@ export const Dashboard = () => {
                   </div>
 
                   <div className='flex-1 overflow-y-scroll'>
-                    {transactions &&
-                    transactions[0].transactions.length === 0 ? (
+                    {transactions && transactions.length === 0 ? (
                       <div className='h-full flex justify-center items-center'>
                         No Transactions
                       </div>
@@ -260,11 +261,7 @@ export const Dashboard = () => {
                         ) : (
                           <DashboardTransactionList
                             isLoading={isTransactionsFetching}
-                            transactions={
-                              transactions
-                                ? transactions[0].transactions
-                                : undefined
-                            }
+                            transactions={transactions || undefined}
                           />
                         )}
                       </div>

@@ -2,7 +2,7 @@ import { Button } from '@/components/ui'
 
 import { useGetAccountsQuery } from '@/features/account/accountApi'
 
-import { LinkedAccount, LinkedAccountSkeleton } from '.'
+import { LinkedAccount, LinkedAccountSkeleton } from './'
 
 type Props = {
   handleCTA: () => void
@@ -20,17 +20,15 @@ export const DashboardAccountList = ({
       {isAccountsLoading ? (
         <LinkedAccountSkeleton />
       ) : (
-        data?.accounts.map(
-          ({ id, accountId, accountName, bankLogo, accountIban }) => (
-            <LinkedAccount
-              key={id}
-              accountIban={accountIban}
-              accountName={accountName}
-              bankLogo={bankLogo}
-              onClick={() => handleAccountChange(accountId)}
-            />
-          ),
-        )
+        data?.accounts.map(({ id, name, institutionLogo, iban }) => (
+          <LinkedAccount
+            key={id}
+            accountIban={iban}
+            accountName={name}
+            bankLogo={institutionLogo}
+            onClick={() => handleAccountChange(id)}
+          />
+        ))
       )}
 
       <Button variant='primary' onClick={handleCTA}>

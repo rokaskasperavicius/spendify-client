@@ -2,13 +2,13 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 
 import {
   AccountTransactionsGroupedProps,
+  AccountsResponse,
   DeleteAccountBody,
   GenerateAccountLinkUrl,
   GenerateAccountLinkUrlBody,
   GetAccountTransactions,
   GetInstitution,
   GetLinkableAccount,
-  GetLinkedAccounts,
   LinkAccountBody,
 } from '@/features/account/types'
 
@@ -23,16 +23,16 @@ export const accountApi = createApi({
   tagTypes: ['Accounts'],
 
   endpoints: (builder) => ({
-    getAccounts: builder.query<GetLinkedAccounts, void>({
+    getAccounts: builder.query<AccountsResponse, void>({
       query: () => `${API_PREFIX}`,
       providesTags: ['Accounts'],
 
-      transformResponse: (response: SuccessResponse<GetLinkedAccounts>) =>
+      transformResponse: (response: SuccessResponse<AccountsResponse>) =>
         response.data,
     }),
 
     getAvailableAccounts: builder.query<GetLinkableAccount[], string>({
-      query: (ref) => `${API_PREFIX}/available-accounts/${ref}`,
+      query: (ref) => `${API_PREFIX}/available/${ref}`,
 
       transformResponse: (response: SuccessResponse<GetLinkableAccount[]>) =>
         response.data,

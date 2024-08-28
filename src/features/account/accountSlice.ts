@@ -7,7 +7,6 @@ import { useAppSelector } from '@/store/hooks'
 import { IntervalProps } from './types'
 
 const initialState: State = {
-  timestamp: new Date().getTime(),
   intervals: [
     {
       id: uuid(),
@@ -18,7 +17,6 @@ const initialState: State = {
 }
 
 type State = {
-  timestamp: number
   intervals: IntervalProps[]
 }
 

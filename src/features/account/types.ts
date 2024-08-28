@@ -1,18 +1,18 @@
 type TransactionCategories = 'Food & Groceries' | 'Utilities' | 'Transfers'
 
-export type GetLinkedAccounts = {
-  accounts: LinkedAccount[]
-  someExpired: boolean
+/** GET /accounts/ */
+export type AccountsResponse = {
+  accounts: Account[]
 }
 
-export type LinkedAccount = {
-  id: number
-  accountId: string
-  accountBalance: string
-  accountName: string
-  accountIban: string
-  bankName: string
-  bankLogo: string
+export type Account = {
+  id: string
+  balance: string
+  name: string | null
+  iban: string | null
+  institutionName: string | null
+  institutionLogo: string | null
+  lastSyncedAt: Date
 }
 
 export type AccountTransactionsGroupedProps = Array<{
@@ -25,10 +25,10 @@ export type AccountTransactionsGroupedProps = Array<{
 
 export type GetLinkableAccount = {
   accountId: string
+  accountName: string | undefined
+  accountIban: string | undefined
   accountBalance: string
-  accountName: string
-  accountIban: string
-  bankLogo: string
+  institutionLogo: string
 }
 
 export type GenerateAccountLinkUrl = {
@@ -50,25 +50,22 @@ export type DeleteAccountBody = {
 
 export type GetInstitution = {
   id: string
-  bankName: string
-  bankLogo: string
+  name: string
+  logo: string
 }
 
-export type GetAccountTransactions = {
-  id: string
-  transactions: AccountTransactionProps[]
-}[]
+export type GetAccountTransactions = AccountTransactionProps[]
 
 export type AccountTransactionProps = {
   weight: number
   id: string
-  title: string
-  category: TransactionCategories
   amount: string
-  amountInt: string
+  amountInt: number
   totalAmount: string
   totalAmountInt: number
-  date: number
+  title: string
+  category: TransactionCategories
+  date: Date
 }
 
 export type IntervalProps = {

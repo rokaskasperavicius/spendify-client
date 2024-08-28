@@ -92,31 +92,35 @@ export const Settings = () => {
 
             <ul className='space-y-8'>
               {data && data.accounts.length > 0 ? (
-                data.accounts?.map(
-                  ({ id, accountId, accountName, bankLogo, accountIban }) => (
-                    <li key={id} className='flex gap-4'>
+                data.accounts?.map(({ id, name, institutionLogo, iban }) => (
+                  <li key={id} className='flex gap-4'>
+                    {institutionLogo && (
                       <div>
-                        <Image size='md' src={bankLogo} alt='Bank Logo' />
+                        <Image
+                          size='md'
+                          src={institutionLogo}
+                          alt='Bank Logo'
+                        />
+                      </div>
+                    )}
+
+                    <div className='overflow-hidden'>
+                      <div className='truncate'>{name}</div>
+                      <div className='text-gray-500 text-sm mt-1 truncate'>
+                        {iban}
                       </div>
 
-                      <div className='overflow-hidden'>
-                        <div className='truncate'>{accountName}</div>
-                        <div className='text-gray-500 text-sm mt-1 truncate'>
-                          {accountIban}
-                        </div>
-
-                        <Button
-                          className='mt-2'
-                          variant='error-outline'
-                          fullWidth={false}
-                          onClick={() => deleteAccount({ accountId })}
-                        >
-                          Remove
-                        </Button>
-                      </div>
-                    </li>
-                  ),
-                )
+                      <Button
+                        className='mt-2'
+                        variant='error-outline'
+                        fullWidth={false}
+                        onClick={() => deleteAccount({ accountId: id })}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  </li>
+                ))
               ) : (
                 <div>No Accounts Found</div>
               )}

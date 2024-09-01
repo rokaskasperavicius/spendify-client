@@ -11,7 +11,7 @@ const initialState: State = {
     {
       id: uuid(),
       from: subMonths(new Date(), 1).getTime(),
-      to: new Date().getTime(),
+      to: null,
     },
   ],
 }
@@ -27,7 +27,7 @@ export const accountSlice = createSlice({
     addAccountsInterval: (state) => {
       state.intervals = [
         ...state.intervals,
-        { id: uuid(), from: undefined, to: undefined },
+        { id: uuid(), from: null, to: null },
       ]
     },
 
@@ -43,8 +43,8 @@ export const accountSlice = createSlice({
       state,
       action: PayloadAction<{
         id: string
-        from: number | undefined
-        to: number | undefined
+        from: number | null
+        to: number | null
       }>,
     ) => {
       const { id, from, to } = action.payload
@@ -60,6 +60,8 @@ export const accountSlice = createSlice({
 
         return interval
       })
+
+      console.log(changedIntervals)
 
       state.intervals = changedIntervals
     },

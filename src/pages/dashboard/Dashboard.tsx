@@ -2,7 +2,7 @@ import { skipToken } from '@reduxjs/toolkit/dist/query'
 import clsx from 'clsx'
 import { AnimatePresence, motion } from 'framer-motion'
 import qs from 'qs'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDebounce } from 'react-use'
 
@@ -16,8 +16,8 @@ import {
 } from '@/features/account/accountApi'
 import { useAccountSlice } from '@/features/account/accountSlice'
 import { Account } from '@/features/account/types'
-import { filterIntervals } from '@/features/account/utils'
 
+// import { filterIntervals } from '@/features/account/utils'
 import { useTitle } from '@/hooks/useTitle'
 
 import {
@@ -39,11 +39,6 @@ export const Dashboard = () => {
   const { intervals } = useAccountSlice()
 
   const { accounts } = accountsInfo || {}
-
-  const filteredIntervals = useMemo(
-    () => filterIntervals(intervals),
-    [intervals],
-  )
 
   const [selectedAccount, setSelectedAccount] = useState<Account>()
   const accountId = selectedAccount?.id
@@ -71,11 +66,18 @@ export const Dashboard = () => {
       query.push(`category=${encodeURIComponent(category)}`)
     }
 
-    if (filteredIntervals[0].from && filteredIntervals[0].to) {
+    if (intervals[0].from) {
       query.push(
         qs.stringify({
-          from: new Date(filteredIntervals[0].from),
-          to: new Date(filteredIntervals[0].to),
+          from: new Date(intervals[0].from),
+        }),
+      )
+    }
+
+    if (intervals[0].to) {
+      query.push(
+        qs.stringify({
+          to: new Date(intervals[0].to),
         }),
       )
     }
@@ -90,7 +92,7 @@ export const Dashboard = () => {
       setQuery(generateQuery())
     },
     400,
-    [search, category, filteredIntervals, selectedAccount],
+    [search, category, intervals[0].from, intervals[0].to, selectedAccount],
   )
 
   const handleAccountChange = (accountId: string) => {
@@ -105,7 +107,7 @@ export const Dashboard = () => {
         accountId: accountId as string,
         query: query as string,
       },
-      { skip: !accountId || !query },
+      { skip: !accountId },
     )
 
   useEffect(() => {

@@ -78,16 +78,22 @@ export const DashboardTooltip = ({
             className='flex-1 w-full'
             type='date'
             value={
-              primaryInterval.from && formatInputDate(primaryInterval.from)
+              primaryInterval.from ? formatInputDate(primaryInterval.from) : ''
             }
-            max={primaryInterval.to && formatInputDate(primaryInterval.to)}
-            onChange={(e) =>
-              handleIntervalChange({
+            max={
+              primaryInterval.to
+                ? formatInputDate(primaryInterval.to)
+                : formatInputDate(new Date().getTime())
+            }
+            onChange={(e) => {
+              return handleIntervalChange({
                 id: primaryInterval.id,
-                from: new Date(e.target.value).getTime(),
+                from: e.target.value
+                  ? new Date(e.target.value).getTime()
+                  : null,
                 to: primaryInterval.to,
               })
-            }
+            }}
           />
 
           <div>&#8211;</div>
@@ -95,15 +101,19 @@ export const DashboardTooltip = ({
           <Input
             className='flex-1 w-full'
             type='date'
-            value={primaryInterval.to && formatInputDate(primaryInterval.to)}
+            value={
+              primaryInterval.to ? formatInputDate(primaryInterval.to) : ''
+            }
             onChange={(e) =>
               handleIntervalChange({
                 id: primaryInterval.id,
                 from: primaryInterval.from,
-                to: new Date(e.target.value).getTime(),
+                to: e.target.value ? new Date(e.target.value).getTime() : null,
               })
             }
-            min={primaryInterval.from && formatInputDate(primaryInterval.from)}
+            min={
+              primaryInterval.from ? formatInputDate(primaryInterval.from) : ''
+            }
             max={formatInputDate(new Date().getTime())}
           />
         </div>
@@ -148,8 +158,12 @@ export const DashboardTooltip = ({
                       <Input
                         className='flex-1 w-full'
                         type='date'
-                        value={from && formatInputDate(from)}
-                        max={to && formatInputDate(to)}
+                        value={from ? formatInputDate(from) : ''}
+                        max={
+                          to
+                            ? formatInputDate(to)
+                            : formatInputDate(new Date().getTime())
+                        }
                         onChange={(e) =>
                           handleIntervalChange({
                             id,
@@ -162,7 +176,7 @@ export const DashboardTooltip = ({
                       <Input
                         className='flex-1 w-full'
                         type='date'
-                        value={to && formatInputDate(to)}
+                        value={to ? formatInputDate(to) : ''}
                         onChange={(e) =>
                           handleIntervalChange({
                             id,
@@ -170,7 +184,7 @@ export const DashboardTooltip = ({
                             to: new Date(e.target.value).getTime(),
                           })
                         }
-                        min={from && formatInputDate(from)}
+                        min={from ? formatInputDate(from) : ''}
                         max={formatInputDate(new Date().getTime())}
                       />
                     </div>

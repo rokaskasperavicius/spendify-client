@@ -7,9 +7,13 @@ import {
   XAxis,
 } from 'recharts'
 
-import { AccountTransactionsGroupedProps } from '@/features/accounts/accounts-types'
+import { AccountTransactionsGroupedResponse } from '@/features/accounts/accounts-types'
 
 import { DashboardBarChartTooltip } from './DashboardBarChartTooltip'
+
+type Props = {
+  groupedAccountTransactions: AccountTransactionsGroupedResponse['data']
+}
 
 export const DashboardBarChartPrimary = ({
   groupedAccountTransactions,
@@ -47,8 +51,4 @@ export const DashboardBarChartPrimary = ({
       </BarChart>
     </ResponsiveContainer>
   )
-}
-
-type Props = {
-  groupedAccountTransactions: AccountTransactionsGroupedProps
 }

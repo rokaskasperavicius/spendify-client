@@ -13,7 +13,7 @@ export const DashboardAccountList = ({
   handleCTA,
   handleAccountChange,
 }: Props) => {
-  const { data, isLoading: isAccountsLoading } = useGetAccountsQuery()
+  const { data, isLoading: isAccountsLoading } = useGetAccountsQuery(undefined)
 
   return (
     <div className='space-y-4'>

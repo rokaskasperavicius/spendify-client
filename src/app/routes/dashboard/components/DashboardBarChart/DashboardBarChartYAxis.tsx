@@ -1,10 +1,10 @@
 import millify from 'millify'
 import { Bar, BarChart, ResponsiveContainer, YAxis } from 'recharts'
 
-import { AccountTransactionsGroupedProps } from '@/features/accounts/accounts-types'
+import { AccountTransactionsGroupedResponse } from '@/features/accounts/accounts-types'
 
 type Props = {
-  groupedAccountTransactions: AccountTransactionsGroupedProps
+  groupedAccountTransactions: AccountTransactionsGroupedResponse['data']
 }
 
 const tickFormatter = (value: number) => {

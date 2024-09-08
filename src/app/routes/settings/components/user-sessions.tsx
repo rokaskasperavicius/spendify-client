@@ -5,6 +5,7 @@ import {
   useGetSessionsQuery,
 } from '@/features/auth/auth-api'
 import { authApi } from '@/features/auth/auth-api'
+import { AUTH_TAGS } from '@/features/auth/auth-constants'
 
 import { useAppDispatch } from '@/store/hooks'
 
@@ -13,12 +14,12 @@ export const UserSessions = () => {
 
   const [destroySession] = useDestroySessionMutation()
 
-  const { data: sessions, isLoading } = useGetSessionsQuery()
+  const { data: sessions, isLoading } = useGetSessionsQuery(undefined)
 
   const handleDestroySession = async (sessionId: string) => {
     try {
       await destroySession({ sessionId }).unwrap()
-      dispatch(authApi.util.invalidateTags(['Devices']))
+      dispatch(authApi.util.invalidateTags([AUTH_TAGS.DEVICES]))
     } catch (err) {
       console.error(err)
     }

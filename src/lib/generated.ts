@@ -481,7 +481,7 @@ export interface operations {
                             ipAddress: string;
                             /** @example Denmark, Copenhagen */
                             ipLocation: string;
-                        };
+                        }[];
                     } & components["schemas"]["ApiResponse"];
                 };
             };

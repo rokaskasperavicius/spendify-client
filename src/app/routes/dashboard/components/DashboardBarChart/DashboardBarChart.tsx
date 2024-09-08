@@ -1,13 +1,15 @@
 import { Spinner } from '@/components/ui'
 
-import { AccountTransactionsGroupedProps } from '@/features/accounts/accounts-types'
+import { AccountTransactionsGroupedResponse } from '@/features/accounts/accounts-types'
 
 import { DashboardBarChartPrimary } from './DashboardBarChartPrimary'
 import { DashboardBarChartYAxis } from './DashboardBarChartYAxis'
 
 type Props = {
   isLoading: boolean
-  groupedAccountTransactions: AccountTransactionsGroupedProps | undefined
+  groupedAccountTransactions:
+    | AccountTransactionsGroupedResponse['data']
+    | undefined
 }
 
 export const DashboardBarChart = ({

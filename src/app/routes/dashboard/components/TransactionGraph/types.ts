@@ -1,10 +1,10 @@
-import { AccountTransactionProps } from '@/features/accounts/accounts-types'
+import { AccountTransactionsResponse } from '@/features/accounts/accounts-types'
 
 export type CollectorLineDotProps = {
   lineIndex: number
 
   dotPayload: Omit<LineDotProps, 'payload'>
-  transactionPayload: AccountTransactionProps
+  transactionPayload: AccountTransactionsResponse['data'][0]
 }
 
 export type LineDotProps = {
@@ -19,7 +19,7 @@ export type LineDotProps = {
   value: number
   width: number
   index: number
-  payload: AccountTransactionProps
+  payload: AccountTransactionsResponse['data'][0]
 }
 
 export type LineCursorProps = {

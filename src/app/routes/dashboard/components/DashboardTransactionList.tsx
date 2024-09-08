@@ -1,4 +1,4 @@
-import { AccountTransactionProps } from '@/features/accounts/accounts-types'
+import { AccountTransactionsResponse } from '@/features/accounts/accounts-types'
 
 import { formatDate } from '@/utils/format-date'
 
@@ -6,7 +6,7 @@ import { LinkedAccountTransaction, LinkedAccountTransactionSkeleton } from '.'
 
 type Props = {
   isLoading: boolean
-  transactions: AccountTransactionProps[] | undefined
+  transactions: AccountTransactionsResponse['data'] | undefined
 }
 
 export const DashboardTransactionList = ({

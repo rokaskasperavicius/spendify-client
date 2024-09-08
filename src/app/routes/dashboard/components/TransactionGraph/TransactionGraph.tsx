@@ -10,10 +10,7 @@ import {
 
 import { Spinner } from '@/components/ui'
 
-import {
-  AccountTransactionProps,
-  GetAccountTransactions,
-} from '@/features/accounts/accounts-types'
+import { AccountTransactionsResponse } from '@/features/accounts/accounts-types'
 
 import { formatDate } from '@/utils/format-date'
 
@@ -29,7 +26,7 @@ const tickFormatter = (value: number) => millify(value)
 
 type Props = {
   isLoading: boolean
-  transactions: GetAccountTransactions | undefined
+  transactions: AccountTransactionsResponse['data'] | undefined
 }
 
 export const TransactionGraph = ({ isLoading, transactions: trans }: Props) => {
@@ -119,7 +116,7 @@ export const TransactionGraph = ({ isLoading, transactions: trans }: Props) => {
                 ?.slice()
                 .sort((result, next) => result.weight - next.weight)}
               type='monotone'
-              dataKey={(transaction: AccountTransactionProps) =>
+              dataKey={(transaction: AccountTransactionsResponse['data'][0]) =>
                 transaction.totalAmountInt
               }
               stroke={graphColors[index]}
@@ -132,7 +129,7 @@ export const TransactionGraph = ({ isLoading, transactions: trans }: Props) => {
             <XAxis
               key={transaction.id}
               xAxisId={transaction.id}
-              dataKey={(transaction: AccountTransactionProps) =>
+              dataKey={(transaction: AccountTransactionsResponse['data'][0]) =>
                 formatDate(transaction.date)
               }
             />

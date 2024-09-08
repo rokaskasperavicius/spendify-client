@@ -12,10 +12,10 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
-import { accountApi } from '@/features/account/accountApi'
-import { accountSlice } from '@/features/account/accountSlice'
-import { authApi } from '@/features/auth/authApi'
-import { authSlice, resetAuth } from '@/features/auth/authSlice'
+import { accountsApi } from '@/features/accounts/accounts-api'
+import { accountSlice } from '@/features/accounts/accounts-slice'
+import { authApi } from '@/features/auth/auth-api'
+import { authSlice, resetAuth } from '@/features/auth/auth-slice'
 
 const persistConfig = {
   key: 'root',
@@ -27,7 +27,7 @@ const combinedReducers = combineReducers({
   [authSlice.name]: authSlice.reducer,
   [accountSlice.name]: accountSlice.reducer,
   [authApi.reducerPath]: authApi.reducer,
-  [accountApi.reducerPath]: accountApi.reducer,
+  [accountsApi.reducerPath]: accountsApi.reducer,
 })
 
 // Clear the redux store on logout
@@ -37,7 +37,6 @@ const reducerProxy = (
   state: ReturnType<typeof combinedReducers> | undefined,
   action: AnyAction,
 ) => {
-  // This need to be refactored to use invalidatesTags!!!
   if (resetAuth.match(action)) {
     storage.removeItem('persist:root')
 
@@ -59,7 +58,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat(authApi.middleware, accountApi.middleware),
+    }).concat(authApi.middleware, accountsApi.middleware),
 })
 
 export const persistor = persistStore(store)

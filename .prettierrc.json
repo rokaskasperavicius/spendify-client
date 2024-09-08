@@ -6,12 +6,12 @@
   "semi": false,
   "importOrder": [
     "^@/assets/(.*)$",
+    "^@/config/(.*)$",
     "^@/components/(.*)$",
     "^@/features/(.*)$",
     "^@/hooks/(.*)$",
     "^@/lib/(.*)$",
     "^@/pages/(.*)$",
-    "^@/services/(.*)$",
     "^@/store/(.*)$",
     "^@/styles/(.*)$",
     "^@/utils/(.*)$",

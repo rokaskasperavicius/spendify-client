@@ -63,8 +63,8 @@ export const accountsApi = createApi({
       AccountTransactionsQuery & AccountTransactionsParams
     >({
       query: ({ accountId, ...query }) => {
-        console.log(query)
         const joinedQuery = joinTransactionQuery(query)
+
         return `${ACCOUNT_PATHS.GET_TRANSACTIONS(accountId)}${joinedQuery ? `?${joinedQuery}` : ''}`
       },
 

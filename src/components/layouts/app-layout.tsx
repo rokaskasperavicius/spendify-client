@@ -10,11 +10,11 @@ import {
 
 import MenuIcon from '@/assets/menu.svg'
 
-import { Menu } from '@/components/Menu'
+import { Menu } from '@/components/menu'
 import { Button, Image } from '@/components/ui'
 
-import { useLogOutMutation } from '@/features/auth/auth-api'
-import { useAuthState } from '@/features/auth/auth-slice'
+import { useLogOutMutation } from '@/features/auth/auth.api'
+import { useAuthState } from '@/features/auth/auth.slice'
 
 import { useScrollDirection } from '@/hooks/use-scroll-direction'
 
@@ -61,7 +61,7 @@ export const AppLayout = () => {
             setIsOpen={setIsMenuOpen}
             trigger={
               <div>
-                <Image alt='Menu Icon' size='mdd' src={MenuIcon} />
+                <Image alt='Menu Icon' size='lg' src={MenuIcon} />
               </div>
             }
           >

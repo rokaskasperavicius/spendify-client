@@ -1,11 +1,11 @@
-import passwordValidator from 'password-validator'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 
 import { Button, Container, Input } from '@/components/ui'
 
-import { usePatchUserPasswordMutation } from '@/features/auth/auth-api'
+import { usePatchUserPasswordMutation } from '@/features/auth/auth.api'
+import { isPasswordValid } from '@/features/auth/utils/is-password-valid'
 
 import { ERROR_CODES } from '@/lib/types'
 import { isFetchBaseQueryError } from '@/lib/utils/is-fetch-base-query-error'
@@ -15,19 +15,6 @@ type FormValues = {
   newPassword: string
   repeatNewPassword: string
 }
-
-const passwordSchema = new passwordValidator()
-passwordSchema
-  .is()
-  .min(8) // Minimum length 8
-  .is()
-  .max(40) // Maximum length 40
-  .has()
-  .uppercase() // Must have uppercase letters
-  .has()
-  .lowercase() // Must have lowercase letters
-  .has()
-  .digits(1) // Must have at least 1 digit
 
 export const ChangeUserPassword = () => {
   const [isWrongPassword, setIsWrongPassword] = useState(false)
@@ -84,7 +71,7 @@ export const ChangeUserPassword = () => {
                 className='w-full'
                 type='password'
                 {...register('newPassword', {
-                  validate: (value) => !!passwordSchema.validate(value),
+                  validate: (value) => isPasswordValid(value),
                 })}
               />
             </div>

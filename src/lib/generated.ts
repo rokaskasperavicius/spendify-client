@@ -211,15 +211,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/accounts/{accountId}/transactions/grouped": {
+    "/accounts/{accountId}/transactions/monthly-overview": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get Account Grouped Transactions */
-        get: operations["getAccountGroupedTransactions"];
+        /** Get Account Transactions' Monthly Overview */
+        get: operations["getAccountTransactionsMonthlyOverview"];
         put?: never;
         post?: never;
         delete?: never;
@@ -925,7 +925,7 @@ export interface operations {
             };
         };
     };
-    getAccountGroupedTransactions: {
+    getAccountTransactionsMonthlyOverview: {
         parameters: {
             query?: never;
             header?: never;

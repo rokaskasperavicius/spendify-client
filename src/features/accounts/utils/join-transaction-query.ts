@@ -1,4 +1,4 @@
-import { AccountTransactionsQuery } from '../accounts-types'
+import { AccountTransactionsQuery } from '../accounts.types'
 
 /**
  * Joins all query parameters into a single string

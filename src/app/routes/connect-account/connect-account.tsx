@@ -3,7 +3,8 @@ import { P, match } from 'ts-pattern'
 
 import { useTitle } from '@/hooks/use-title'
 
-import { SelectAccount, SelectInstitution } from './components'
+import { SelectAccount } from './components/select-account'
+import { SelectInstitution } from './components/select-institution'
 
 export const ConnectAccount = () => {
   useTitle('Connect Account')

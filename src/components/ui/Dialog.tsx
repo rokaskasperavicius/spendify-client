@@ -14,7 +14,7 @@ type Props = {
   children: React.ReactNode
   trigger: React.ReactNode
   mode?: 'modal'
-  closeIconSize?: 'sm' | 'mdd'
+  closeIconSize?: 'sm' | 'lg'
   tooltipText?: string
 }
 

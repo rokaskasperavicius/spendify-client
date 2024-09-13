@@ -7,8 +7,8 @@ import { Button, Container, Image } from '@/components/ui'
 import {
   useDeleteAccountMutation,
   useGetAccountsQuery,
-} from '@/features/accounts/accounts-api'
-import { useAuthState } from '@/features/auth/auth-slice'
+} from '@/features/accounts/accounts.api'
+import { useAuthState } from '@/features/auth/auth.slice'
 
 import { useTitle } from '@/hooks/use-title'
 
@@ -95,7 +95,7 @@ export const Settings = () => {
                     {institutionLogo && (
                       <div>
                         <Image
-                          size='md'
+                          size='xl'
                           src={institutionLogo}
                           alt='Bank Logo'
                         />

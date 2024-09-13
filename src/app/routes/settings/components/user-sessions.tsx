@@ -1,11 +1,11 @@
-import { Button, Spinner } from '@/components/ui'
+import { Button, Loader } from '@/components/ui'
 
 import {
   useDestroySessionMutation,
   useGetSessionsQuery,
-} from '@/features/auth/auth-api'
-import { authApi } from '@/features/auth/auth-api'
-import { AUTH_TAGS } from '@/features/auth/auth-constants'
+} from '@/features/auth/auth.api'
+import { authApi } from '@/features/auth/auth.api'
+import { AUTH_TAGS } from '@/features/auth/auth.constants'
 
 import { useAppDispatch } from '@/store/hooks'
 
@@ -26,7 +26,7 @@ export const UserSessions = () => {
   }
 
   return (
-    <Spinner isLoading={isLoading} rootClassName='flex justify-center'>
+    <Loader isLoading={isLoading}>
       <div className='space-y-4'>
         <div className='font-medium'>Manage Account Sessions</div>
 
@@ -62,6 +62,6 @@ export const UserSessions = () => {
           ))}
         </div>
       </div>
-    </Spinner>
+    </Loader>
   )
 }

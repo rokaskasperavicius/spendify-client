@@ -4,8 +4,8 @@ import { Link, useNavigate } from 'react-router-dom'
 
 import { Button, Input } from '@/components/ui'
 
-import { useLoginUserMutation } from '@/features/auth/auth-api'
-import { useAuthState } from '@/features/auth/auth-slice'
+import { useLoginUserMutation } from '@/features/auth/auth.api'
+import { useAuthState } from '@/features/auth/auth.slice'
 
 import { useTitle } from '@/hooks/use-title'
 

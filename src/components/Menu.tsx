@@ -25,7 +25,7 @@ export const Menu = ({ children, trigger, isOpen, setIsOpen }: Props) => (
         <div className='mt-4'>{children}</div>
 
         <RadixDialog.Close className='absolute top-4 right-4'>
-          <Image src={CloseIcon} alt='Close Icon' size='mdd' />
+          <Image src={CloseIcon} alt='Close Icon' size='lg' />
         </RadixDialog.Close>
       </RadixDialog.Content>
     </RadixDialog.Portal>

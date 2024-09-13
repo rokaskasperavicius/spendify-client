@@ -12,10 +12,9 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
-import { accountsApi } from '@/features/accounts/accounts-api'
-import { accountSlice } from '@/features/accounts/accounts-slice'
-import { authApi } from '@/features/auth/auth-api'
-import { authSlice, resetAuth } from '@/features/auth/auth-slice'
+import { accountsApi } from '@/features/accounts/accounts.api'
+import { authApi } from '@/features/auth/auth.api'
+import { authSlice, resetAuth } from '@/features/auth/auth.slice'
 
 const persistConfig = {
   key: 'root',
@@ -25,7 +24,6 @@ const persistConfig = {
 
 const combinedReducers = combineReducers({
   [authSlice.name]: authSlice.reducer,
-  [accountSlice.name]: accountSlice.reducer,
   [authApi.reducerPath]: authApi.reducer,
   [accountsApi.reducerPath]: accountsApi.reducer,
 })

@@ -1,10 +1,11 @@
+import 'dotenv/config'
 import fs from 'node:fs'
 import openapiTS, { astToString, c } from 'openapi-typescript'
 
 // import ts from 'typescript'
 
-const INPUT = process.argv[2]
-const OUTPUT = process.argv[3]
+const INPUT = `${process.env.VITE_API_BASE_URL}/openapi.yaml`
+const OUTPUT = process.argv[2]
 
 // This creates an absolute cwd path from the given relative path
 const CWD = new URL(`file://${process.cwd()}/`)

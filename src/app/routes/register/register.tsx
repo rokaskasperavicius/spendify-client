@@ -1,4 +1,3 @@
-import passwordValidator from 'password-validator'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
@@ -6,26 +5,14 @@ import isEmail from 'validator/lib/isEmail'
 
 import { Button, Input } from '@/components/ui'
 
-import { useRegisterUserMutation } from '@/features/auth/auth-api'
-import { useAuthState } from '@/features/auth/auth-slice'
+import { useRegisterUserMutation } from '@/features/auth/auth.api'
+import { useAuthState } from '@/features/auth/auth.slice'
+import { isPasswordValid } from '@/features/auth/utils/is-password-valid'
 
 import { useTitle } from '@/hooks/use-title'
 
 import { ERROR_CODES } from '@/lib/types'
 import { isFetchBaseQueryError } from '@/lib/utils/is-fetch-base-query-error'
-
-const passwordSchema = new passwordValidator()
-passwordSchema
-  .is()
-  .min(8) // Minimum length 8
-  .is()
-  .max(40) // Maximum length 40
-  .has()
-  .uppercase() // Must have uppercase letters
-  .has()
-  .lowercase() // Must have lowercase letters
-  .has()
-  .digits(1) // Must have at least 1 digit
 
 export type RegisterFormValues = {
   name: string
@@ -94,7 +81,7 @@ export const Register = () => {
             <Input
               type='password'
               {...register('password', {
-                validate: (value) => !!passwordSchema.validate(value),
+                validate: (value) => isPasswordValid(value),
               })}
             />
             {errors && errors.password && (

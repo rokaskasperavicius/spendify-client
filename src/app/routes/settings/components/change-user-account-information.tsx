@@ -5,8 +5,8 @@ import isEmail from 'validator/lib/isEmail'
 
 import { Button, Container, Input } from '@/components/ui'
 
-import { usePatchUserInfoMutation } from '@/features/auth/auth-api'
-import { useAuthState } from '@/features/auth/auth-slice'
+import { usePatchUserInfoMutation } from '@/features/auth/auth.api'
+import { useAuthState } from '@/features/auth/auth.slice'
 
 import { ERROR_CODES } from '@/lib/types'
 import { isFetchBaseQueryError } from '@/lib/utils/is-fetch-base-query-error'
@@ -29,8 +29,8 @@ export const ChangeUserAccountInformation = () => {
     formState: { isDirty },
   } = useForm<FormValues>({
     defaultValues: {
-      name: name || '',
-      email: email || '',
+      name: name ?? '',
+      email: email ?? '',
     },
   })
 

@@ -18,4 +18,4 @@ jobs:
       - name: NPM setup
         run: npm install
       - name: ESLint and TypeScript
-        run: npm run cid
+        run: npm run ci

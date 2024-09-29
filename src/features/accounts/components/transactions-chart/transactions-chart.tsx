@@ -26,9 +26,7 @@ export const TransactionsChart = ({ isLoading, transactions }: Props) => {
     <Loader isLoading={isLoading} rootClassName='h-full'>
       <ResponsiveContainer>
         <LineChart
-          data={transactions
-            ?.slice()
-            .sort((result, next) => result.weight - next.weight)}
+          data={transactions}
           margin={{ top: 10, right: 10, bottom: 0, left: 10 }}
         >
           <YAxis

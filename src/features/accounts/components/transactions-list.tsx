@@ -23,8 +23,10 @@ export const TransactionsList = ({ isLoading, transactions }: Props) => {
 
   return (
     <>
-      {transactions?.map(
-        ({ id, amount, category, date, title, totalAmount }) => (
+      {transactions
+        ?.slice()
+        .reverse()
+        .map(({ id, amount, category, date, title, totalAmount }) => (
           <Transaction
             key={id}
             title={title}
@@ -33,8 +35,7 @@ export const TransactionsList = ({ isLoading, transactions }: Props) => {
             category={category}
             date={formatDate(date)}
           />
-        ),
-      )}
+        ))}
     </>
   )
 }

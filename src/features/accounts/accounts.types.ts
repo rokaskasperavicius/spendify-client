@@ -1,6 +1,7 @@
 import { components, paths } from '@/lib/generated'
 
 export type TransactionCategories = components['schemas']['Categories']
+export type AccountStatuses = components['schemas']['AccountStatuses']
 
 /** [GET] /accounts */
 type AccountsPath = paths['/accounts']['get']

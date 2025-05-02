@@ -261,6 +261,8 @@ export interface components {
         /** @enum {string} */
         ErrorCodes: ErrorCodes;
         /** @enum {string} */
+        AccountStatuses: AccountStatuses;
+        /** @enum {string} */
         Categories: Categories;
     };
     responses: never;
@@ -760,10 +762,13 @@ export interface operations {
                                 id: string;
                                 /** @example Account Name */
                                 name: string | null;
+                                status: components["schemas"]["AccountStatuses"];
                                 /** @example DK4404005032950081 */
                                 iban: string | null;
                                 /** @example 50.380,90 */
                                 balance: string;
+                                /** @example SANDBOXFINANCE_SFIN0000 */
+                                institutionId: string | null;
                                 /** @example Sandbox Finance */
                                 institutionName: string | null;
                                 /** @example https://cdn-logos.gocardless.com/ais/SANDBOXFINANCE_SFIN0000.png */
@@ -801,6 +806,8 @@ export interface operations {
                 "application/json": {
                     /** @example bbcdb297-acce-4d4a-8678-8344ee92d195 */
                     accountId: string;
+                    /** @example 3fa85f64-5717-4562-b3fc-2c963f66afa6 */
+                    requisitionId: string;
                 };
             };
         };
@@ -1013,6 +1020,10 @@ export enum ErrorCodes {
     DUPLICATE_ACCOUNTS = "DUPLICATE_ACCOUNTS",
     INVALID_SCHEMA = "INVALID_SCHEMA",
     UNAUTHORIZED = "UNAUTHORIZED"
+}
+export enum AccountStatuses {
+    READY = "READY",
+    EXPIRED = "EXPIRED"
 }
 export enum Categories {
     Food_Groceries = "Food & Groceries",

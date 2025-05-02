@@ -27,12 +27,15 @@ export const SelectAccount = ({ reference }: Props) => {
   const { data: availableAccounts, isLoading: isAvailableAccountsLoading } =
     useGetAvailableAccountsQuery({ requisitionId: reference })
 
-  const linkAccountHandler = async (accountId: string) => {
+  const linkAccountHandler = async (
+    accountId: string,
+    requisitionId: string,
+  ) => {
     if (isConnecting) return
 
     try {
       setIsConnecting(true)
-      await connectAccount({ accountId }).unwrap()
+      await connectAccount({ accountId, requisitionId }).unwrap()
 
       navigate('/')
     } catch (error) {
@@ -41,6 +44,8 @@ export const SelectAccount = ({ reference }: Props) => {
         error.code === ERROR_CODES.DUPLICATE_ACCOUNTS
       ) {
         toast.error('This account is already connected')
+      } else {
+        toast.error('Something went wrong. Please try again')
       }
     } finally {
       setIsConnecting(false)
@@ -61,7 +66,7 @@ export const SelectAccount = ({ reference }: Props) => {
             <div
               key={account.accountId}
               className='w-full md:w-1/2 border border-gray-400 p-2 rounded-md cursor-pointer hover:bg-gray-100 flex gap-4'
-              onClick={() => linkAccountHandler(account.accountId)}
+              onClick={() => linkAccountHandler(account.accountId, reference)}
             >
               {account.institutionLogo && (
                 <div>

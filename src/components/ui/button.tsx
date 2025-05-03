@@ -3,13 +3,7 @@ import { ButtonHTMLAttributes } from 'react'
 
 type Props = {
   children: React.ReactNode
-  variant?:
-    | 'primary'
-    | 'secondary'
-    | 'error-outline'
-    | 'simple'
-    | 'text'
-    | 'primary-two'
+  variant?: 'primary' | 'secondary' | 'error-outline' | 'text' | 'primary-two'
   fullWidth?: boolean
   isDisabled?: boolean
 } & ButtonHTMLAttributes<HTMLButtonElement>
@@ -20,9 +14,6 @@ const variants = {
 
   'primary-two':
     'text-primary font-medium bg-white focus:bg-neutral-100 hover:bg-neutral-50 border border-primary',
-
-  simple:
-    'text-black bg-white border border-gray-400 focus:bg-gray-100 hover:bg-gray-100',
 
   'error-outline':
     'text-error-red bg-white focus:bg-red-100 hover:bg-red-50 border border-error-red',

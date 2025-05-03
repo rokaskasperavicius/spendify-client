@@ -235,8 +235,25 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get Account Transactions */
+        /** Sync Account Transactions */
         get: operations["syncAccountTransactions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/accounts/sync": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Sync Account Statuses */
+        get: operations["syncAccountStatuses"];
         put?: never;
         post?: never;
         delete?: never;
@@ -768,7 +785,7 @@ export interface operations {
                                 /** @example 50.380,90 */
                                 balance: string;
                                 /** @example SANDBOXFINANCE_SFIN0000 */
-                                institutionId: string | null;
+                                institutionId: string;
                                 /** @example Sandbox Finance */
                                 institutionName: string | null;
                                 /** @example https://cdn-logos.gocardless.com/ais/SANDBOXFINANCE_SFIN0000.png */
@@ -981,6 +998,38 @@ export interface operations {
         };
     };
     syncAccountTransactions: {
+        parameters: {
+            query: {
+                /** @description SYNC_ADMIN_KEY */
+                admin_key: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Success */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiResponse"];
+                };
+            };
+            /** @description Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiError"];
+                };
+            };
+        };
+    };
+    syncAccountStatuses: {
         parameters: {
             query: {
                 /** @description SYNC_ADMIN_KEY */

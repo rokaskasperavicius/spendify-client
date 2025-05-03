@@ -5,9 +5,10 @@ import { useSearchParams } from 'react-router-dom'
 import { useDebounce } from 'react-use'
 
 import { useGetAccountTransactionsQuery } from '@/features/accounts/accounts.api'
-import { TransactionCategories } from '@/features/accounts/accounts.types'
 import { TransactionsChart } from '@/features/accounts/components/transactions-chart/transactions-chart'
 import { TransactionsList } from '@/features/accounts/components/transactions-list'
+
+import { Categories } from '@/lib/generated'
 
 import { formatInputDate } from '@/utils/format-date'
 
@@ -46,7 +47,7 @@ export const TransactionsView = ({ accountId }: Props) => {
       from: from ? new Date(from).toISOString() : undefined,
       to: to ? new Date(to).toISOString() : undefined,
       category: categoryValue
-        ? (encodeURIComponent(categoryValue) as TransactionCategories)
+        ? (encodeURIComponent(categoryValue) as Categories)
         : undefined,
     })
 

@@ -2,11 +2,17 @@ import { AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { REDIRECT_URL } from '@/config/constants'
+
 import { Loader } from '@/components/ui'
 import { Button } from '@/components/ui'
 
-import { useGetAccountsQuery } from '@/features/accounts/accounts.api'
+import {
+  useGetAccountsQuery,
+  useInitiateConnectAccountMutation,
+} from '@/features/accounts/accounts.api'
 import { Account } from '@/features/accounts/accounts.types'
+import { AccountStatus } from '@/features/accounts/components/account-status'
 import { ConnectedAccountBanner } from '@/features/accounts/components/connected-account-banner'
 import { ConnectedAccounts } from '@/features/accounts/components/connected-accounts'
 
@@ -25,6 +31,7 @@ export const Dashboard = () => {
 
   const { data: accountsData, isLoading: isAccountsLoading } =
     useGetAccountsQuery(undefined)
+  const [initiateConnectAccount] = useInitiateConnectAccountMutation()
 
   const { accounts } = accountsData || {}
   const accountId = selectedAccount?.id
@@ -33,6 +40,19 @@ export const Dashboard = () => {
     const account = accounts?.find((account) => account.id === accountId)
 
     setSelectedAccount(account)
+  }
+
+  const handleAccountReconnect = async (institutionId: string) => {
+    try {
+      const { url } = await initiateConnectAccount({
+        institutionId,
+        redirect: REDIRECT_URL,
+      }).unwrap()
+
+      window.location.replace(url)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   useEffect(() => {
@@ -72,9 +92,15 @@ export const Dashboard = () => {
         <Loader isLoading={isAccountsLoading} rootClassName='h-full'>
           <div>
             {selectedAccount && (
-              <div className='p-4 border-b border-gray-300 italic text-sm'>
-                Last updated:{' '}
-                {new Date(selectedAccount.lastSyncedAt).toLocaleString()}
+              <div className='p-4 border-b border-gray-300 text-sm'>
+                <AccountStatus
+                  name={selectedAccount.name}
+                  lastSyncedAt={selectedAccount.lastSyncedAt}
+                  status={selectedAccount.status}
+                  handleAccountReconnect={() =>
+                    handleAccountReconnect(selectedAccount.institutionId)
+                  }
+                />
               </div>
             )}
 

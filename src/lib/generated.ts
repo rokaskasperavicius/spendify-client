@@ -1076,8 +1076,17 @@ export enum ErrorCodes {
     UNAUTHORIZED = "UNAUTHORIZED"
 }
 export enum AccountStatuses {
-    READY = "READY",
-    EXPIRED = "EXPIRED"
+    CR = "CR",
+    ID = "ID",
+    LN = "LN",
+    RJ = "RJ",
+    ER = "ER",
+    SU = "SU",
+    EX = "EX",
+    GC = "GC",
+    UA = "UA",
+    GA = "GA",
+    SA = "SA"
 }
 export enum Categories {
     Food_Groceries = "Food & Groceries",

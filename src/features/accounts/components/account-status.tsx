@@ -16,7 +16,7 @@ export const AccountStatus = ({
   handleAccountReconnect,
 }: Props) => (
   <div>
-    {status === AccountStatuses.EXPIRED ? (
+    {status === AccountStatuses.EX ? (
       <div className='space-y-2'>
         <div>
           Access to your account expired. To be able to see latest activity:

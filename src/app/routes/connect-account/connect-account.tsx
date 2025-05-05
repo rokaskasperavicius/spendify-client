@@ -11,8 +11,11 @@ export const ConnectAccount = () => {
 
   const [searchParams] = useSearchParams()
   const ref = searchParams.get('ref')
+  const secret = searchParams.get('secret')
 
   return match(ref)
-    .with(P.string, () => <SelectAccount reference={ref as string} />)
+    .with(P.string, () => (
+      <SelectAccount reference={ref as string} secret={secret as string} />
+    ))
     .otherwise(() => <SelectInstitution />)
 }

@@ -3,8 +3,8 @@ const PREFIX = '/accounts'
 export const ACCOUNT_PATHS = {
   GET_ACCOUNTS: `${PREFIX}`,
 
-  GET_AVAILABLE_ACCOUNTS: (requisitionId: string) =>
-    `${PREFIX}/available/${requisitionId}`,
+  GET_AVAILABLE_ACCOUNTS: (requisitionId: string, secret: string) =>
+    `${PREFIX}/available/${requisitionId}?secret=${secret}`,
 
   GET_INSTITUTIONS: `${PREFIX}/institutions`,
 

@@ -714,7 +714,10 @@ export interface operations {
     };
     getAvailableAccounts: {
         parameters: {
-            query?: never;
+            query: {
+                /** @description The secret assigned to the user */
+                secret: string;
+            };
             header?: never;
             path: {
                 /** @description The requisition approved by the user */
@@ -825,6 +828,8 @@ export interface operations {
                     accountId: string;
                     /** @example 3fa85f64-5717-4562-b3fc-2c963f66afa6 */
                     requisitionId: string;
+                    /** @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c */
+                    secret: string;
                 };
             };
         };

@@ -9,6 +9,7 @@ import {
   AccountsParams,
   AccountsResponse,
   AvailableAccountsParams,
+  AvailableAccountsQuery,
   AvailableAccountsResponse,
   ConnectAccountRequest,
   ConnectAccountResponse,
@@ -40,10 +41,10 @@ export const accountsApi = createApi({
 
     getAvailableAccounts: builder.query<
       AvailableAccountsResponse['data'],
-      AvailableAccountsParams
+      AvailableAccountsParams & AvailableAccountsQuery
     >({
       query: (query) =>
-        ACCOUNT_PATHS.GET_AVAILABLE_ACCOUNTS(query.requisitionId),
+        ACCOUNT_PATHS.GET_AVAILABLE_ACCOUNTS(query.requisitionId, query.secret),
 
       transformResponse: (response: AvailableAccountsResponse) => response.data,
     }),

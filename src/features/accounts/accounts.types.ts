@@ -16,6 +16,9 @@ type AvailableAccountsPath = paths['/accounts/available/{requisitionId}']['get']
 export type AvailableAccountsParams =
   AvailableAccountsPath['parameters']['path']
 
+export type AvailableAccountsQuery =
+  AvailableAccountsPath['parameters']['query']
+
 export type AvailableAccountsResponse =
   AvailableAccountsPath['responses']['200']['content']['application/json']
 

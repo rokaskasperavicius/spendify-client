@@ -16,16 +16,17 @@ import { ConnectAccountHeader } from './connect-account-header'
 
 type Props = {
   reference: string
+  secret: string
 }
 
-export const SelectAccount = ({ reference }: Props) => {
+export const SelectAccount = ({ reference, secret }: Props) => {
   const navigate = useNavigate()
   const [isConnecting, setIsConnecting] = useState(false)
 
   const [connectAccount] = useConnectAccountMutation()
 
   const { data: availableAccounts, isLoading: isAvailableAccountsLoading } =
-    useGetAvailableAccountsQuery({ requisitionId: reference })
+    useGetAvailableAccountsQuery({ requisitionId: reference, secret: secret })
 
   const linkAccountHandler = async (
     accountId: string,
@@ -35,7 +36,11 @@ export const SelectAccount = ({ reference }: Props) => {
 
     try {
       setIsConnecting(true)
-      await connectAccount({ accountId, requisitionId }).unwrap()
+      await connectAccount({
+        accountId,
+        requisitionId,
+        secret,
+      }).unwrap()
 
       navigate('/')
     } catch (error) {

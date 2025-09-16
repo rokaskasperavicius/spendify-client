@@ -7,7 +7,8 @@
     "node": "20.11.1"
   },
   "scripts": {
-    "dev": "npm run codegen && vite",
+    "dev": "vite",
+    "predev": "npm run codegen",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "codegen": "tsx ./src/scripts/openapi.ts ./src/lib/generated.ts",

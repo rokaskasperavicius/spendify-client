@@ -10,7 +10,7 @@ import { toast } from 'react-toastify'
 
 const query = () =>
   fetchBaseQuery({
-    baseUrl: `/v1`,
+    baseUrl: `http://192.168.1.4:10001/v1`,
     credentials: 'include',
   })
 

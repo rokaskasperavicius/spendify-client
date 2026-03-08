@@ -6,11 +6,9 @@ import type {
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { toast } from 'react-toastify'
 
-// import { API_BASE_URL } from '../config/constants'
-
 const query = () =>
   fetchBaseQuery({
-    baseUrl: `/v1`,
+    baseUrl: `/api/v1`,
     credentials: 'include',
   })
 

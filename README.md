@@ -1,7 +1,7 @@
 # Spendify
 
 ### Requirements
-- Node v20.11.1
+- Node v20.20.1
 - Running Local Instance of Spendify API
 
 ### Setup

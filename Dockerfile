@@ -12,6 +12,6 @@ FROM nginx:alpine
 # Copy our custom Nginx config
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 # Copy built assets from the builder stage
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=builder --chown=node:node /app/build /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

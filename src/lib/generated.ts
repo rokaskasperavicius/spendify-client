@@ -1007,6 +1007,8 @@ export interface operations {
             query: {
                 /** @description SYNC_ADMIN_KEY */
                 admin_key: string;
+                /** @description Account ID to sync (optional) */
+                account_id?: string;
             };
             header?: never;
             path?: never;

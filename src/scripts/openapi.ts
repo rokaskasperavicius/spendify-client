@@ -4,7 +4,7 @@ import openapiTS, { astToString, c } from 'openapi-typescript'
 
 // import ts from 'typescript'
 
-const INPUT = `${process.env.VITE_API_BASE_URL}/openapi.yaml`
+const INPUT = 'http://localhost:8080/openapi.yaml'
 const OUTPUT = process.argv[2]
 
 // This creates an absolute cwd path from the given relative path

@@ -1092,6 +1092,10 @@ export enum AccountStatuses {
 }
 export enum Categories {
     Food_Groceries = "Food & Groceries",
+    Shopping = "Shopping",
+    Transfers = "Transfers",
+    Income = "Income",
     Utilities = "Utilities",
-    Transfers = "Transfers"
+    Transportation = "Transportation",
+    Other = "Other"
 }
